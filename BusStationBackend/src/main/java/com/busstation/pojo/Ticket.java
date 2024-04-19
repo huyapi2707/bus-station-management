@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Collection;
 
 @Entity
 @Table(name = "bus_station_ticket", schema = "bus-station-db", catalog = "")

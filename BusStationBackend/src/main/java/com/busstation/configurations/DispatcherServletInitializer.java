@@ -1,5 +1,6 @@
 package com.busstation.configurations;
 
+
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class DispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -7,14 +8,15 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
     protected Class<?>[] getRootConfigClasses() {
         return new Class[] {
                 HibernateConfiguration.class,
-                TilesConfiguration.class
+                TilesConfiguration.class,
+                SecurityConfiguration.class
+
         };
     }
-
     @Override
     protected Class<?>[] getServletConfigClasses() {
         return new Class[] {
-                WebAppContextConfig.class
+                WebAppContextConfig.class,
         };
     }
 
