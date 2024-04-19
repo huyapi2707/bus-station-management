@@ -1,19 +1,27 @@
 package com.busstation.pojo;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.HashSet;
+
 
 @Entity
 @Table(name = "bus_station_user", schema = "bus-station-db", catalog = "")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class User {
+@Builder
+public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
@@ -22,10 +30,10 @@ public class User {
     @Column(name = "username", nullable = false, length = 255)
     private String username;
     @Basic
-    @Column(name = "first_name", nullable = false, length = 255)
+    @Column(name = "first_name", length = 255)
     private String firstName;
     @Basic
-    @Column(name = "last_name", nullable = false, length = 255)
+    @Column(name = "last_name", length = 255)
     private String lastName;
     @Basic
     @Column(name = "password", nullable = false, length = 255)
@@ -34,10 +42,10 @@ public class User {
     @Column(name = "email", nullable = false, length = 254)
     private String email;
     @Basic
-    @Column(name = "phone", nullable = false, length = 50)
+    @Column(name = "phone", length = 50)
     private String phone;
     @Basic
-    @Column(name = "avatar", nullable = false, length = 255)
+    @Column(name = "avatar", length = 255)
     private String avatar;
     @Basic
     @Column(name = "created_at", nullable = false)
@@ -55,4 +63,31 @@ public class User {
     private Role role;
 
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Collection<SimpleGrantedAuthority> authorities = new HashSet<>();
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(this.getRole().getName());
+        authorities.add(authority);
+        return authorities;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.isActive;
+    }
 }
