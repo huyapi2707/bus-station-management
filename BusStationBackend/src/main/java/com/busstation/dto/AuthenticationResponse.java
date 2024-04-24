@@ -1,6 +1,7 @@
-package com.busstation.controllers.auth;
+package com.busstation.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,9 +10,8 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest implements Serializable {
-    private String username;
-    private String email;
-    private String password;
+@Builder
+public class AuthenticationResponse implements Serializable {
+    private String accessToken;
     private String role;
 }

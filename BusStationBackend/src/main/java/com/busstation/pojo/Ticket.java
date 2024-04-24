@@ -3,8 +3,12 @@ package com.busstation.pojo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 
 @Entity
@@ -18,16 +22,21 @@ public class Ticket {
     @Column(name = "id", nullable = false)
     private Long id;
     @Basic
+    @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
     @Basic
+    @NotNull(message = "{ticket.seatPrice.notNull}")
+    @Min(value = 0, message = "{ticket.seatPrice.min}")
     @Column(name = "seat_price", nullable = false, precision = 0)
     private Double seatPrice;
     @Basic
+    @NotNull(message = "{ticket.seatCode.notNull}")
+    @Size(min = 0, max = 20, message = "{ticket.seatCode.size}")
     @Column(name = "seat_code", nullable = false, length = 20)
     private String seatCode;
     @Basic
-    @Column(name = "paid_at", nullable = false)
+    @Column(name = "paid_at")
     private Timestamp paidAt;
 
     @OneToOne(mappedBy = "ticket")

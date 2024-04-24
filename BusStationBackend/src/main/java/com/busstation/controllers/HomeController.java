@@ -1,4 +1,4 @@
-package com.busstation.controllers.auth;
+package com.busstation.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

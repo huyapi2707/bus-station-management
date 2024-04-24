@@ -49,11 +49,11 @@ DROP TABLE IF EXISTS `bus_station_cargo`;
 CREATE TABLE `bus_station_cargo` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `receiver_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `receiver_email` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `receiver_email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `receiver_phone` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `receiver_address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cargo_price` double NOT NULL,
-  `sent_at` datetime(6) NOT NULL,
+  `sent_at` datetime(6) DEFAULT NULL,
   `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `ticket_id` bigint NOT NULL,
   PRIMARY KEY (`id`),
@@ -160,8 +160,8 @@ DROP TABLE IF EXISTS `bus_station_route`;
 CREATE TABLE `bus_station_route` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `gg_from_location` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `gg_to_location` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gg_from_location` longtext COLLATE utf8mb4_unicode_ci,
+  `gg_to_location` longtext COLLATE utf8mb4_unicode_ci,
   `is_active` tinyint(1) NOT NULL,
   `from_location` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `to_location` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -224,7 +224,7 @@ CREATE TABLE `bus_station_ticket` (
   `created_at` datetime(6) NOT NULL,
   `seat_price` double NOT NULL,
   `seat_code` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `paid_at` datetime(6) NOT NULL,
+  `paid_at` datetime(6) DEFAULT NULL,
   `customer_id` bigint NOT NULL,
   `payment_method_id` bigint NOT NULL,
   `trip_id` bigint NOT NULL,
@@ -364,4 +364,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-19 22:03:19
+-- Dump completed on 2024-04-24 23:38:16

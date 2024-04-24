@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 
 @Entity
@@ -18,6 +20,8 @@ public class Car {
     @Column(name = "id", nullable = false)
     private Long id;
     @Basic
+    @NotNull(message = "{car.carNumber.notNull}")
+    @Size(min = 0, max = 10, message = "{car.carNumber.size}")
     @Column(name = "car_number", nullable = false, length = 10)
     private String carNumber;
     @OneToMany(mappedBy = "car")

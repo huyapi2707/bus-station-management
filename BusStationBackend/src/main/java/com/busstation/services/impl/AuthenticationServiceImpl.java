@@ -1,8 +1,8 @@
 package com.busstation.services.impl;
 
-import com.busstation.controllers.auth.AuthenticationRequest;
-import com.busstation.controllers.auth.AuthenticationResponse;
-import com.busstation.controllers.auth.RegisterRequest;
+import com.busstation.dto.AuthenticationRequest;
+import com.busstation.dto.AuthenticationResponse;
+import com.busstation.dto.RegisterRequest;
 import com.busstation.pojo.Role;
 import com.busstation.pojo.User;
 import com.busstation.repositories.RoleRepository;
@@ -12,7 +12,6 @@ import com.busstation.services.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

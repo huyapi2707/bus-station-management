@@ -3,6 +3,7 @@ package com.busstation.pojo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -25,6 +26,7 @@ public class Trip {
     @Column(name = "cargo_price", nullable = false, precision = 0)
     private Double cargoPrice;
     @Basic
+    @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
     @Basic

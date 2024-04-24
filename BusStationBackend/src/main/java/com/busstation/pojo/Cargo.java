@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 
 @Entity
@@ -21,7 +24,7 @@ public class Cargo {
     @Column(name = "receiver_name", nullable = false, length = 255)
     private String receiverName;
     @Basic
-    @Column(name = "receiver_email", nullable = false, length = 254)
+    @Column(name = "receiver_email", nullable = false, length = 50)
     private String receiverEmail;
     @Basic
     @Column(name = "receiver_phone", nullable = false, length = 20)
@@ -33,7 +36,7 @@ public class Cargo {
     @Column(name = "cargo_price", nullable = false, precision = 0)
     private Double cargoPrice;
     @Basic
-    @Column(name = "sent_at", nullable = false)
+    @Column(name = "sent_at")
     private Timestamp sentAt;
     @Basic
     @Column(name = "description", nullable = false, length = -1)

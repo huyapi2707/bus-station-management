@@ -3,6 +3,7 @@ package com.busstation.pojo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -19,6 +20,7 @@ public class TransportationCompany {
     @Column(name = "id", nullable = false)
     private Long id;
     @Basic
+
     @Column(name = "name", nullable = false, length = 255)
     private String name;
     @Basic
@@ -40,6 +42,7 @@ public class TransportationCompany {
     @Column(name = "is_cargo_transport", nullable = false)
     private Boolean isCargoTransport;
     @Basic
+    @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
 
