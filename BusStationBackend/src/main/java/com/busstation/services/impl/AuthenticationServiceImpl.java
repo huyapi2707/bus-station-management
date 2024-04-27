@@ -3,20 +3,23 @@ package com.busstation.services.impl;
 import com.busstation.dto.AuthenticationRequest;
 import com.busstation.dto.AuthenticationResponse;
 import com.busstation.dto.RegisterRequest;
+import com.busstation.dto.mappers.UserDTOMapper;
 import com.busstation.pojo.Role;
 import com.busstation.pojo.User;
 import com.busstation.repositories.RoleRepository;
 import com.busstation.repositories.UserRepository;
 import com.busstation.services.AuthenticationService;
 import com.busstation.services.JwtService;
+import com.busstation.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.function.Function;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -25,7 +28,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private JwtService jwtService;
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserService userDetailsService;
 
     @Autowired
     private UserRepository userRepository;
@@ -36,32 +39,43 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     private RoleRepository roleRepository;
 
+
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
     @Override
     public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
-      manager.authenticate(
+
+        manager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authenticationRequest.getUsername(),
                         authenticationRequest.getPassword()
                 )
         );
-      User userDetails = (User) userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-      return AuthenticationResponse.builder()
-              .accessToken(jwtService.generateToken(userDetails))
-              .role((userDetails.getRole().getName()))
-              .build();
+        User userDetails = (User) userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+        return AuthenticationResponse.builder()
+                .accessToken(jwtService.generateToken(userDetails))
+                .userDetails(userDetailsService.toDTO(userDetails))
+                .build();
     }
+
 
     @Override
     public AuthenticationResponse register(RegisterRequest registerRequest) {
         User user = (User) userDetailsService.loadUserByUsername(registerRequest.getUsername());
-        if (user != null && user.getEmail().equals(registerRequest.getEmail())) {
-            throw new IllegalArgumentException("User name or email is exist");
+        if (user != null) {
+            throw new IllegalArgumentException("User name  is exist");
+        } else {
+            if (userDetailsService.isEmailExist(registerRequest.getEmail())) {
+                throw new IllegalArgumentException("Email is exist");
+            }
+        }
+        if (user.getEmail().equals(registerRequest.getEmail())) {
+            throw new IllegalArgumentException("Email is exist");
         }
         Role role = roleRepository.getRoleByName(registerRequest.getRole());
         if (role == null) {
-            throw  new IllegalArgumentException("Role field is invalid");
+            throw new IllegalArgumentException("Role field is invalid");
         }
         User newUser = User.builder()
                 .email(registerRequest.getEmail())
@@ -74,7 +88,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         userRepository.saveUser(newUser);
         return AuthenticationResponse.builder()
                 .accessToken(jwtService.generateToken(newUser))
-                .role(newUser.getRole().getName())
+                .userDetails(userDetailsService.toDTO(newUser))
                 .build();
     }
 }

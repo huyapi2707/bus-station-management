@@ -7,6 +7,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -19,7 +20,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @ComponentScan(basePackages = {
         "com.busstation.controllers",
         "com.busstation.services",
-        "com.busstation.repositories"
+        "com.busstation.repositories",
+        "com.busstation.dto"
 })
 
 public class WebAppContextConfig implements WebMvcConfigurer {
@@ -48,5 +50,9 @@ public class WebAppContextConfig implements WebMvcConfigurer {
         return validatorFactoryBean;
     }
 
-
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/api/v1/**")
+                .allowedOrigins("http://localhost:3000");
+    }
 }

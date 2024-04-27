@@ -13,5 +13,5 @@ import java.io.Serializable;
 @Builder
 public class AuthenticationResponse implements Serializable {
     private String accessToken;
-    private String role;
+    private UserDTO userDetails;
 }

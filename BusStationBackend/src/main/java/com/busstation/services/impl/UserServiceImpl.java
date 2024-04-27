@@ -1,5 +1,7 @@
 package com.busstation.services.impl;
 
+import com.busstation.dto.UserDTO;
+import com.busstation.dto.mappers.UserDTOMapper;
 import com.busstation.pojo.User;
 import com.busstation.repositories.UserRepository;
 import com.busstation.services.UserService;
@@ -13,8 +15,21 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserDTOMapper userDTOMapper;
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         return userRepository.getUserByUserName(s);
+    }
+
+    @Override
+    public boolean isEmailExist(String email) {
+        return userRepository.isEmailExist(email);
+    }
+
+    @Override
+    public UserDTO toDTO(User user) {
+        return userDTOMapper.apply(user);
     }
 }

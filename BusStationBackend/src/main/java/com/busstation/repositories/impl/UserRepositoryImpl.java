@@ -38,4 +38,12 @@ public class UserRepositoryImpl implements UserRepository {
         Session session = sessionFactory.getObject().getCurrentSession();
         session.save(newUser);
     }
+
+    @Override
+    public boolean isEmailExist(String email) {
+        Session session = sessionFactory.getObject().getCurrentSession();
+        Query query = session.createQuery("from User u where u.email = :email", User.class)
+                .setParameter("email", email);
+        return query.getResultList().size() > 0;
+    }
 }
