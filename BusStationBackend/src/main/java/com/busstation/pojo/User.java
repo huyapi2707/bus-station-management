@@ -56,9 +56,9 @@ public class User implements UserDetails {
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private Collection<Ticket> tickets;
-    @OneToOne(mappedBy = "manager")
+    @OneToOne(mappedBy = "manager", fetch = FetchType.LAZY)
     private TransportationCompany managed;
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)

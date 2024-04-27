@@ -8,4 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface UserRepository {
     User getUserByUserName(String username);
     void saveUser(User newUser);
+
+    boolean isEmailExist(String email);
 }

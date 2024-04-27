@@ -1,23 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
-
+import Login from './pages/login';
+import Register from './pages/register';
+import {LoadingContext, AuthenticationContext} from './config/context';
+import {useState} from 'react';
+import Loading from './components/loading';
+import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
 function App() {
+  const [loading, setLoading] = useState('none');
+  const [user, setUser] = useState(null);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container-fluid">
+      <AuthenticationContext.Provider value={{user, setUser}}>
+        <LoadingContext.Provider value={{loading, setLoading}}>
+          {loading && <Loading />}
+          <ToastContainer />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+            </Routes>
+          </BrowserRouter>
+        </LoadingContext.Provider>
+      </AuthenticationContext.Provider>
     </div>
   );
 }

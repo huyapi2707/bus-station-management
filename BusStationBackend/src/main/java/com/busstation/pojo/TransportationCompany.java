@@ -46,11 +46,11 @@ public class TransportationCompany {
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
 
-    @OneToMany(mappedBy = "company")
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
     private Collection<Review> reviews;
-    @OneToMany(mappedBy = "company")
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
     private Collection<Route> routes;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id", referencedColumnName = "id", nullable = false)
     private User manager;
 

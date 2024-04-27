@@ -43,6 +43,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
 
+
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
@@ -67,4 +69,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return configuration.getAuthenticationManager();
 
     }
+
+
 }

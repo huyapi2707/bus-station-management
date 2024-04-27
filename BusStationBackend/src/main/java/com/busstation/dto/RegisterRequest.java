@@ -22,6 +22,6 @@ public class RegisterRequest implements Serializable {
     @Size(min = 3, max = 255, message = "{user.password.size}")
     private String password;
     @NotNull(message = "{user.role.notNull}")
-    @Size(min = 1, max =20, message = "{user.role.notNull}")
+    @Size(min = 5, max =20, message = "{user.role.notNull}")
     private String role;
 }
