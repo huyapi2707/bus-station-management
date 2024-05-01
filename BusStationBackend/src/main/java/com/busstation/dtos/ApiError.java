@@ -1,4 +1,4 @@
-package com.busstation.dto;
+package com.busstation.dtos;
 
 import lombok.Data;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
-package com.busstation.dto.mappers;
+package com.busstation.dtos.mappers;
 
-import com.busstation.dto.UserDTO;
+import com.busstation.dtos.UserDTO;
 import com.busstation.pojo.User;
 import org.springframework.stereotype.Service;
 

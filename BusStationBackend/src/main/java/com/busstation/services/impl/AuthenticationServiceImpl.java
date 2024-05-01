@@ -1,9 +1,8 @@
 package com.busstation.services.impl;
 
-import com.busstation.dto.AuthenticationRequest;
-import com.busstation.dto.AuthenticationResponse;
-import com.busstation.dto.RegisterRequest;
-import com.busstation.dto.mappers.UserDTOMapper;
+import com.busstation.dtos.AuthenticationRequest;
+import com.busstation.dtos.AuthenticationResponse;
+import com.busstation.dtos.RegisterRequest;
 import com.busstation.pojo.Role;
 import com.busstation.pojo.User;
 import com.busstation.repositories.RoleRepository;
@@ -14,12 +13,10 @@ import com.busstation.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.function.Function;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {

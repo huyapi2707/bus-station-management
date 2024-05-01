@@ -1,8 +1,8 @@
 package com.busstation.services;
 
-import com.busstation.dto.AuthenticationRequest;
-import com.busstation.dto.AuthenticationResponse;
-import com.busstation.dto.RegisterRequest;
+import com.busstation.dtos.AuthenticationRequest;
+import com.busstation.dtos.AuthenticationResponse;
+import com.busstation.dtos.RegisterRequest;
 
 
 public interface AuthenticationService {
