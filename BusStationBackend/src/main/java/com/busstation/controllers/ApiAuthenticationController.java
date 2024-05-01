@@ -1,8 +1,7 @@
-package com.busstation.controllers.auth;
+package com.busstation.controllers;
 
-import com.busstation.dto.AuthenticationRequest;
-import com.busstation.dto.AuthenticationResponse;
-import com.busstation.dto.RegisterRequest;
+import com.busstation.dtos.AuthenticationRequest;
+import com.busstation.dtos.RegisterRequest;
 import com.busstation.services.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +15,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/v1/auth")
 
-public class AuthenticationController {
+public class ApiAuthenticationController {
 
     @Autowired
     private AuthenticationService authenticationService;

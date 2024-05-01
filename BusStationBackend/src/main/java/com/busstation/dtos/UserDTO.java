@@ -1,4 +1,4 @@
-package com.busstation.dto;
+package com.busstation.dtos;
 
 import lombok.Builder;
 import lombok.Data;

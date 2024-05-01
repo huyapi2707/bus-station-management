@@ -21,7 +21,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
         "com.busstation.controllers",
         "com.busstation.services",
         "com.busstation.repositories",
-        "com.busstation.dto"
+        "com.busstation.dtos"
 })
 
 public class WebAppContextConfig implements WebMvcConfigurer {
