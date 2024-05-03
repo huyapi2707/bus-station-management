@@ -1,5 +1,6 @@
 package com.busstation.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,11 +48,14 @@ public class TransportationCompany {
     private Timestamp createdAt;
 
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Collection<Review> reviews;
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Collection<Route> routes;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id", referencedColumnName = "id", nullable = false)
+    @JsonIgnore
     private User manager;
 
 
