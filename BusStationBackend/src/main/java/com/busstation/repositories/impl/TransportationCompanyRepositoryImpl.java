@@ -1,18 +1,20 @@
 package com.busstation.repositories.impl;
 
-import com.busstation.pojo.Role;
 import com.busstation.pojo.TransportationCompany;
 import com.busstation.repositories.TransportationCompanyRepository;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-public class TransportationCompanyRepositoryimpl implements TransportationCompanyRepository {
+@Repository
+public class TransportationCompanyRepositoryImpl implements TransportationCompanyRepository {
     @Autowired
     private  LocalSessionFactoryBean sessionFactory;
 
