@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
 @Repository
 @Transactional
 @PropertySource("classpath:configuration.properties")
@@ -60,5 +59,43 @@ public class TransportationCompanyRepositoryImpl implements TransportationCompan
         }
         List<TransportationCompany> result = query.getResultList();
         return result;
+    }
+
+    @Override
+    public TransportationCompany getTransportationCompanyById(int id) {
+        Session session = sessionFactoryBean.getObject().getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<TransportationCompany> criteria = builder.createQuery(TransportationCompany.class);
+        Root root = criteria.from(TransportationCompany.class);
+        criteria.select(root);
+        criteria.where(builder.equal(root.get("id"), id));
+        Query query = session.createQuery(criteria);
+        return (TransportationCompany) query.getResultList().stream().findFirst().orElse(null);
+    }
+
+    @Override
+    public void saveTransportationCompany(TransportationCompany newtransportationCompany) {
+        Session session = sessionFactoryBean.getObject().getCurrentSession();
+        session.persist(newtransportationCompany);
+    }
+
+    @Override
+    public void updateTransportationCompany(TransportationCompany transportationCompany) {
+        Session session = sessionFactoryBean.getObject().getCurrentSession();
+        TransportationCompany existingCompany = session.byId(TransportationCompany.class).load(transportationCompany.getId());
+        existingCompany.setName(transportationCompany.getName());
+        existingCompany.setAvatar(transportationCompany.getAvatar());
+        existingCompany.setPhone(transportationCompany.getPhone());
+        existingCompany.setEmail(transportationCompany.getEmail());
+        session.flush();
+    }
+
+    @Override
+    public void deleteTransportationCompany(int id) {
+        Session session = sessionFactoryBean.getObject().getCurrentSession();
+        TransportationCompany transportationCompany = session.byId(TransportationCompany.class).load(id);
+        if (transportationCompany != null) {
+            session.delete(transportationCompany);
+        }
     }
 }
