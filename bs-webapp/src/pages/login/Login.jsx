@@ -1,5 +1,5 @@
 import {useContext, useState} from 'react';
-import './styles.css';
+import '../../styles/login.css';
 import {FaGoogle} from 'react-icons/fa';
 import {LoadingContext, AuthenticationContext} from '../../config/context';
 import {apis, endpoints} from '../../config/apis';

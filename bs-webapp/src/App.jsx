@@ -1,9 +1,10 @@
 import './App.css';
-import Login from './pages/login';
-import Register from './pages/register';
+import Login from './pages/login/Login';
+import Register from './pages/register/Register';
+import Navbar from './components/Navbar';
 import {LoadingContext, AuthenticationContext} from './config/context';
 import {useState} from 'react';
-import Loading from './components/loading';
+import Loading from './components/Loading';
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
@@ -20,6 +21,7 @@ function App() {
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/" element={<Navbar />}/>
             </Routes>
           </BrowserRouter>
         </LoadingContext.Provider>

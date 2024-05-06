@@ -1,5 +1,4 @@
-import './styles.css';
-import '../login/styles.css';
+import '../../styles/login.css';
 import {useContext, useState} from 'react';
 import * as validator from '../../config/validator';
 import {LoadingContext, AuthenticationContext} from '../../config/context';

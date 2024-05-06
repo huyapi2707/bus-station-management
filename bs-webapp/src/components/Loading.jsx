@@ -1,5 +1,5 @@
-import './styles.css';
-import {LoadingContext} from '../../config/context';
+import '../styles/loading.css';
+import {LoadingContext} from '../config/context';
 import {useContext} from 'react';
 const Loading = () => {
   const {loading} = useContext(LoadingContext);
