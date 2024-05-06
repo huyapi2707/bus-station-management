@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-
+import java.util.Optional;
 @Service
 public class TransportationCompanyServiceImpl implements TransportationCompanyService {
 
@@ -18,5 +18,26 @@ public class TransportationCompanyServiceImpl implements TransportationCompanySe
     @Override
     public List<TransportationCompany> getAll(Map<String, String> params) {
         return transportationCompanyRepository.getAll(params);
+    }
+
+    @Override
+    public Optional<TransportationCompany> getTransportationCompanyById(int id) {
+        return Optional.ofNullable(transportationCompanyRepository.getTransportationCompanyById(id));
+    }
+
+    @Override
+    public TransportationCompany saveTransportationCompany(TransportationCompany transportationCompany) {
+        transportationCompanyRepository.saveTransportationCompany(transportationCompany);
+        return transportationCompany; // Assuming the ID is generated and set in the transportationCompany object.
+    }
+
+    @Override
+    public void updateTransportationCompany(TransportationCompany transportationCompany) {
+        transportationCompanyRepository.updateTransportationCompany(transportationCompany);
+    }
+
+    @Override
+    public void deleteTransportationCompany(int id) {
+        transportationCompanyRepository.deleteTransportationCompany(id);
     }
 }
