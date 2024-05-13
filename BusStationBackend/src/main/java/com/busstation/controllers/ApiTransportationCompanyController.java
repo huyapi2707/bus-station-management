@@ -17,6 +17,7 @@ public class ApiTransportationCompanyController {
     @Autowired
     private TransportationCompanyService transportationCompanyService;
 
+
     @GetMapping("/list")
     public ResponseEntity<Object> list(@RequestParam Map<String, String> params) {
         return ResponseEntity.ok(transportationCompanyService.getAll(params));

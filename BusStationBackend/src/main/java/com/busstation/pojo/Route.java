@@ -25,21 +25,11 @@ public class Route {
     @Basic
     @Column(name = "name", nullable = false, length = 255)
     private String name;
-    @Basic
-    @Column(name = "gg_from_location", length = -1)
-    private String ggFromLocation;
-    @Basic
-    @Column(name = "gg_to_location", length = -1)
-    private String ggToLocation;
+
     @Basic
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
-    @Basic
-    @Column(name = "from_location", nullable = false, length = 255)
-    private String fromLocation;
-    @Basic
-    @Column(name = "to_location", nullable = false, length = 255)
-    private String toLocation;
+
     @Basic
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
@@ -52,4 +42,11 @@ public class Route {
     private Collection<Trip> trips;
 
 
+    @ManyToOne
+    @JoinColumn(name = "from_station", nullable = false)
+    private Station fromStation;
+
+    @ManyToOne
+    @JoinColumn(name = "to_station", nullable = false)
+    private Station toStation;
 }
