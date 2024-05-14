@@ -3,8 +3,11 @@ package com.busstation.services.impl;
 import com.busstation.pojo.Station;
 import com.busstation.repositories.StationRepository;
 import com.busstation.services.StationService;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
+@Service
 public class StationServiceImpl implements StationService {
     private final StationRepository stationRepository;
 
