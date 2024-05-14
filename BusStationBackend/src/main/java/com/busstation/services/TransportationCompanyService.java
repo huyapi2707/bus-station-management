@@ -11,5 +11,5 @@ public interface TransportationCompanyService{
     TransportationCompany saveTransportationCompany(TransportationCompany transportationCompany);
     void updateTransportationCompany(TransportationCompany transportationCompany);
     void deleteTransportationCompany(int id);
-
+    void verifiedTransportationCompany(int id);
 }

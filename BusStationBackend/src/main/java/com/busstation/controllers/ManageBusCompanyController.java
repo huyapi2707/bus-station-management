@@ -45,4 +45,10 @@ public class ManageBusCompanyController {
         transportationCompanyService.deleteTransportationCompany(id);
         return ResponseEntity.ok().build();
     }
+    
+    @PostMapping("/{id}/verify")
+    public String verifyCompany(@PathVariable int id) {
+        transportationCompanyService.verifiedTransportationCompany(id);
+        return "Company verification successfully!";
+    }
 }

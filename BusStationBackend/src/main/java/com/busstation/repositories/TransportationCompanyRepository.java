@@ -11,4 +11,5 @@ public interface TransportationCompanyRepository {
     void saveTransportationCompany(TransportationCompany newtransportationCompany);
     void deleteTransportationCompany(int id);
     void updateTransportationCompany(TransportationCompany transportationCompany);
+    void verifiedTransportationCompany(int id);
 }

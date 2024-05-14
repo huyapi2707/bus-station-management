@@ -98,4 +98,18 @@ public class TransportationCompanyRepositoryImpl implements TransportationCompan
             session.delete(transportationCompany);
         }
     }
+
+    @Override
+    public void verifiedTransportationCompany(int id) {
+        Session session = sessionFactoryBean.getObject().getCurrentSession();
+        try {
+            TransportationCompany transportationCompany = session.byId(TransportationCompany.class).load(id);
+            if (transportationCompany != null) {
+                transportationCompany.setIsVerified(!transportationCompany.getIsVerified());
+                session.update(transportationCompany);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

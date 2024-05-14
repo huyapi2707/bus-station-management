@@ -40,4 +40,9 @@ public class TransportationCompanyServiceImpl implements TransportationCompanySe
     public void deleteTransportationCompany(int id) {
         transportationCompanyRepository.deleteTransportationCompany(id);
     }
+
+    @Override
+    public  void verifiedTransportationCompany(int id) {
+        transportationCompanyRepository.verifiedTransportationCompany(id);
+    }
 }
