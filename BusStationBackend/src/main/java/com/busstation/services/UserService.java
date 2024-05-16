@@ -8,4 +8,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface UserService extends UserDetailsService {
     boolean isEmailExist(String email);
     UserDTO toDTO(User user);
+
+    UserDTO getAuthenticatedUser();
 }

@@ -16,7 +16,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -62,6 +67,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/v1/auth/**").permitAll()
                 .antMatchers("/api/v1/transportation_company/**").permitAll()
+                .antMatchers("/api/v1/route/**").permitAll()
+                .antMatchers("/api/v1/users/**").authenticated()
+
                 .anyRequest().authenticated();
     }
 
@@ -70,6 +78,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return configuration.getAuthenticationManager();
 
     }
+
 
 
 }

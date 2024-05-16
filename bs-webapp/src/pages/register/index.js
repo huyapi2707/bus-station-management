@@ -43,7 +43,7 @@ const Register = () => {
     } else {
       try {
         setLoading('flex');
-        const response = await apis
+        const response = await apis(null)
           .post(endpoints.register, {
             username: username,
             password: password,
@@ -65,7 +65,7 @@ const Register = () => {
           });
         if (response.status === 201) {
           localStorage.setItem('accessToken', response.data.accessToken);
-          setUser(response.data);
+          setUser(response.data['userDetails']);
         }
       } catch (error) {
         console.log(error);

@@ -19,12 +19,7 @@ public class Trip {
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
-    @Basic
-    @Column(name = "seat_price", nullable = false, precision = 0)
-    private Double seatPrice;
-    @Basic
-    @Column(name = "cargo_price", nullable = false, precision = 0)
-    private Double cargoPrice;
+
     @Basic
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)

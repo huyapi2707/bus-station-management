@@ -35,6 +35,13 @@ public class Route {
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
 
+    @Basic
+    @Column(name = "seat_price", nullable = false, precision = 0)
+    private Double seatPrice;
+    @Basic
+    @Column(name = "cargo_price", nullable = false, precision = 0)
+    private Double cargoPrice;
+
     @ManyToOne
     @JoinColumn(name = "company_id", referencedColumnName = "id", nullable = false)
     private TransportationCompany company;

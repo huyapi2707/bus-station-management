@@ -6,6 +6,7 @@ import com.busstation.pojo.User;
 import com.busstation.repositories.UserRepository;
 import com.busstation.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -31,5 +32,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO toDTO(User user) {
         return userDTOMapper.apply(user);
+    }
+
+    @Override
+    public UserDTO getAuthenticatedUser() {
+       User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+       return userDTOMapper.apply(user);
     }
 }
