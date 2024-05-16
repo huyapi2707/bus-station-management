@@ -13,7 +13,11 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import java.util.stream.Collectors;
+
+
+import java.util.Optional;
 
 @Service
 @PropertySource("classpath:configuration.properties")
@@ -35,7 +39,7 @@ public class TransportationCompanyServiceImpl implements TransportationCompanySe
         List<TransportationCompany> results = repository.list(params);
         Long total = repository.count(params);
         int pageSize = Integer.parseInt(environment.getProperty("transportationCompany.pageSize"));
-        int pageTotal = (int) Math.ceil(total / pageSize);
+        int pageTotal = (int) ((total / pageSize) + 1);
         Map<String, Object> m = new HashMap<>();
         m.put("total", total);
         m.put("pageTotal", pageTotal);
@@ -49,5 +53,26 @@ public class TransportationCompanyServiceImpl implements TransportationCompanySe
        List<TransportationCompany> results = repository.list(new HashMap<>());
        List<CompanyPublicDTO> r = results.stream().map(companyPublicMapper::apply).collect(Collectors.toList());
        return r;
+    }
+
+    @Override
+    public Optional<TransportationCompany> getTransportationCompanyById(int id) {
+        return Optional.ofNullable(repository.getTransportationCompanyById(id));
+    }
+
+    @Override
+    public TransportationCompany saveTransportationCompany(TransportationCompany transportationCompany) {
+        repository.saveTransportationCompany(transportationCompany);
+        return transportationCompany; // Assuming the ID is generated and set in the transportationCompany object.
+    }
+
+    @Override
+    public void updateTransportationCompany(TransportationCompany transportationCompany) {
+        repository.updateTransportationCompany(transportationCompany);
+    }
+
+    @Override
+    public void deleteTransportationCompany(int id) {
+        repository.deleteTransportationCompany(id);
     }
 }
