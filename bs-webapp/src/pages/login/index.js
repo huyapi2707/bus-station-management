@@ -4,14 +4,14 @@ import {FaGoogle} from 'react-icons/fa';
 import {LoadingContext, AuthenticationContext} from '../../config/context';
 import {apis, endpoints} from '../../config/apis';
 import {toast} from 'react-toastify';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import * as validator from '../../config/validator';
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const {setLoading} = useContext(LoadingContext);
   const {setUser} = useContext(AuthenticationContext);
-
+  const navigator = useNavigate();
   const validate = () => {
     const msgs = [];
     msgs.push(validator.validateUsername(username));
@@ -37,7 +37,7 @@ const Login = () => {
 
     try {
       setLoading('flex');
-      const response = await apis
+      const response = await apis(null)
         .post(endpoints.login, {
           username: username,
           password: password,
@@ -58,7 +58,8 @@ const Login = () => {
       const data = response.data;
 
       localStorage.setItem('accessToken', data.accessToken);
-      setUser(data);
+      setUser(data['userDetails']);
+      navigator('/');
     } catch (error) {
       console.info(error);
     } finally {

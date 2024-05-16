@@ -16,6 +16,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ public class TransportationCompanyRepositoryImpl implements TransportationCompan
     Environment environment;
 
     @Override
-    public List<TransportationCompany> getAll(Map<String, String> params) {
+    public List<TransportationCompany> list(Map<String, String> params) {
         Session session = sessionFactoryBean.getObject().getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
 
@@ -39,12 +40,7 @@ public class TransportationCompanyRepositoryImpl implements TransportationCompan
         Root root = criteriaQuery.from(TransportationCompany.class);
         criteriaQuery.select(root);
 
-        List<Predicate> predicates = new ArrayList<>();
-        String kw = params.get("kw");
-        if (kw != null && !kw.isEmpty()) {
-            predicates.add(builder.like(root.get("name"),  String.format("%%%s%%", kw)));
-        }
-
+        List<Predicate> predicates = createPredicates(builder, root, params);
         criteriaQuery.where(predicates.toArray(Predicate[]::new));
 
         Query query = session.createQuery(criteriaQuery);
@@ -52,16 +48,39 @@ public class TransportationCompanyRepositoryImpl implements TransportationCompan
         String page = params.get("page");
         if (page != null && !page.isEmpty()) {
             int pageSize = Integer.parseInt(environment.getProperty("transportationCompany.pageSize").toString());
+
             int start = (Integer.parseInt(page) -1 ) * pageSize;
             query.setFirstResult(start);
             query.setMaxResults(pageSize);
 
         }
-        List<TransportationCompany> result = query.getResultList();
-        return result;
+        return query.getResultList();
     }
 
     @Override
+
+    public Long count(Map<String, String> params) {
+        Session session = sessionFactoryBean.getObject().getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
+        Root root = criteriaQuery.from(TransportationCompany.class);
+        criteriaQuery.select(builder.count(root));
+        List<Predicate> predicates = createPredicates(builder, root, params);
+        criteriaQuery.where(predicates.toArray(Predicate[]::new));
+       return session.createQuery(criteriaQuery).getSingleResult();
+    }
+
+    private List<Predicate> createPredicates(CriteriaBuilder builder , Root root , Map<String, String> params) {
+        List<Predicate> results = new ArrayList<>();
+        String kw = params.get("kw");
+        if (kw != null && !kw.isEmpty()) {
+            Predicate predicate = builder.like(root.get("name"), String.format("%%%s%%", kw));
+            results.add(predicate);
+        }
+        return results;
+    }
+
+
     public TransportationCompany getTransportationCompanyById(int id) {
         Session session = sessionFactoryBean.getObject().getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -98,4 +117,5 @@ public class TransportationCompanyRepositoryImpl implements TransportationCompan
             session.delete(transportationCompany);
         }
     }
+
 }
