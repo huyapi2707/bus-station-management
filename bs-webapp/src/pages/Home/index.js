@@ -1,8 +1,9 @@
 import './styles.css';
 import Navbar from '../../components/navbar';
 import Banner from '../../components/banner';
-import Grid from '../../components/Grid';
 import {endpoints} from '../../config/apis';
+import Grid from '../../components/Grid';
+import Footer from '../../components/footer';
 const Home = () => {
   return (
     <>
@@ -13,11 +14,13 @@ const Home = () => {
         dataEndpoint={endpoints.company_list}
         breadcrumb={['Home', 'Companies']}
       />
+
       <Grid
         title="Routes"
         dataEndpoint={endpoints.route_list}
         breadcrumb={['Home', 'Route']}
       />
+      <Footer />
     </>
   );
 };
