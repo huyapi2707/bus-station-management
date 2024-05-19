@@ -1,7 +1,7 @@
 package com.busstation.services.impl;
 
 import com.busstation.dtos.UserDTO;
-import com.busstation.dtos.mappers.UserDTOMapper;
+import com.busstation.mappers.UserDTOMapper;
 import com.busstation.pojo.User;
 import com.busstation.repositories.UserRepository;
 import com.busstation.services.UserService;

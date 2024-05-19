@@ -1,8 +1,12 @@
 import {Link} from 'react-router-dom';
-
+import * as utils from '../../config/utils';
 const RouteItem = ({value}) => {
   return (
-    <Link className="nav-link grid-item border">
+    <Link
+      to={`/route/${value['id']}`}
+      state={{route: value}}
+      className="nav-link grid-item border"
+    >
       <div className="image-container">
         <h1>{value['name']}</h1>
       </div>
@@ -15,11 +19,15 @@ const RouteItem = ({value}) => {
           <li className="nav-item">Company: {value['company']['name']}</li>
           <li className="nav-item">
             Seat price:{' '}
-            <span className="text-primary">{value['seatPrice']}</span>
+            <span className="text-primary">
+              {utils.formatToVND(value['seatPrice'])}
+            </span>
           </li>
           <li className="nav-item">
             Cargo price:{' '}
-            <span className="text-primary">{value['cargoPrice']}</span>
+            <span className="text-primary">
+              {utils.formatToVND(value['cargoPrice'])}
+            </span>
           </li>
         </ul>
       </div>

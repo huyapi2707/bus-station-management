@@ -45,7 +45,7 @@ public class Route {
     @ManyToOne
     @JoinColumn(name = "company_id", referencedColumnName = "id", nullable = false)
     private TransportationCompany company;
-    @OneToMany(mappedBy = "route")
+    @OneToMany(mappedBy = "route", fetch = FetchType.EAGER)
     private Collection<Trip> trips;
 
 

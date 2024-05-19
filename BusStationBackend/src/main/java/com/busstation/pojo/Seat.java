@@ -1,5 +1,6 @@
 package com.busstation.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,7 @@ public class Seat {
     private String code;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "car_id", referencedColumnName = "id", nullable = false)
     private Car car;
 
