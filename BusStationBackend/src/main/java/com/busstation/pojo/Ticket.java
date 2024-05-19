@@ -30,11 +30,7 @@ public class Ticket {
     @Min(value = 0, message = "{ticket.seatPrice.min}")
     @Column(name = "seat_price", nullable = false, precision = 0)
     private Double seatPrice;
-    @Basic
-    @NotNull(message = "{ticket.seatCode.notNull}")
-    @Size(min = 0, max = 20, message = "{ticket.seatCode.size}")
-    @Column(name = "seat_code", nullable = false, length = 20)
-    private String seatCode;
+
     @Basic
     @Column(name = "paid_at")
     private Timestamp paidAt;
@@ -53,6 +49,8 @@ public class Ticket {
     @JoinColumn(name = "trip_id", referencedColumnName = "id", nullable = false)
     private Trip trip;
 
-
+    @ManyToOne
+    @JoinColumn(name = "seat_id", referencedColumnName = "id", nullable = false)
+    private Seat seat;
 
 }

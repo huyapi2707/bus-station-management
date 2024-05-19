@@ -107,6 +107,7 @@ public class TransportationCompanyRepositoryImpl implements TransportationCompan
         existingCompany.setPhone(transportationCompany.getPhone());
         existingCompany.setEmail(transportationCompany.getEmail());
         session.flush();
+
     }
 
     @Override

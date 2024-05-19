@@ -1,4 +1,4 @@
-package com.busstation.dtos.mappers;
+package com.busstation.mappers;
 
 import com.busstation.dtos.UserDTO;
 import com.busstation.pojo.User;

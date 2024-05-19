@@ -1,7 +1,7 @@
 package com.busstation.services.impl;
 
 import com.busstation.dtos.CompanyPublicDTO;
-import com.busstation.dtos.mappers.CompanyPublicMapper;
+import com.busstation.mappers.CompanyPublicMapper;
 import com.busstation.pojo.TransportationCompany;
 import com.busstation.repositories.TransportationCompanyRepository;
 import com.busstation.services.TransportationCompanyService;

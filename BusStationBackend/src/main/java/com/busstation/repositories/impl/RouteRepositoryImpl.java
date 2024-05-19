@@ -17,10 +17,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 @Transactional
@@ -65,7 +62,16 @@ public class RouteRepositoryImpl implements RouteRepository {
         return session.createQuery(criteriaQuery).getSingleResult();
     }
 
-   private List<Predicate> createPredicates(CriteriaBuilder builder , Root root , Map<String, String> params) {
+    @Override
+    public Route getById(Long id) {
+        Session session = sessionFactoryBean.getObject().getCurrentSession();
+        Route route = session.get(Route.class, id);
+        if (route == null) throw new IllegalArgumentException("Id not found");
+        return route;
+    }
+
+
+    private List<Predicate> createPredicates(CriteriaBuilder builder , Root root , Map<String, String> params) {
         List<Predicate> results = new ArrayList<>();
         String kw = params.get("kw");
         if (kw != null && !kw.isEmpty()) {

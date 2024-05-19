@@ -23,7 +23,7 @@ import java.util.Arrays;
         "com.busstation.controllers",
         "com.busstation.services",
         "com.busstation.repositories",
-        "com.busstation.dtos"
+        "com.busstation.mappers"
 })
 
 public class WebAppContextConfig implements WebMvcConfigurer {
