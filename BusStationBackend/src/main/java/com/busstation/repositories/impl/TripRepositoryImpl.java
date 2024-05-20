@@ -1,5 +1,6 @@
 package com.busstation.repositories.impl;
 
+import com.busstation.dtos.TripDTO;
 import com.busstation.pojo.Car;
 import com.busstation.pojo.Seat;
 import com.busstation.pojo.Ticket;
@@ -34,7 +35,7 @@ public class TripRepositoryImpl implements TripRepository {
 
        Predicate tripIdPredicate = builder.equal(tripRoot.get("id"), id);
        seatCriteriaQuery.select(carSeatJoin);
-       seatCriteriaQuery.where(tripIdPredicate);
+
 
        // create subQuery
         Subquery<Seat> seatSubquery = seatCriteriaQuery.subquery(Seat.class);
@@ -42,10 +43,10 @@ public class TripRepositoryImpl implements TripRepository {
         Join<Trip, Ticket> subQueryTripTicketJoin = subQueryTripRoot.join("tickets");
         Join<Ticket, Seat> subQueryTicketSeatJoin = subQueryTripTicketJoin.join("seat");
         Predicate subQueryTripIdPredicate = builder.equal(subQueryTripRoot.get("id"), id);
-        seatSubquery.select(subQueryTicketSeatJoin);
+        seatSubquery.select(subQueryTicketSeatJoin.get("code"));
         seatSubquery.where(subQueryTripIdPredicate);
 
-        seatCriteriaQuery.where(builder.not(builder.exists(seatSubquery)));
+        seatCriteriaQuery.where(builder.and(builder.not(carSeatJoin.get("code").in(seatSubquery)), tripIdPredicate));
 
         Query query = session.createQuery(seatCriteriaQuery);
         return query.getResultList();
@@ -65,5 +66,13 @@ public class TripRepositoryImpl implements TripRepository {
         criteriaQuery.where(predicate);
         Query query = session.createQuery(criteriaQuery);
         return query.getResultList();
+    }
+
+    @Override
+    public Trip getById(Long id) {
+        Session session = sessionFactoryBean.getObject().getCurrentSession();
+        Trip trip = session.get(Trip.class, id);
+        if (trip == null) throw  new IllegalArgumentException("Trip id is not exist");
+        return trip;
     }
 }

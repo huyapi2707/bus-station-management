@@ -11,17 +11,21 @@ import {useEffect, useReducer, useState} from 'react';
 import Loading from './components/Loading';
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import {BrowserRouter, Route, Routes, json} from 'react-router-dom';
 import Home from './pages/Home';
 import Cart from './components/Cart';
 import {apis, endpoints} from './config/apis';
 import CartIcon from './components/CartIcon';
 import Grid from './components/Grid';
 import RouteInfor from './components/RouteInfor';
+import {type} from '@testing-library/user-event/dist/type';
 function App() {
   const [loading, setLoading] = useState('none');
   const [user, setUser] = useState(null);
-  const [cart, cartDispatcher] = useReducer(cartReducer, CartContext);
+  const [cart, cartDispatcher] = useReducer(cartReducer, {
+    key: '',
+    data: [],
+  });
 
   const fetchUserInfor = async (accessToken) => {
     try {
@@ -45,6 +49,26 @@ function App() {
       fetchUserInfor(accessToken);
     }
   }, [user]);
+
+  useEffect(() => {
+    const localStorageItem = localStorage.getItem('cart');
+    if (cart['key'] === '' && localStorageItem !== '') {
+      try {
+        const temp = JSON.parse(localStorageItem);
+        if (temp.length > 0) {
+          cartDispatcher({
+            type: 'ADD_TO_CART',
+            payload: temp,
+          });
+        }
+      } catch (ex) {
+        console.error(ex);
+      }
+    } else {
+      localStorage.setItem('cart', cart['key']);
+    }
+  }, [cart['key']]);
+
   return (
     <div className="container-fluid">
       <AuthenticationContext.Provider value={{user, setUser}}>
@@ -52,9 +76,9 @@ function App() {
           <CartContext.Provider value={{cart, cartDispatcher}}>
             {loading && <Loading />}
             <ToastContainer />
-            <Cart />
             <CartIcon />
             <BrowserRouter>
+              <Cart />
               <Routes>
                 <Route path="/" element={<Home />}>
                   <Route
