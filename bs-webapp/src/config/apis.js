@@ -8,6 +8,7 @@ const endpoints = {
   company_list_idName: '/api/v1/transportation_company/list/name-and-id',
   userInfor: '/api/v1/users/self',
   route_list: '/api/v1/route/list',
+  cart_details: '/api/v1/ticket/cart/details',
   route_trip_list: (id) => `/api/v1/route/${id}/trip`,
   trip_seat_details: (id) => `/api/v1/trip/${id}/seat-details`,
 };

@@ -3,32 +3,61 @@ import './styles.css';
 import {useContext, useEffect, useState} from 'react';
 import * as utils from '../../config/utils';
 import {apis, endpoints} from '../../config/apis';
-import {LoadingContext} from '../../config/context';
+import {CartContext, LoadingContext} from '../../config/context';
 import moment from 'moment';
+import {toast} from 'react-toastify';
 
 const RouteInfor = () => {
   let {id} = useParams();
   let {state} = useLocation();
   let route = state['route'];
   const {setLoading} = useContext(LoadingContext);
+  const {cartDispatcher} = useContext(CartContext);
+  const [withCargo, setWithCargo] = useState(true);
   const [trips, setTrips] = useState([]);
   const [tripId, setTripId] = useState(null);
   const [seatDetails, setSeatDetails] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]);
 
-  const handleToggleSeat = (event) => {
-    if (!event.target.checked) {
-      setSelectedSeats((selectedSeats) => {
-        selectedSeats.push(event.target.value);
-        return selectedSeats;
+  const addToCart = () => {
+    if (selectedSeats.length === 0) {
+      toast.warning('Please select your seat', {
+        position: 'top-center',
+        autoClose: 4000,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
       });
+      return;
+    }
+    const payload = selectedSeats.map((seat) => {
+      return {
+        routeId: id,
+        tripId: tripId,
+        seatId: seat,
+        withCargo: withCargo,
+      };
+    });
+
+    cartDispatcher({
+      type: 'ADD_TO_CART',
+      payload: payload,
+    });
+  };
+
+  const handleToggleSeat = (event) => {
+    if (event.target.checked) {
+      const newSelectedSeats = selectedSeats;
+      newSelectedSeats.push(event.target.value);
+      setSelectedSeats(newSelectedSeats);
     } else {
       const id = event.target.value;
       const index = selectedSeats.indexOf(id);
-      setSelectedSeats((selectedSeats) => {
-        selectedSeats.slice(index, 1);
-        return selectedSeats;
-      });
+      const newSelectedSeats = selectedSeats;
+      newSelectedSeats.splice(index, 1);
+      setSelectedSeats(newSelectedSeats);
     }
   };
 
@@ -69,7 +98,6 @@ const RouteInfor = () => {
         return a['id'] - b['id'];
       });
       setSeatDetails(seats);
-      console.log(seats);
     } catch (ex) {
       console.error(ex);
     } finally {
@@ -141,6 +169,23 @@ const RouteInfor = () => {
               </li>
             </ul>
           </div>
+          <div className="mt-5 d-flex align-items-center">
+            <button onClick={addToCart} className="btn btn-primary">
+              Add to cart
+            </button>
+            <div className="form-check ms-3">
+              <input
+                checked={withCargo}
+                className="form-check-input"
+                type="checkbox"
+                onChange={(event) => setWithCargo(event.target.checked)}
+                id="flexCheckChecked"
+              />
+              <label className="form-check-label" htmlFor="flexCheckChecked">
+                With cargo
+              </label>
+            </div>
+          </div>
         </div>
         <div className="col-md-6 p-3">
           <div>
@@ -185,9 +230,9 @@ const RouteInfor = () => {
                         type="checkbox"
                         className="btn-check"
                         id={seat['id']}
-                        autocomplete="off"
-                        onClick={(event) => handleToggleSeat(event)}
-                        checked={selectedSeats.includes(seat['id'])}
+                        autoComplete="off"
+                        onChange={(event) => handleToggleSeat(event)}
+                        disabled={!seat['available']}
                       />
                       <label
                         className={[
