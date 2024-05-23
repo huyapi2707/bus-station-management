@@ -1,5 +1,6 @@
 package com.busstation.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,8 @@ public class PaymentMethod {
     @Basic
     @Column(name = "name", nullable = false, length = 10)
     private String name;
-    @OneToMany(mappedBy = "paymentMethod")
+    @OneToMany(mappedBy = "paymentMethod", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Collection<Ticket> tickets;
 
 
