@@ -4,14 +4,22 @@ import {FaGoogle} from 'react-icons/fa';
 import {LoadingContext, AuthenticationContext} from '../../config/context';
 import {apis, endpoints} from '../../config/apis';
 import {toast} from 'react-toastify';
-import {Link, useNavigate} from 'react-router-dom';
+import {Link, Navigate, useLocation, useNavigate} from 'react-router-dom';
 import * as validator from '../../config/validator';
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const {setLoading} = useContext(LoadingContext);
   const {setUser} = useContext(AuthenticationContext);
+  const location = useLocation();
+  const {from} = location['state'] || {from: '/'};
   const navigator = useNavigate();
+
+  const accessToken = localStorage.getItem('accessToken');
+  if (accessToken) {
+    return <Navigate to={from} />;
+  }
+
   const validate = () => {
     const msgs = [];
     msgs.push(validator.validateUsername(username));
@@ -59,7 +67,7 @@ const Login = () => {
 
       localStorage.setItem('accessToken', data.accessToken);
       setUser(data['userDetails']);
-      navigator('/');
+      navigator(from);
     } catch (error) {
       console.info(error);
     } finally {

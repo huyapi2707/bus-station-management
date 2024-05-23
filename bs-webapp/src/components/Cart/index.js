@@ -100,7 +100,9 @@ const Cart = () => {
                       </li>
                       <li>
                         Depart at:{' '}
-                        {moment(ticket['tripInfo']['departAt']).calendar()}
+                        {moment(ticket['tripInfo']['departAt']).format(
+                          'MMMM Do YYYY, h:mm:ss a',
+                        )}
                       </li>
                       <li>Seat code: {ticket['seat']['code']}</li>
                       <li>
@@ -153,7 +155,9 @@ const Cart = () => {
           </tbody>
         </table>
         <div className="d-flex justify-content-end">
-          <button className="btn btn-primary">Check out</button>
+          <Link to={'/checkout'} className="btn btn-primary">
+            Check out
+          </Link>
         </div>
       </div>
     </div>

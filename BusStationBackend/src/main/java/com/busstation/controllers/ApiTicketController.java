@@ -20,4 +20,9 @@ public class ApiTicketController {
     public ResponseEntity<Object> handleGetCartInfo(@RequestBody List<Map<String, String>> cart) {
         return ResponseEntity.ok(ticketService.getInfoFromCart(cart));
     }
+
+    @PostMapping("/cart/checkout")
+    public ResponseEntity<Object> handleCheckout(@RequestBody List<Map<String, String>> cart) {
+        return ResponseEntity.ok(ticketService.getInfoFromCart(cart));
+    }
 }
