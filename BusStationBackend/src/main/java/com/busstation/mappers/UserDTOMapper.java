@@ -11,6 +11,7 @@ public class UserDTOMapper implements Function<User, UserDTO> {
     @Override
     public UserDTO apply(User user) {
         return UserDTO.builder()
+                .id(user.getId())
                 .username(user.getUsername())
                 .firstname(user.getFirstName())
                 .lastname(user.getLastName())

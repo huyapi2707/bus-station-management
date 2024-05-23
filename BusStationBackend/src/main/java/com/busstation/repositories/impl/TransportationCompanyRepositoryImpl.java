@@ -16,9 +16,10 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 @Transactional
@@ -67,7 +68,7 @@ public class TransportationCompanyRepositoryImpl implements TransportationCompan
         criteriaQuery.select(builder.count(root));
         List<Predicate> predicates = createPredicates(builder, root, params);
         criteriaQuery.where(predicates.toArray(Predicate[]::new));
-       return session.createQuery(criteriaQuery).getSingleResult();
+        return session.createQuery(criteriaQuery).getSingleResult();
     }
 
     private List<Predicate> createPredicates(CriteriaBuilder builder , Root root , Map<String, String> params) {
@@ -81,7 +82,7 @@ public class TransportationCompanyRepositoryImpl implements TransportationCompan
     }
 
 
-    public TransportationCompany getTransportationCompanyById(int id) {
+    public TransportationCompany getTransportationCompanyById(Long id) {
         Session session = sessionFactoryBean.getObject().getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<TransportationCompany> criteria = builder.createQuery(TransportationCompany.class);
@@ -102,21 +103,62 @@ public class TransportationCompanyRepositoryImpl implements TransportationCompan
     public void updateTransportationCompany(TransportationCompany transportationCompany) {
         Session session = sessionFactoryBean.getObject().getCurrentSession();
         TransportationCompany existingCompany = session.byId(TransportationCompany.class).load(transportationCompany.getId());
+
         existingCompany.setName(transportationCompany.getName());
         existingCompany.setAvatar(transportationCompany.getAvatar());
         existingCompany.setPhone(transportationCompany.getPhone());
         existingCompany.setEmail(transportationCompany.getEmail());
-        session.flush();
+        existingCompany.setIsVerified(transportationCompany.getIsVerified());
+        existingCompany.setIsActive(transportationCompany.getIsActive());
+        existingCompany.setIsCargoTransport(transportationCompany.getIsCargoTransport());
+        existingCompany.setManager(transportationCompany.getManager());
 
+        session.flush();
     }
 
     @Override
-    public void deleteTransportationCompany(int id) {
+    public void deleteById(Long id) {
         Session session = sessionFactoryBean.getObject().getCurrentSession();
-        TransportationCompany transportationCompany = session.byId(TransportationCompany.class).load(id);
-        if (transportationCompany != null) {
-            session.delete(transportationCompany);
+        TransportationCompany company = session.get(TransportationCompany.class, id);
+        if (company != null) {
+            session.delete(company);
         }
     }
 
+    @Override
+    public Optional<TransportationCompany> findById(Long id) {
+        Session session = sessionFactoryBean.getObject().getCurrentSession();
+        TransportationCompany company = session.get(TransportationCompany.class, id);
+        return Optional.ofNullable(company);
+    }
+
+    @Override
+    public void save(TransportationCompany company) {
+        Session session = sessionFactoryBean.getObject().getCurrentSession();
+        session.saveOrUpdate(company);
+    }
+
+    @Override
+    public List<TransportationCompany> findByIsVerifiedFalse() {
+        Session session = sessionFactoryBean.getObject().getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<TransportationCompany> criteriaQuery = builder.createQuery(TransportationCompany.class);
+        Root<TransportationCompany> root = criteriaQuery.from(TransportationCompany.class);
+        criteriaQuery.select(root);
+
+        Predicate verifiedPredicate = builder.isFalse(root.get("isVerified"));
+        criteriaQuery.where(verifiedPredicate);
+
+        return session.createQuery(criteriaQuery).getResultList();
+    }
+
+    @Override
+    public void verifyCompany(Long id) {
+        Session session = sessionFactoryBean.getObject().getCurrentSession();
+        TransportationCompany company = session.get(TransportationCompany.class, id);
+        if (company != null) {
+            company.setIsVerified(true);
+            session.update(company);
+        }
+    }
 }

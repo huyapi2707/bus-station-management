@@ -57,4 +57,5 @@ public class WebAppContextConfig implements WebMvcConfigurer {
         registry.addMapping("/api/v1/**")
                 .allowedOrigins("http://localhost:3000");
     }
+
 }
