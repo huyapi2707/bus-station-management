@@ -26,7 +26,6 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 @EnableTransactionManagement
-
 @ComponentScan(basePackages = {
         "com.busstation.controllers",
         "com.busstation.repositories",
@@ -41,14 +40,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private OncePerRequestFilter jwtFilter;
 
-
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
-
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -60,11 +55,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .cors(cors -> {cors.configurationSource(corsConfigurationSource());})
-                .sessionManagement(httpSecuritySessionManagementConfigurer ->
-                        httpSecuritySessionManagementConfigurer
-                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeRequests()
                 .antMatchers("/api/v1/auth/**").permitAll()
                 .antMatchers("/api/v1/payment-method/**").permitAll()
@@ -72,31 +66,32 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/route/**").permitAll()
                 .antMatchers("/api/v1/trip/**").permitAll()
                 .antMatchers("/api/v1/ticket/**").permitAll()
-                .antMatchers("/api/v1/users/**").authenticated()
-                .anyRequest().authenticated()
-                .antMatchers("/api/v1/users/role").authenticated()
                 .antMatchers("/api/v1/stations/**").permitAll()
                 .antMatchers("/admin/login").permitAll()
                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers("/api/v1/users/**").authenticated()
+                .antMatchers("/api/v1/users/role").authenticated()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/admin/login").usernameParameter("username").passwordParameter("password")
+                .loginPage("/admin/login")
+                .usernameParameter("username")
+                .passwordParameter("password")
                 .loginProcessingUrl("/admin/login")
-                .defaultSuccessUrl("/admin/", true).failureUrl("/admin/login?error")
+                .defaultSuccessUrl("/admin/", true)
+                .failureUrl("/admin/login?error")
                 .permitAll()
                 .and()
                 .logout()
-                .permitAll();
-                
+                .permitAll()
+                .and()
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
-
     }
-
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -105,8 +100,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new
-                UrlBasedCorsConfigurationSource();
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
