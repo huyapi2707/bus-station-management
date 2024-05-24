@@ -24,8 +24,10 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private TransportationCompanyService transportationCompanyService;
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
 
     @GetMapping("/companies")
     public String companies() {
