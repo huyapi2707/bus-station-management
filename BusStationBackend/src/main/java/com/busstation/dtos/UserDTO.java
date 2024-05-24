@@ -6,12 +6,12 @@ import lombok.Data;
 @Data
 @Builder
 public class UserDTO {
+    private Long id;
     private String username;
     private String email;
     private String firstname;
     private String lastname;
     private String role;
-
     private String phone;
     private String avatar;
 }

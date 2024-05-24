@@ -73,7 +73,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/trip/**").permitAll()
                 .antMatchers("/api/v1/ticket/**").permitAll()
                 .antMatchers("/api/v1/users/**").authenticated()
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
+                .antMatchers("/api/v1/users/role").authenticated()
+                .antMatchers("/api/v1/stations/**").permitAll()
+                .antMatchers("/admin/login").permitAll()
+                .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .loginPage("/admin/login").usernameParameter("username").passwordParameter("password")
+                .loginProcessingUrl("/admin/login")
+                .defaultSuccessUrl("/admin/", true).failureUrl("/admin/login?error")
+                .permitAll()
+                .and()
+                .logout()
+                .permitAll();
+                
     }
 
     @Bean

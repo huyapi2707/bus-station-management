@@ -4,6 +4,7 @@ import com.busstation.dtos.CompanyPublicDTO;
 import com.busstation.mappers.CompanyPublicMapper;
 import com.busstation.pojo.TransportationCompany;
 import com.busstation.repositories.TransportationCompanyRepository;
+import com.busstation.services.EmailService;
 import com.busstation.services.TransportationCompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
@@ -16,7 +17,7 @@ import java.util.Map;
 
 import java.util.stream.Collectors;
 
-
+import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
@@ -32,6 +33,9 @@ public class TransportationCompanyServiceImpl implements TransportationCompanySe
 
     @Autowired
     private CompanyPublicMapper companyPublicMapper;
+
+    @Autowired
+    private EmailService emailService;
 
 
     @Override
@@ -50,29 +54,67 @@ public class TransportationCompanyServiceImpl implements TransportationCompanySe
 
     @Override
     public List<CompanyPublicDTO> getAllNameAndId() {
-       List<TransportationCompany> results = repository.list(new HashMap<>());
-       List<CompanyPublicDTO> r = results.stream().map(companyPublicMapper::apply).collect(Collectors.toList());
-       return r;
+        List<TransportationCompany> results = repository.list(new HashMap<>());
+        List<CompanyPublicDTO> r = results.stream().map(companyPublicMapper::apply).collect(Collectors.toList());
+        return r;
     }
 
     @Override
-    public Optional<TransportationCompany> getTransportationCompanyById(int id) {
+    public Optional<TransportationCompany> getTransportationCompanyById(Long id) {
         return Optional.ofNullable(repository.getTransportationCompanyById(id));
     }
 
     @Override
     public TransportationCompany saveTransportationCompany(TransportationCompany transportationCompany) {
         repository.saveTransportationCompany(transportationCompany);
-        return transportationCompany; // Assuming the ID is generated and set in the transportationCompany object.
+        return transportationCompany;
+    }
+
+    @Transactional
+    @Override
+    public void updateTransportationCompany(TransportationCompany company) {
+        Optional<TransportationCompany> existingCompanyOpt = repository.findById(company.getId());
+        if (existingCompanyOpt.isPresent()) {
+            TransportationCompany existingCompany = existingCompanyOpt.get();
+            existingCompany.setName(company.getName());
+            existingCompany.setAvatar(company.getAvatar());
+            existingCompany.setPhone(company.getPhone());
+            existingCompany.setEmail(company.getEmail());
+            existingCompany.setIsVerified(company.getIsVerified());
+            existingCompany.setIsActive(company.getIsActive());
+            existingCompany.setIsCargoTransport(company.getIsCargoTransport());
+            existingCompany.setManager(company.getManager());
+
+            repository.save(existingCompany);
+        } else {
+            throw new RuntimeException("Company not found");
+        }
     }
 
     @Override
-    public void updateTransportationCompany(TransportationCompany transportationCompany) {
-        repository.updateTransportationCompany(transportationCompany);
+    @Transactional
+    public void deleteTransportationCompany(Long id) {
+        repository.deleteById(id);
     }
 
     @Override
-    public void deleteTransportationCompany(int id) {
-        repository.deleteTransportationCompany(id);
+    @Transactional
+    public List<TransportationCompany> getUnverifiedCompanies() {
+        return repository.findByIsVerifiedFalse();
+    }
+
+    @Override
+    @Transactional
+    public void verifyCompany(Long id) {
+        repository.verifyCompany(id);
+
+        Optional<TransportationCompany> companyOpt = repository.findById(id);
+        if (companyOpt.isPresent()) {
+            TransportationCompany company = companyOpt.get();
+            String to = company.getEmail();
+            String subject = "Your Company has been Verified";
+            String text = "Dear " + company.getName() + ",\n\nYour company has been successfully verified.\n\nBest regards,\nBus Station Team";
+            emailService.sendEmail(to, subject, text);
+        }
     }
 }
