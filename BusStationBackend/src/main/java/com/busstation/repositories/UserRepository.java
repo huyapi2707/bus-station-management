@@ -1,13 +1,15 @@
 package com.busstation.repositories;
 
 import com.busstation.pojo.User;
-import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestMapping;
+import java.util.List;
+import java.util.Map;
 
 
 public interface UserRepository {
     User getUserByUserName(String username);
     void saveUser(User newUser);
-
     boolean isEmailExist(String email);
+    List<User> listActiveUsers();
+    List<User> findActiveUsersByRoleId(Long roleId);
+    User getUserById(Long userId);
 }

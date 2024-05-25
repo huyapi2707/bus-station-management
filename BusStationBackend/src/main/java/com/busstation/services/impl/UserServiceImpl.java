@@ -10,6 +10,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service("userDetailsService")
 public class UserServiceImpl implements UserService {
@@ -38,5 +46,29 @@ public class UserServiceImpl implements UserService {
     public UserDTO getAuthenticatedUser() {
        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
        return userDTOMapper.apply(user);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserDTO> listActiveUsers() {
+        return userRepository.listActiveUsers()
+                .stream()
+                .map(userDTOMapper::apply)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserDTO> findActiveUsersByRoleId(Long roleId) {
+        return userRepository.findActiveUsersByRoleId(roleId)
+                .stream()
+                .map(userDTOMapper::apply)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<User> getUserById(Long id) {
+        User user = userRepository.getUserById(id);
+        return Optional.ofNullable(user);
     }
 }

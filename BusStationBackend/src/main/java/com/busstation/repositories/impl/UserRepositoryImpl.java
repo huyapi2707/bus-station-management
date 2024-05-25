@@ -4,6 +4,7 @@ import com.busstation.pojo.User;
 import com.busstation.repositories.UserRepository;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,11 +12,20 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 
 @Repository
 @Transactional
 public class UserRepositoryImpl implements UserRepository {
+
+    @Autowired
+    private Environment environment;
 
     @Autowired
     private LocalSessionFactoryBean sessionFactory;
@@ -46,4 +56,43 @@ public class UserRepositoryImpl implements UserRepository {
                 .setParameter("email", email);
         return query.getResultList().size() > 0;
     }
+
+    @Override
+    public List<User> listActiveUsers() {
+        Session session = sessionFactory.getObject().getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<User> criteriaQuery = builder.createQuery(User.class);
+        Root<User> root = criteriaQuery.from(User.class);
+        criteriaQuery.select(root);
+
+        // Add predicate for isActive = true
+        Predicate activePredicate = builder.isTrue(root.get("isActive"));
+        criteriaQuery.where(activePredicate);
+
+        Query query = session.createQuery(criteriaQuery);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<User> findActiveUsersByRoleId(Long roleId) {
+        Session session = sessionFactory.getObject().getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<User> criteriaQuery = builder.createQuery(User.class);
+        Root<User> root = criteriaQuery.from(User.class);
+        criteriaQuery.select(root);
+
+        Predicate activePredicate = builder.isTrue(root.get("isActive"));
+        Predicate rolePredicate = builder.equal(root.get("role").get("id"), roleId);
+        criteriaQuery.where(builder.and(activePredicate, rolePredicate));
+
+        Query query = session.createQuery(criteriaQuery);
+        return query.getResultList();
+    }
+
+    @Override
+    public User getUserById(Long userId) { // Thêm phương thức này
+        Session session = sessionFactory.getObject().getCurrentSession();
+        return session.get(User.class, userId);
+    }
 }
+

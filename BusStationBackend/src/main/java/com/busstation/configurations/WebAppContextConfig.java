@@ -58,4 +58,5 @@ public class WebAppContextConfig implements WebMvcConfigurer {
 
                 .allowedOrigins("http://localhost:3000");
     }
+
 }
