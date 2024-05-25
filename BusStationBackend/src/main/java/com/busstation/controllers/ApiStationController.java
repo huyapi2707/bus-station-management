@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/stations")
-public class StationController {
+public class ApiStationController {
 
     @Autowired
     private StationService stationService;

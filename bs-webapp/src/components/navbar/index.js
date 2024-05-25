@@ -115,7 +115,7 @@ const Navbar = () => {
                   type="button"
                   className="btn btn-primary w-100"
                 >
-                  Đăng nhập
+                  Sign in
                 </Link>
               </div>
               <div className="w-50">
@@ -124,7 +124,7 @@ const Navbar = () => {
                   type="button"
                   className="btn btn-light w-100"
                 >
-                  Đăng ký
+                  Sign up
                 </Link>
               </div>
             </>

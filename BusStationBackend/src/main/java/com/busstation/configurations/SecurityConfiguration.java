@@ -59,19 +59,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
+                .antMatchers("/payment-result/**").permitAll()
                 .antMatchers("/api/v1/auth/**").permitAll()
                 .antMatchers("/api/v1/payment-method/**").permitAll()
                 .antMatchers("/api/v1/transportation_company/**").permitAll()
                 .antMatchers("/api/v1/route/**").permitAll()
                 .antMatchers("/api/v1/trip/**").permitAll()
-                .antMatchers("/api/v1/ticket/**").permitAll()
-                .antMatchers("/api/v1/stations/**").permitAll()
+                .antMatchers("/api/v1/ticket/cart/**").permitAll()
                 .antMatchers("/admin/login").permitAll()
-                .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers("/api/v1/users/**").authenticated()
+                .antMatchers("/api/v1/ticket/checkout/**").authenticated()
+                .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers("/api/v1/users/role").authenticated()
-                .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/admin/login")
@@ -84,8 +85,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .permitAll()
-                .and()
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                ;
+
     }
 
     @Bean

@@ -22,4 +22,12 @@ public class PaymentMethodRepositoryImpl implements PaymentMethodRepository {
         Session session = sessionFactoryBean.getObject().getCurrentSession();
         return session.createQuery("SELECT a FROM PaymentMethod a ", PaymentMethod.class).getResultList();
     }
+
+    @Override
+    public PaymentMethod getById(Long id) {
+        Session session = sessionFactoryBean.getObject().getCurrentSession();
+        PaymentMethod method = session.get(PaymentMethod.class, id);
+        if (method == null) throw new IllegalArgumentException("Payment method id not exist");
+        return  method;
+    }
 }
