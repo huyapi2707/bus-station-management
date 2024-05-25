@@ -49,6 +49,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         authenticationRequest.getPassword()
                 )
         );
+
         User userDetails = (User) userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         return AuthenticationResponse.builder()
                 .accessToken(jwtService.generateToken(userDetails))

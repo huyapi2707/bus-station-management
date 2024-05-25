@@ -61,7 +61,7 @@ function App() {
         console.error(ex);
       }
     } else {
-      localStorage.setItem('cart', cart['key']);
+      localStorage.setItem('cart', JSON.stringify(cart['data']));
     }
   }, [cart['key']]);
 

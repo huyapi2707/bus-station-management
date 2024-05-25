@@ -53,14 +53,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
+        http.csrf().disable()
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .authorizeRequests()
+                .sessionManagement(httpSecuritySessionManagementConfigurer
+                        -> httpSecuritySessionManagementConfigurer
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        http.authorizeRequests()
                 .antMatchers("/payment-result/**").permitAll()
                 .antMatchers("/api/v1/auth/**").permitAll()
                 .antMatchers("/api/v1/payment-method/**").permitAll()
@@ -68,30 +68,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/route/**").permitAll()
                 .antMatchers("/api/v1/trip/**").permitAll()
                 .antMatchers("/api/v1/ticket/cart/**").permitAll()
-                .antMatchers("/admin/login").permitAll()
-                .antMatchers("/api/v1/users/**").authenticated()
-                .antMatchers("/api/v1/ticket/checkout/**").authenticated()
-                .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-                .antMatchers("/api/v1/users/role").authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/admin/login")
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .loginProcessingUrl("/admin/login")
-                .defaultSuccessUrl("/admin/", true)
-                .failureUrl("/admin/login?error")
-                .permitAll()
-                .and()
-                .logout()
-                .permitAll()
-                ;
+                .anyRequest().authenticated();
 
     }
 
+
+
+    @Override
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Bean
