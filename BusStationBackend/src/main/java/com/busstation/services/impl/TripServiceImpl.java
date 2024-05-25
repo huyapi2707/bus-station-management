@@ -37,4 +37,14 @@ public class TripServiceImpl implements TripService {
         Trip trip = tripRepository.getById(id);
         return tripDTOMapper.apply(trip);
     }
+
+    @Override
+    public Trip getById(Long id) {
+        return tripRepository.getById(id);
+    }
+
+    @Override
+    public Seat availableSeat(Long tripId, Long seatId) {
+        return tripRepository.availableSeat(tripId, seatId);
+    }
 }

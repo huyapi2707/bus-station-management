@@ -8,10 +8,11 @@ import {
 } from '../../config/context';
 import {apis, endpoints} from '../../config/apis';
 import * as ultils from '../../config/utils';
+import {toast} from 'react-toastify';
 const Checkout = () => {
   const {user} = useContext(AuthenticationContext);
   const {setLoading} = useContext(LoadingContext);
-  const {cart} = useContext(CartContext);
+  const {cart, cartDispatcher} = useContext(CartContext);
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(0);
   const [tickets, setTickets] = useState([]);
@@ -51,6 +52,50 @@ const Checkout = () => {
   useEffect(() => {
     fetchCartDetails();
   }, [cart['key']]);
+
+  const handleCheckout = async () => {
+    try {
+      setLoading('flex');
+      const accessToken = localStorage.getItem('accessToken');
+      const response = await apis(accessToken).post(
+        endpoints.checkout(selectedPaymentMethod),
+        cart['data'],
+      );
+
+      const {paymentUrl} = response['data'];
+
+      if (paymentUrl === null) {
+        toast.success('Your order have been created', {
+          position: 'top-center',
+          autoClose: 500,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+        });
+      } else {
+        window.location.replace(paymentUrl);
+      }
+    } catch (error) {
+      toast.error('Error when processing your order', {
+        position: 'top-center',
+        autoClose: 5000,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
+      });
+      console.error(error);
+    } finally {
+      cartDispatcher({
+        type: 'CLEAR_CART',
+      });
+
+      setLoading('none');
+    }
+  };
 
   return (
     <div className="container-fluid mt-5 ">
@@ -129,7 +174,9 @@ const Checkout = () => {
                 </select>
               </div>
               <div className="mt-3 d-flex justify-content-center align-items-center">
-                <button className=" btn btn-primary">Checkout</button>
+                <button onClick={handleCheckout} className=" btn btn-primary">
+                  Checkout
+                </button>
               </div>
             </div>
           </div>
@@ -150,9 +197,9 @@ const Checkout = () => {
                 </tr>
               </thead>
               <tbody>
-                {tickets.map((ticket) => {
+                {tickets.map((ticket, index) => {
                   return (
-                    <tr key={ticket['id']}>
+                    <tr key={index}>
                       <td>
                         <p>{ticket['routeInfo']['company']['name']}</p>
                         <p>{ticket['routeInfo']['name']}</p>

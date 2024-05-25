@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
@@ -21,8 +23,11 @@ public class ApiTicketController {
         return ResponseEntity.ok(ticketService.getInfoFromCart(cart));
     }
 
-    @PostMapping("/cart/checkout")
-    public ResponseEntity<Object> handleCheckout(@RequestBody List<Map<String, String>> cart) {
-        return ResponseEntity.ok(ticketService.getInfoFromCart(cart));
+    @PostMapping("/checkout/{id}")
+    public ResponseEntity<Object> handleCheckout(@RequestBody List<Map<String, String>> cart, @PathVariable(name = "id") Long paymentMethodId, HttpServletRequest request) throws UnsupportedEncodingException {
+        String ip = request.getRemoteAddr();
+        return ResponseEntity.ok(ticketService.checkout(cart, paymentMethodId, ip));
     }
+
+
 }

@@ -26,18 +26,18 @@ public class TripRepositoryImpl implements TripRepository {
 
     @Override
     public List<Seat> getAvailableSeats(Long id) {
-       Session session = sessionFactoryBean.getObject().getCurrentSession();
-       CriteriaBuilder builder = session.getCriteriaBuilder();
-       CriteriaQuery<Seat> seatCriteriaQuery = builder.createQuery(Seat.class);
-       Root<Trip> tripRoot = seatCriteriaQuery.from(Trip.class);
-       Join<Trip, Car> tripCarJoin = tripRoot.join("car");
-       Join<Car, Seat> carSeatJoin = tripCarJoin.join("seats");
+        Session session = sessionFactoryBean.getObject().getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Seat> seatCriteriaQuery = builder.createQuery(Seat.class);
+        Root<Trip> tripRoot = seatCriteriaQuery.from(Trip.class);
+        Join<Trip, Car> tripCarJoin = tripRoot.join("car");
+        Join<Car, Seat> carSeatJoin = tripCarJoin.join("seats");
 
-       Predicate tripIdPredicate = builder.equal(tripRoot.get("id"), id);
-       seatCriteriaQuery.select(carSeatJoin);
+        Predicate tripIdPredicate = builder.equal(tripRoot.get("id"), id);
+        seatCriteriaQuery.select(carSeatJoin);
 
 
-       // create subQuery
+        // create subQuery
         Subquery<Seat> seatSubquery = seatCriteriaQuery.subquery(Seat.class);
         Root<Trip> subQueryTripRoot = seatSubquery.from(Trip.class);
         Join<Trip, Ticket> subQueryTripTicketJoin = subQueryTripRoot.join("tickets");
@@ -55,7 +55,7 @@ public class TripRepositoryImpl implements TripRepository {
     @Override
     public List<Seat> getUnAvailableSeats(Long id) {
         Session session = sessionFactoryBean.getObject().getCurrentSession();
-        CriteriaBuilder  builder = session.getCriteriaBuilder();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
 
         CriteriaQuery<Seat> criteriaQuery = builder.createQuery(Seat.class);
         Root<Trip> tripRoot = criteriaQuery.from(Trip.class);
@@ -69,10 +69,37 @@ public class TripRepositoryImpl implements TripRepository {
     }
 
     @Override
+    public Seat availableSeat(Long tripId, Long seatId) {
+        Session session = sessionFactoryBean.getObject().getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Seat> criteriaQuery = builder.createQuery(Seat.class);
+        Subquery<Seat> seatSubquery = criteriaQuery.subquery(Seat.class);
+        Root<Seat> seatRoot = criteriaQuery.from(Seat.class);
+        criteriaQuery.select(seatRoot);
+
+        // subquery
+        Root<Trip> tripSubRoot = seatSubquery.from(Trip.class);
+        Join<Trip, Ticket> tripTicketJoin = tripSubRoot.join("tickets");
+        Join<Ticket, Seat> ticketSeatJoin = tripTicketJoin.join(("seat"));
+        seatSubquery.select(ticketSeatJoin);
+        Predicate subPredicateTripId = builder.equal(tripSubRoot.get("id"), tripId);
+
+        seatSubquery.where(subPredicateTripId);
+
+        criteriaQuery.where(builder.and(builder.not(seatRoot.get("id").in(seatSubquery)), builder.equal(seatRoot.get("id"), seatId)));
+
+        Query query = session.createQuery(criteriaQuery);
+        Seat seat = (Seat) query.getResultList().stream().findFirst().orElse(null);
+        if (seat == null) throw new IllegalArgumentException(String.format("Seat with id %s is unavailable", seatId));
+        return seat;
+
+    }
+
+    @Override
     public Trip getById(Long id) {
         Session session = sessionFactoryBean.getObject().getCurrentSession();
         Trip trip = session.get(Trip.class, id);
-        if (trip == null) throw  new IllegalArgumentException("Trip id is not exist");
+        if (trip == null) throw new IllegalArgumentException("Trip id is not exist");
         return trip;
     }
 }

@@ -8,6 +8,7 @@ import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Home from '../pages/Home';
 import {endpoints} from '../config/apis';
+import PaymentResult from '../pages/PaymentResult';
 const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -44,6 +45,7 @@ const AppRouter = () => {
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/payment-result" element={<PaymentResult />} />
       </Routes>
     </BrowserRouter>
   );

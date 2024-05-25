@@ -14,7 +14,7 @@ const cartReducer = (currentState, action) => {
         return seen.hasOwnProperty(k) ? false : (seen[k] = true);
       });
       return {
-        key: JSON.stringify(temp2),
+        key: new Date().getTime(),
         data: temp2,
       };
     }
@@ -32,7 +32,7 @@ const cartReducer = (currentState, action) => {
         return true;
       });
       return {
-        key: JSON.stringify(temp),
+        key: new Date().getTime(),
         data: temp,
       };
     }
@@ -50,11 +50,16 @@ const cartReducer = (currentState, action) => {
         }
         return true;
       });
-      console.log(temp2);
 
       return {
-        key: JSON.stringify(temp2),
+        key: new Date().getTime(),
         data: temp2,
+      };
+    }
+    case 'CLEAR_CART': {
+      return {
+        key: new Date().getTime(),
+        data: [],
       };
     }
   }

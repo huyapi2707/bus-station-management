@@ -42,7 +42,7 @@ public class Cargo {
     @Column(name = "description", nullable = false, length = -1)
     private String description;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ticket_id", referencedColumnName = "id", nullable = false)
     private Ticket ticket;
 

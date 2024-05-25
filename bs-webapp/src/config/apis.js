@@ -12,6 +12,7 @@ const endpoints = {
   payment_method_list: '/api/v1/payment-method/list',
   route_trip_list: (id) => `/api/v1/route/${id}/trip`,
   trip_seat_details: (id) => `/api/v1/trip/${id}/seat-details`,
+  checkout: (paymentMethodId) => `/api/v1/ticket/checkout/${paymentMethodId}`,
 };
 
 // transportationCompany_list has available request params: kw , page

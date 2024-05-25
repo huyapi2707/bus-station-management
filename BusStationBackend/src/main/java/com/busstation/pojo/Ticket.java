@@ -1,6 +1,7 @@
 package com.busstation.pojo;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
@@ -16,7 +18,8 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Ticket {
+@Builder
+public class Ticket implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
@@ -33,9 +36,10 @@ public class Ticket {
 
     @Basic
     @Column(name = "paid_at")
+
     private Timestamp paidAt;
 
-    @OneToOne(mappedBy = "ticket")
+    @OneToOne(mappedBy = "ticket", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Cargo cargo;
     @OneToOne(mappedBy = "ticket")
     private Review review;
@@ -53,4 +57,8 @@ public class Ticket {
     @JoinColumn(name = "seat_id", referencedColumnName = "id", nullable = false)
     private Seat seat;
 
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "payment_id")
+    private OnlinePaymentResult paymentResult;
 }

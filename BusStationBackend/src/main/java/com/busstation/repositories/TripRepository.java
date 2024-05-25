@@ -10,5 +10,7 @@ public interface TripRepository {
     List<Seat> getAvailableSeats(Long id);
     List<Seat> getUnAvailableSeats(Long id);
 
+    Seat availableSeat(Long tripId, Long seatId);
+
     Trip getById(Long id);
 }
