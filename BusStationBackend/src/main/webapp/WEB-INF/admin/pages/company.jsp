@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,12 +40,18 @@
         .form-container button.cancel {
             background-color: #f44336;
         }
+        #avatarPreview {
+            max-width: 150px; /* Adjust the size as needed */
+            height: auto;
+            display: none;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
 <div class="form-container">
     <h2>Create New Company</h2>
-    <form id="newCompanyForm">
+    <form id="newCompanyForm" enctype="multipart/form-data">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required>
 
@@ -66,7 +71,8 @@
         <input type="checkbox" id="isCargoTransport" name="isCargoTransport">
 
         <label for="avatar">Avatar:</label>
-        <input type="file" id="avatar" name="avatar" required>
+        <input type="file" id="avatar" name="avatar" accept="image/*">
+        <img id="avatarPreview" src="#" alt="Avatar Preview">
 
         <label for="managerId">Manager ID:</label>
         <select id="managerId" name="managerId" required>
@@ -74,8 +80,7 @@
         </select>
 
         <button type="button" id="saveBtn">Save</button>
-        <a class="btn btn-primary" href="<c:url value="/admin/companies"/>">Cancel</a>
-
+        <button type="button" class="cancel" onclick="window.location.href='http://localhost:8080/busstation/admin/companies'">Cancel</button>
     </form>
 </div>
 
@@ -93,6 +98,27 @@
             .catch(function(error) {
                 console.error('Failed to load managers:', error);
             });
+
+        // Function to show image preview
+        function showImagePreview(fileInput, imageElement) {
+            if (fileInput.files && fileInput.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $(imageElement).attr('src', e.target.result);
+                    $(imageElement).show();
+                };
+
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                $(imageElement).hide();
+            }
+        }
+
+        // Event listener for the avatar input change
+        $('#avatar').change(function() {
+            showImagePreview(this, '#avatarPreview');
+        });
 
         // Save new company
         $('#saveBtn').on('click', function() {
