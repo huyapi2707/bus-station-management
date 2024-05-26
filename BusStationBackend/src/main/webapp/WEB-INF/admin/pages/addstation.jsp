@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Edit Bus Station</title>
+    <title>Create New Bus Station</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
@@ -45,8 +45,8 @@
 </head>
 <body>
 <div class="form-container">
-    <h2>Edit Bus Station</h2>
-    <form id="editStationForm">
+    <h2>Create New Bus Station</h2>
+    <form id="newStationForm">
         <label for="address">Address:</label>
         <input type="text" id="address" name="address" required>
 
@@ -54,40 +54,25 @@
         <input type="url" id="mapUrl" name="mapUrl" required>
 
         <button type="button" id="saveBtn">Save</button>
-        <button type="button" class="cancel" onclick="window.location.href='http://localhost:8080/busstation/admin/stations'">Cancel</button>
+        <a class="btn btn-primary" href="<c:url value="/admin/stations"/>>">Cancel</a>
+
     </form>
 </div>
 
 <script>
     $(document).ready(function() {
-        const stationId = new URLSearchParams(window.location.search).get('id');
-        loadStationData(stationId);
-
-        function loadStationData(stationId) {
-            axios.get('http://localhost:8080/busstation/api/v1/stations/' + stationId)
-                .then(function(response) {
-                    const station = response.data;
-                    $('#address').val(station.address);
-                    $('#mapUrl').val(station.mapUrl);
-                })
-                .catch(function(error) {
-                    console.error("Failed to load station data:", error);
-                });
-        }
-
         $('#saveBtn').on('click', function() {
-            const updatedStation = {
-                id: stationId,
+            const newStation = {
                 address: $('#address').val(),
                 mapUrl: $('#mapUrl').val()
             };
 
-            axios.put('http://localhost:8080/busstation/api/v1/stations/update', updatedStation)
+            axios.post('http://localhost:8080/busstation/api/v1/stations/add', newStation)
                 .then(function() {
                     window.location.href = 'http://localhost:8080/busstation/admin/stations';
                 })
                 .catch(function(error) {
-                    console.error("Failed to update station:", error);
+                    console.error("Failed to create new station:", error);
                 });
         });
     });

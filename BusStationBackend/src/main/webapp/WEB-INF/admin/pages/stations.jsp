@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Companies</title>
+    <title>Bus Stations</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
@@ -20,7 +20,7 @@
         th {
             background-color: #469A9E;
         }
-        .add-company-btn {
+        .add-station-btn {
             display: inline-block;
             margin-bottom: 10px;
             padding: 10px 20px;
@@ -41,51 +41,49 @@
     </style>
 </head>
 <body>
-<h1 align="center">Transportation Company</h1>
-<a href="http://localhost:8080/busstation/admin/company" class="add-company-btn"> +Add new</a>
+<h1 align="center">Bus Stations</h1>
+<a href="<c:url value="/admin/addstation"/>" class="add-station-btn">+ Add new</a>
 <table>
     <thead>
     <tr>
         <th>ID</th>
-        <th>Name</th>
-        <th>Phone</th>
-        <th>Email</th>
+        <th>Address</th>
+        <th>Map</th>
         <th>Actions</th>
     </tr>
     </thead>
-    <tbody id="companyTable">
+    <tbody id="stationTable">
     <!-- Content will be loaded via AJAX -->
     </tbody>
 </table>
 <script>
     $(document).ready(function() {
-        loadCompanies();
+        loadStations();
 
-        function loadCompanies() {
-            axios.get('http://localhost:8080/busstation/api/v1/transportation_company/list')
+        function loadStations() {
+            axios.get('http://localhost:8080/busstation/api/v1/stations/list')
                 .then(function(response) {
                     console.log("Data received:", response.data);
-                    var data = response.data.results;
+                    var data = response.data;
                     var tableContent = '';
-                    data.forEach(function(company, index) {
+                    data.forEach(function(station, index) {
                         var rowClass = index % 2 === 0 ? 'even' : 'odd';
                         tableContent += '<tr class="' + rowClass + '">';
-                        tableContent += '<td>' + company.id + '</td>';
-                        tableContent += '<td>' + company.name + '</td>';
-                        tableContent += '<td>' + company.phone + '</td>';
-                        tableContent += '<td>' + company.email + '</td>';
+                        tableContent += '<td>' + station.id + '</td>';
+                        tableContent += '<td>' + station.address + '</td>';
+                        tableContent += '<td><a href="' + station.mapUrl + '" target="_blank">View Map</a></td>';
                         tableContent += '<td>' +
-                            '<a href="http://localhost:8080/busstation/admin/company?id=' + company.id + '">Edit</a> ' +
-                            '<button class="delete-btn" data-id="' + company.id + '">Delete</button>' +
+                            '<a href="http://localhost:8080/busstation/admin/station_detail?id=' + station.id + '">Edit</a> ' +
+                            '<button class="delete-btn" data-id="' + station.id + '">Delete</button>' +
                             '</td>';
                         tableContent += '</tr>';
                     });
-                    $('#companyTable').html(tableContent);
+                    $('#stationTable').html(tableContent);
 
                     $('.delete-btn').on('click', function() {
-                        var companyId = $(this).data('id');
-                        if (confirm('Are you sure you want to delete this company?')) {
-                            deleteCompany(companyId);
+                        var stationId = $(this).data('id');
+                        if (confirm('Are you sure you want to delete this station?')) {
+                            deleteStation(stationId);
                         }
                     });
                 })
@@ -94,13 +92,13 @@
                 });
         }
 
-        function deleteCompany(companyId) {
-            axios.delete('http://localhost:8080/busstation/api/v1/transportation_company/' + companyId)
+        function deleteStation(stationId) {
+            axios.delete('http://localhost:8080/busstation/api/v1/stations/delete/' + stationId)
                 .then(function() {
-                    loadCompanies();
+                    loadStations();
                 })
                 .catch(function(error) {
-                    console.error("Failed to delete company:", error); // Kiểm tra lỗi
+                    console.error("Failed to delete station:", error); // Kiểm tra lỗi
                 });
         }
     });

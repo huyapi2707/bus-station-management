@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Unverified Companies</title>
+    <title>Companies</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
@@ -41,8 +41,8 @@
     </style>
 </head>
 <body>
-<h1 align="center">Unverified Transportation Companies</h1>
-<a href="http://localhost:8080/busstation/admin/company" class="add-company-btn"> +Add new</a>
+<h1 align="center">Transportation Company</h1>
+<a href="<c:url value="/admin/company"/>" class="add-company-btn"> +Add new</a>
 <table>
     <thead>
     <tr>
@@ -62,10 +62,10 @@
         loadCompanies();
 
         function loadCompanies() {
-            axios.get('http://localhost:8080/busstation/api/v1/transportation_company/unverified')
+            axios.get('http://localhost:8080/busstation/api/v1/transportation_company/list')
                 .then(function(response) {
                     console.log("Data received:", response.data);
-                    var data = response.data;
+                    var data = response.data.results;
                     var tableContent = '';
                     data.forEach(function(company, index) {
                         var rowClass = index % 2 === 0 ? 'even' : 'odd';
@@ -75,18 +75,12 @@
                         tableContent += '<td>' + company.phone + '</td>';
                         tableContent += '<td>' + company.email + '</td>';
                         tableContent += '<td>' +
-                            '<button class="verify-btn" data-id="' + company.id + '">Verify</button> ' +
+                            '<a href="http://localhost:8080/busstation/admin/company?id=' + company.id + '">Edit</a> ' +
+                            '<button class="delete-btn" data-id="' + company.id + '">Delete</button>' +
                             '</td>';
                         tableContent += '</tr>';
                     });
                     $('#companyTable').html(tableContent);
-
-                    $('.verify-btn').on('click', function() {
-                        var companyId = $(this).data('id');
-                        if (confirm('Are you sure you want to verify this company?')) {
-                            verifyCompany(companyId);
-                        }
-                    });
 
                     $('.delete-btn').on('click', function() {
                         var companyId = $(this).data('id');
@@ -96,20 +90,19 @@
                     });
                 })
                 .catch(function(error) {
-                    console.error("Failed to load data:", error);
+                    console.error("Failed to load data:", error); // Kiểm tra lỗi
                 });
         }
 
-        function verifyCompany(companyId) {
-            axios.put('http://localhost:8080/busstation/api/v1/transportation_company/verify/' + companyId)
+        function deleteCompany(companyId) {
+            axios.delete('http://localhost:8080/busstation/api/v1/transportation_company/' + companyId)
                 .then(function() {
                     loadCompanies();
                 })
                 .catch(function(error) {
-                    console.error("Failed to verify company:", error);
+                    console.error("Failed to delete company:", error); // Kiểm tra lỗi
                 });
         }
-
     });
 </script>
 </body>
