@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Routes</title>
+    <title>Companies</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
@@ -20,7 +20,7 @@
         th {
             background-color: #469A9E;
         }
-        .add-route-btn {
+        .add-company-btn {
             display: inline-block;
             margin-bottom: 10px;
             padding: 10px 20px;
@@ -41,55 +41,51 @@
     </style>
 </head>
 <body>
-<h1 align="center">Routes</h1>
-<a href="http://localhost:8080/busstation/admin/route" class="add-route-btn"> +Add new</a>
+<h1 align="center">Transportation Company</h1>
+<a href="<c:url value="/admin/company" />" class="add-company-btn"> +Add new</a>
 <table>
     <thead>
     <tr>
         <th>ID</th>
         <th>Name</th>
-        <th>From Station</th>
-        <th>To Station</th>
-        <th>Seat Price</th>
-        <th>Cargo Price</th>
+        <th>Phone</th>
+        <th>Email</th>
         <th>Actions</th>
     </tr>
     </thead>
-    <tbody id="routeTable">
+    <tbody id="companyTable">
     <!-- Content will be loaded via AJAX -->
     </tbody>
 </table>
 <script>
     $(document).ready(function() {
-        loadRoutes();
+        loadCompanies();
 
-        function loadRoutes() {
-            axios.get('http://localhost:8080/busstation/api/v1/route/list')
+        function loadCompanies() {
+            axios.get('http://localhost:8080/busstation/api/v1/transportation_company/list')
                 .then(function(response) {
                     console.log("Data received:", response.data);
-                    var data = response.data.results; // Sử dụng data.results thay vì data
+                    var data = response.data.results;
                     var tableContent = '';
-                    data.forEach(function(route, index) {
+                    data.forEach(function(company, index) {
                         var rowClass = index % 2 === 0 ? 'even' : 'odd';
                         tableContent += '<tr class="' + rowClass + '">';
-                        tableContent += '<td>' + route.id + '</td>';
-                        tableContent += '<td>' + route.name + '</td>';
-                        tableContent += '<td>' + route.fromStation.name + '</td>';
-                        tableContent += '<td>' + route.toStation.name + '</td>';
-                        tableContent += '<td>' + route.seatPrice + '</td>';
-                        tableContent += '<td>' + route.cargoPrice + '</td>';
+                        tableContent += '<td>' + company.id + '</td>';
+                        tableContent += '<td>' + company.name + '</td>';
+                        tableContent += '<td>' + company.phone + '</td>';
+                        tableContent += '<td>' + company.email + '</td>';
                         tableContent += '<td>' +
-                            '<a href="http://localhost:8080/busstation/admin/route?id=' + route.id + '">Edit</a> ' +
-                            '<button class="delete-btn" data-id="' + route.id + '">Delete</button>' +
+                            '<a href="http://localhost:8080/busstation/admin/company_detail?id=' + company.id + '">Edit</a> ' +
+                            '<button class="delete-btn" data-id="' + company.id + '">Delete</button>' +
                             '</td>';
                         tableContent += '</tr>';
                     });
-                    $('#routeTable').html(tableContent);
+                    $('#companyTable').html(tableContent);
 
                     $('.delete-btn').on('click', function() {
-                        var routeId = $(this).data('id');
-                        if (confirm('Are you sure you want to delete this route?')) {
-                            deleteRoute(routeId);
+                        var companyId = $(this).data('id');
+                        if (confirm('Are you sure you want to delete this company?')) {
+                            deleteCompany(companyId);
                         }
                     });
                 })
@@ -98,13 +94,13 @@
                 });
         }
 
-        function deleteRoute(routeId) {
-            axios.delete('http://localhost:8080/busstation/api/v1/route/' + routeId)
+        function deleteCompany(companyId) {
+            axios.delete('http://localhost:8080/busstation/api/v1/transportation_company/' + companyId)
                 .then(function() {
-                    loadRoutes();
+                    loadCompanies();
                 })
                 .catch(function(error) {
-                    console.error("Failed to delete route:", error);
+                    console.error("Failed to delete company:", error);
                 });
         }
     });

@@ -23,11 +23,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class AdminController {
     @Autowired
     private UserService userService;
-
-    @GetMapping("/login")
-    public String login() {
-        return "login";
+    @GetMapping("/")
+    public String admin() {
+        return "admin";
     }
+
 
     @GetMapping("/companies")
     public String companies() {
@@ -71,10 +71,7 @@ public class AdminController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @GetMapping("/")
-    public String home() {
-        return "home";
-    }
+
 
     @GetMapping("/verify")
     public String verify() {
