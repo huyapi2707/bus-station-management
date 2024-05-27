@@ -90,9 +90,16 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User getUserById(Long userId) { // Thêm phương thức này
+    public User getUserById(Long userId) {
         Session session = sessionFactory.getObject().getCurrentSession();
         return session.get(User.class, userId);
     }
+
+    @Override
+    public void changeRole(User user) {
+        Session session = sessionFactory.getObject().getCurrentSession();
+        session.saveOrUpdate(user);
+    }
+
 }
 

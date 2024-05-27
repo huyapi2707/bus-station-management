@@ -4,11 +4,14 @@ import Grid from '../components/Grid';
 import RouteInfor from '../components/RouteInfor';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import Checkout from '../components/Checkout';
-import Login from '../pages/Login';
-import Register from '../pages/Register';
+import Login from '../pages/login';
+
+
+import Register from '../pages/register';
 import Home from '../pages/Home';
 import {endpoints} from '../config/apis';
 import PaymentResult from '../pages/PaymentResult';
+import CreateCompany from '../pages/createCompany';
 const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -46,6 +49,7 @@ const AppRouter = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/payment-result" element={<PaymentResult />} />
+        <Route path="/create-company" element={<CreateCompany/>} />
       </Routes>
     </BrowserRouter>
   );

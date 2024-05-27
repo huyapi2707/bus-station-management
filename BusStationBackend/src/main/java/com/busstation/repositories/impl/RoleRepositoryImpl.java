@@ -31,4 +31,10 @@ public class RoleRepositoryImpl implements RoleRepository {
         Query query = session.createQuery(criteriaQuery);
         return (Role) query.getResultList().stream().findFirst().orElse(null);
     }
+
+    @Override
+    public Role findById(Long id) {
+        Session session = sessionFactory.getObject().getCurrentSession();
+        return session.get(Role.class, id);
+    }
 }

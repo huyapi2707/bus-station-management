@@ -6,6 +6,7 @@ import com.busstation.pojo.TransportationCompany;
 import com.busstation.repositories.TransportationCompanyRepository;
 import com.busstation.services.EmailService;
 import com.busstation.services.TransportationCompanyService;
+import com.busstation.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -35,7 +36,11 @@ public class TransportationCompanyServiceImpl implements TransportationCompanySe
     private CompanyPublicMapper companyPublicMapper;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private EmailService emailService;
+
 
 
     @Override
@@ -107,7 +112,7 @@ public class TransportationCompanyServiceImpl implements TransportationCompanySe
     @Transactional
     public void verifyCompany(Long id) {
         repository.verifyCompany(id);
-
+        userService.changeRole(id,(long)3);
         Optional<TransportationCompany> companyOpt = repository.findById(id);
         if (companyOpt.isPresent()) {
             TransportationCompany company = companyOpt.get();
