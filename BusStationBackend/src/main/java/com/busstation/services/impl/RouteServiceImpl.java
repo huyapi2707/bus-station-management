@@ -5,13 +5,18 @@ import com.busstation.dtos.TripDTO;
 import com.busstation.mappers.RouteDTOMapper;
 import com.busstation.mappers.TripDTOMapper;
 import com.busstation.pojo.Route;
+import com.busstation.pojo.Station;
+import com.busstation.pojo.TransportationCompany;
 import com.busstation.pojo.Trip;
 import com.busstation.repositories.RouteRepository;
+import com.busstation.repositories.StationRepository;
+import com.busstation.repositories.TransportationCompanyRepository;
 import com.busstation.services.RouteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +26,7 @@ import java.util.stream.Collectors;
 
 @Service
 @PropertySource("classpath:configuration.properties")
+
 public class RouteServiceImpl implements RouteService {
 
     @Autowired
@@ -31,6 +37,12 @@ public class RouteServiceImpl implements RouteService {
 
     @Autowired
     private RouteDTOMapper routeDTOMapper;
+
+    @Autowired
+    private TransportationCompanyRepository transportationCompanyRepository;
+
+    @Autowired
+    private StationRepository stationRepository;
 
     @Autowired
     private TripDTOMapper tripDTOMapper;
@@ -60,4 +72,24 @@ public class RouteServiceImpl implements RouteService {
         List<Trip> trips = (List<Trip>) route.getTrips();
         return trips.stream().map(tripDTOMapper::apply).collect(Collectors.toList());
     }
+
+//    @Override
+//    public RouteDTO createRoute(RouteDTO routeDTO) {
+//        Route route = new Route();
+//        route.setName(routeDTO.getName());
+//        route.setSeatPrice(routeDTO.getSeatPrice());
+//        route.setCargoPrice(routeDTO.getCargoPrice());
+//
+//        TransportationCompany company = transportationCompanyRepository.getTransportationCompanyById(routeDTO.getCompany().getId());
+//        route.setCompany(company);
+//
+//        Station fromStation = stationRepository.findById(routeDTO.getFromStation().getId());
+//        route.setFromStation(fromStation);
+//
+//        Station toStation = stationRepository.findById(routeDTO.getToStation().getId());
+//        route.setToStation(toStation);
+//        repository.save(route);
+//
+//        return routeDTOMapper.apply(route);
+//    }
 }

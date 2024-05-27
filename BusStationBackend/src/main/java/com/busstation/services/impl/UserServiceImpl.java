@@ -2,7 +2,9 @@ package com.busstation.services.impl;
 
 import com.busstation.dtos.UserDTO;
 import com.busstation.mappers.UserDTOMapper;
+import com.busstation.pojo.Role;
 import com.busstation.pojo.User;
+import com.busstation.repositories.RoleRepository;
 import com.busstation.repositories.UserRepository;
 import com.busstation.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private UserDTOMapper userDTOMapper;
@@ -70,5 +75,20 @@ public class UserServiceImpl implements UserService {
     public Optional<User> getUserById(Long id) {
         User user = userRepository.getUserById(id);
         return Optional.ofNullable(user);
+    }
+
+    @Override
+    @Transactional
+    public void changeRole(Long userId, Long roleId) {
+        User user = userRepository.getUserById(userId);
+        if (user == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+        Role role = roleRepository.findById(roleId);
+        if (role == null) {
+            throw new IllegalArgumentException("Role not found");
+        }
+        user.setRole(role);
+        userRepository.changeRole(user);
     }
 }

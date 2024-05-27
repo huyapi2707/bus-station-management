@@ -10,7 +10,6 @@ public class RouteDTO {
     private Long id;
     private String name;
     private CompanyPublicDTO company;
-
     private Double seatPrice;
     private Double cargoPrice;
     private Station fromStation;

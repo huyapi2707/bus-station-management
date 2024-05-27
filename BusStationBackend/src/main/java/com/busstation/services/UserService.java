@@ -16,5 +16,5 @@ public interface UserService extends UserDetailsService {
     List<UserDTO> listActiveUsers();
     List<UserDTO> findActiveUsersByRoleId(Long roleId);
     Optional<User> getUserById(Long id);
-
+    void changeRole(Long userId, Long roleId);
 }

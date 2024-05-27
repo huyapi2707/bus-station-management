@@ -1,5 +1,7 @@
 package com.busstation.controllers;
 
+import com.busstation.dtos.RouteDTO;
+import com.busstation.pojo.Route;
 import com.busstation.services.RouteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,4 +30,10 @@ public class ApiRouteController {
     public ResponseEntity<Object> handleRouteDetails(@PathVariable Long id) {
         return ResponseEntity.ok(service.getTripList(id));
     }
+
+//    @PostMapping("/add")
+//    public ResponseEntity<RouteDTO> createRoute(@RequestBody RouteDTO routeDTO) {
+//        RouteDTO createdRoute = service.createRoute(routeDTO);
+//        return ResponseEntity.ok(createdRoute);
+//    }
 }
