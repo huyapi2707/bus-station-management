@@ -7,8 +7,5 @@ import java.util.List;
 
 public interface TicketRepository {
     void saveAll(List<Ticket> tickets);
-
-
-
     void updateAll(List<Ticket> tickets);
 }

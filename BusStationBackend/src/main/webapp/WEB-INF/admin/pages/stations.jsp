@@ -53,7 +53,6 @@
     </tr>
     </thead>
     <tbody id="stationTable">
-    <!-- Content will be loaded via AJAX -->
     </tbody>
 </table>
 <script>
@@ -88,7 +87,7 @@
                     });
                 })
                 .catch(function(error) {
-                    console.error("Failed to load data:", error); // Kiểm tra lỗi
+                    console.error("Failed to load data:", error);
                 });
         }
 
@@ -98,7 +97,7 @@
                     loadStations();
                 })
                 .catch(function(error) {
-                    console.error("Failed to delete station:", error); // Kiểm tra lỗi
+                    console.error("Failed to delete station:", error);
                 });
         }
     });

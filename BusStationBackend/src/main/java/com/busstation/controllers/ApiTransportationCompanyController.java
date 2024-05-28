@@ -1,8 +1,10 @@
 package com.busstation.controllers;
 
 import com.busstation.dtos.TransportationCompanyDTO;
+import com.busstation.pojo.Station;
 import com.busstation.pojo.TransportationCompany;
 import com.busstation.services.CloudinaryService;
+import com.busstation.services.StationService;
 import com.busstation.services.TransportationCompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,9 @@ public class ApiTransportationCompanyController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private StationService stationService;
 
     @Autowired
     private CloudinaryService cloudinaryService;
@@ -58,32 +63,27 @@ public class ApiTransportationCompanyController {
             @PathVariable Long id,
             @RequestPart("company") TransportationCompanyDTO dto,
             @RequestPart(value = "avatar", required = false) MultipartFile avatarFile) {
-
-        TransportationCompany existingCompany = transportationCompanyService.getTransportationCompanyById(id)
-                .orElseThrow(() -> new RuntimeException("Company not found"));
-
-        String avatarUrl = existingCompany.getAvatar();
-        if (avatarFile != null && !avatarFile.isEmpty()) {
+            String avatarUrl;
             try {
                 avatarUrl = cloudinaryService.uploadFile(avatarFile);
             } catch (IOException e) {
                 return ResponseEntity.badRequest().build();
             }
-        }
+            User user = userService.getUserById(dto.getManagerId())
+                    .orElseThrow(() -> new RuntimeException("Manager not found"));
+            TransportationCompany transportationCompany = transportationCompanyService.getTransportationCompanyById(id)
+                    .orElseThrow(() -> new RuntimeException("Company not found"));
+            transportationCompany.setPhone(dto.getPhone());
+            transportationCompany.setManager(user);
+            transportationCompany.setAvatar(avatarUrl);
+            transportationCompany.setName(dto.getName());
+            transportationCompany.setEmail(dto.getEmail());
+            transportationCompany.setIsVerified(dto.getIsVerified());
+            transportationCompany.setIsCargoTransport(dto.getIsCargoTransport());
+            transportationCompany.setIsActive(dto.getIsActive());
 
-        User manager = userService.getUserById(dto.getManagerId())
-                .orElseThrow(() -> new RuntimeException("Manager not found"));
+            transportationCompanyService.updateTransportationCompany(transportationCompany);
 
-        existingCompany.setName(dto.getName());
-        existingCompany.setAvatar(avatarUrl);
-        existingCompany.setPhone(dto.getPhone());
-        existingCompany.setEmail(dto.getEmail());
-        existingCompany.setIsVerified(dto.getIsVerified());
-        existingCompany.setIsActive(dto.getIsActive());
-        existingCompany.setIsCargoTransport(dto.getIsCargoTransport());
-        existingCompany.setManager(manager);
-
-        transportationCompanyService.updateTransportationCompany(existingCompany);
         return ResponseEntity.ok().build();
     }
 
@@ -132,5 +132,28 @@ public class ApiTransportationCompanyController {
     public ResponseEntity<?> verifyCompany(@PathVariable Long id) {
         transportationCompanyService.verifyCompany(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("get/{id}")
+    public ResponseEntity<TransportationCompanyDTO> getCompanyAndManager(@PathVariable Long id) {
+        TransportationCompanyDTO companyDto = transportationCompanyService.getCompanyAndManager(id);
+        if (companyDto == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(companyDto);
+    }
+    @GetMapping("/list_station")
+    public ResponseEntity<List<Station>> getAllStations() {
+        List<Station> stations = stationService.getAllStations();
+        return ResponseEntity.ok(stations);
+    }
+
+    @GetMapping("/manager/{managerId}")
+    public ResponseEntity<TransportationCompanyDTO> getCompanyByManagerId(@PathVariable Long managerId) {
+        TransportationCompanyDTO company = transportationCompanyService.getCompanyByManagerId(managerId);
+        if (company == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(company);
     }
 }

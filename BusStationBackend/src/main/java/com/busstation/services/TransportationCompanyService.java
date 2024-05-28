@@ -2,6 +2,7 @@
 package com.busstation.services;
 
 import com.busstation.dtos.CompanyPublicDTO;
+import com.busstation.dtos.TransportationCompanyDTO;
 import com.busstation.pojo.TransportationCompany;
 
 import java.util.List;
@@ -14,8 +15,10 @@ public interface TransportationCompanyService{
 
     Optional<TransportationCompany> getTransportationCompanyById(Long id);
     TransportationCompany saveTransportationCompany(TransportationCompany transportationCompany);
-    void updateTransportationCompany(TransportationCompany company);
+    void updateTransportationCompany(TransportationCompany transportationCompany);
     void deleteTransportationCompany(Long id);
     List<TransportationCompany> getUnverifiedCompanies();
     void verifyCompany(Long id);
+    TransportationCompanyDTO getCompanyAndManager(Long companyId);
+    TransportationCompanyDTO getCompanyByManagerId(Long managerId);
 }

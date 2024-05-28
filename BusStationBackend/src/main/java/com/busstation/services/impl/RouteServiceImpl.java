@@ -1,6 +1,7 @@
 package com.busstation.services.impl;
 
 import com.busstation.dtos.RouteDTO;
+import com.busstation.dtos.RouteDetailDTO;
 import com.busstation.dtos.TripDTO;
 import com.busstation.mappers.RouteDTOMapper;
 import com.busstation.mappers.TripDTOMapper;
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
 
 @Service
 @PropertySource("classpath:configuration.properties")
-
+@Transactional
 public class RouteServiceImpl implements RouteService {
 
     @Autowired
@@ -39,10 +40,10 @@ public class RouteServiceImpl implements RouteService {
     private RouteDTOMapper routeDTOMapper;
 
     @Autowired
-    private TransportationCompanyRepository transportationCompanyRepository;
+    private StationRepository stationRepository;
 
     @Autowired
-    private StationRepository stationRepository;
+    private TransportationCompanyRepository transportationCompanyRepository;
 
     @Autowired
     private TripDTOMapper tripDTOMapper;
@@ -73,23 +74,27 @@ public class RouteServiceImpl implements RouteService {
         return trips.stream().map(tripDTOMapper::apply).collect(Collectors.toList());
     }
 
-//    @Override
-//    public RouteDTO createRoute(RouteDTO routeDTO) {
-//        Route route = new Route();
-//        route.setName(routeDTO.getName());
-//        route.setSeatPrice(routeDTO.getSeatPrice());
-//        route.setCargoPrice(routeDTO.getCargoPrice());
-//
-//        TransportationCompany company = transportationCompanyRepository.getTransportationCompanyById(routeDTO.getCompany().getId());
-//        route.setCompany(company);
-//
-//        Station fromStation = stationRepository.findById(routeDTO.getFromStation().getId());
-//        route.setFromStation(fromStation);
-//
-//        Station toStation = stationRepository.findById(routeDTO.getToStation().getId());
-//        route.setToStation(toStation);
-//        repository.save(route);
-//
-//        return routeDTOMapper.apply(route);
-//    }
+    @Transactional
+    public void createRoute(RouteDetailDTO routeDetailDTO) {
+        TransportationCompany company = transportationCompanyRepository.findById(routeDetailDTO.getCompanyId())
+                .orElseThrow(() -> new IllegalArgumentException("Company not found"));
+
+        Station fromStation = stationRepository.getStationById(routeDetailDTO.getFromStationId())
+                .orElseThrow(() -> new IllegalArgumentException("From station not found"));
+
+        Station toStation = stationRepository.getStationById(routeDetailDTO.getToStationId())
+                .orElseThrow(() -> new IllegalArgumentException("To station not found"));
+
+        Route route = Route.builder()
+                .name(routeDetailDTO.getName())
+                .company(company)
+                .fromStation(fromStation)
+                .toStation(toStation)
+                .seatPrice(routeDetailDTO.getSeatPrice())
+                .cargoPrice(routeDetailDTO.getCargoPrice())
+                .isActive(routeDetailDTO.getIsActive())
+                .build();
+
+        repository.save(route);
+    }
 }

@@ -1,5 +1,6 @@
 package com.busstation.repositories.impl;
 
+import com.busstation.dtos.TransportationCompanyDTO;
 import com.busstation.pojo.TransportationCompany;
 import com.busstation.repositories.TransportationCompanyRepository;
 import org.hibernate.Session;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -102,18 +104,7 @@ public class TransportationCompanyRepositoryImpl implements TransportationCompan
     @Override
     public void updateTransportationCompany(TransportationCompany transportationCompany) {
         Session session = sessionFactoryBean.getObject().getCurrentSession();
-        TransportationCompany existingCompany = session.byId(TransportationCompany.class).load(transportationCompany.getId());
-
-        existingCompany.setName(transportationCompany.getName());
-        existingCompany.setAvatar(transportationCompany.getAvatar());
-        existingCompany.setPhone(transportationCompany.getPhone());
-        existingCompany.setEmail(transportationCompany.getEmail());
-        existingCompany.setIsVerified(transportationCompany.getIsVerified());
-        existingCompany.setIsActive(transportationCompany.getIsActive());
-        existingCompany.setIsCargoTransport(transportationCompany.getIsCargoTransport());
-        existingCompany.setManager(transportationCompany.getManager());
-
-        session.flush();
+        session.saveOrUpdate(transportationCompany);
     }
 
     @Override
@@ -160,5 +151,30 @@ public class TransportationCompanyRepositoryImpl implements TransportationCompan
             company.setIsVerified(true);
             session.update(company);
         }
+    }
+    @Override
+    public TransportationCompanyDTO getCompanyAndManager(Long companyId) {
+        try (Session session = sessionFactoryBean.getObject().openSession()) {
+            String jpql = "SELECT new com.busstation.dtos.TransportationCompanyDTO(" +
+                    "c.id, c.name, c.avatar, c.phone, c.email, c.isVerified, c.isActive, c.isCargoTransport, m.id) " +
+                    "FROM TransportationCompany c " +
+                    "LEFT JOIN c.manager m " +
+                    "WHERE c.id = :companyId";
+            TypedQuery<TransportationCompanyDTO> query = session.createQuery(jpql, TransportationCompanyDTO.class);
+            query.setParameter("companyId", companyId);
+            return query.getSingleResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public TransportationCompany findByManagerId(Long managerId) {
+        Session session = sessionFactoryBean.getObject().getCurrentSession();
+        String hql = "FROM TransportationCompany WHERE manager.id = :managerId";
+        return session.createQuery(hql, TransportationCompany.class)
+                .setParameter("managerId", managerId)
+                .uniqueResult();
     }
 }

@@ -1,6 +1,4 @@
 package com.busstation.dtos;
-
-import com.busstation.pojo.Station;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,12 +8,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RouteDTO {
+public class RouteDetailDTO {
     private Long id;
     private String name;
-    private CompanyPublicDTO company;
+    private Long companyId;
     private Double seatPrice;
     private Double cargoPrice;
-    private Station fromStation;
-    private Station toStation;
+    private Boolean isActive;
+    private Long fromStationId;
+    private Long toStationId;
 }

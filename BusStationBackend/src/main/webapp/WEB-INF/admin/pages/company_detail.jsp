@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,7 +20,8 @@
             display: block;
             margin-bottom: 8px;
         }
-        .form-container input[type="text"], .form-container input[type="email"], .form-container input[type="file"], .form-container select {
+        .form-container input[type="text"], .form-container input[type="email"],
+        .form-container input[type="file"], .form-container select {
             width: 100%;
             padding: 8px;
             margin-bottom: 10px;
@@ -41,12 +41,18 @@
         .form-container button.cancel {
             background-color: #f44336;
         }
+        #avatarPreview {
+            max-width: 150px; /* Adjust the size as needed */
+            height: auto;
+            display: none;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
 <div class="form-container">
     <h2>Update Company Information</h2>
-    <form id="updateCompanyForm">
+    <form id="updateCompanyForm" enctype="multipart/form-data">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required>
 
@@ -66,7 +72,8 @@
         <input type="checkbox" id="isCargoTransport" name="isCargoTransport">
 
         <label for="avatar">Avatar:</label>
-        <input type="file" id="avatar" name="avatar">
+        <input type="file" id="avatar" name="avatar" accept="image/*">
+        <img id="avatarPreview" src="#" alt="Avatar Preview">
 
         <label for="managerId">Manager ID:</label>
         <select id="managerId" name="managerId" required>
@@ -74,8 +81,7 @@
         </select>
 
         <button type="button" id="saveBtn">Save</button>
-        <a class="btn btn-primary" href="<c:url value="/admin/companies"/>">Cancel</a>
-
+        <button type="button" class="cancel" onclick="window.location.href='http://localhost:8080/busstation/admin/companies'">Cancel</button>
     </form>
 </div>
 
@@ -84,7 +90,7 @@
         const companyId = new URLSearchParams(window.location.search).get('id');
 
         // Load company data
-        axios.get('http://localhost:8080/busstation/api/v1/transportation_company/' + companyId)
+        axios.get('http://localhost:8080/busstation/api/v1/transportation_company/get/' + companyId)
             .then(function(response) {
                 const company = response.data;
                 $('#name').val(company.name);
@@ -93,55 +99,64 @@
                 $('#isVerified').prop('checked', company.isVerified);
                 $('#isActive').prop('checked', company.isActive);
                 $('#isCargoTransport').prop('checked', company.isCargoTransport);
-
-                // Load managers
-                axios.get('http://localhost:8080/busstation/admin/users/role/3')
-                    .then(function(response) {
-                        const managers = response.data;
-                        const managerSelect = $('#managerId');
-                        managers.forEach(manager => {
-                            managerSelect.append(new Option(manager.id + ' - ' + manager.firstname + ' ' + manager.lastname, manager.id));
-                        });
-
-                        // Set the manager ID
-                        if (company.manager && company.manager.id) {
-                            $('#managerId').val(company.manager.id);
-                        }
-                    })
-                    .catch(function(error) {
-                        console.error('Failed to load managers:', error);
-                    });
+                loadManagers(company.managerId);
             })
             .catch(function(error) {
                 console.error("Failed to load company data:", error);
                 alert("Failed to load company data. Please check the ID and try again.");
             });
 
-        // Save updated company
-        $('#saveBtn').on('click', function() {
-            const formData = new FormData();
-            const companyData = {
-                id: companyId,
-                name: $('#name').val(),
-                phone: $('#phone').val(),
-                email: $('#email').val(),
-                isVerified: $('#isVerified').is(':checked'),
-                isActive: $('#isActive').is(':checked'),
-                isCargoTransport: $('#isCargoTransport').is(':checked'),
-                managerId: $('#managerId').val()
-            };
+        function loadManagers(selectedManagerId) {
+            axios.get('http://localhost:8080/busstation/admin/users/role/3')
+                .then(function(response) {
+                    const managers = response.data;
+                    const managerSelect = $('#managerId');
+                    managers.forEach(manager => {
+                        var option = new Option(manager.id + ' - ' + manager.firstname + ' ' + manager.lastname, manager.id);
+                        managerSelect.append(option);
+                        if (manager.id.toString() === selectedManagerId.toString()) {
+                            $(option).prop('selected', true);
+                        }
+                    });
+                })
+                .catch(function(error) {
+                    console.error('Failed to load managers:', error);
+                });
+        }
 
-            formData.append('company', new Blob([JSON.stringify(companyData)], { type: "application/json" }));
-            if (document.getElementById('avatar').files[0]) {
-                formData.append('avatar', document.getElementById('avatar').files[0]);
+        // Function to show image preview
+        function showImagePreview(fileInput, imageElement) {
+            if (fileInput.files && fileInput.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $(imageElement).attr('src', e.target.result);
+                    $(imageElement).show();
+                };
+
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                $(imageElement).hide();
             }
+        }
+
+        $('#avatar').change(function() {
+            showImagePreview(this, '#avatarPreview');
+        });
+
+        $('#saveBtn').on('click', function() {
+            const formData = new FormData(document.getElementById('updateCompanyForm'));
+            formData.set('isVerified', $('#isVerified').is(':checked'));
+            formData.set('isActive', $('#isActive').is(':checked'));
+            formData.set('isCargoTransport', $('#isCargoTransport').is(':checked'));
 
             axios.put('http://localhost:8080/busstation/api/v1/transportation_company/' + companyId, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             })
-                .then(function() {
+                .then(function(response) {
+                    alert('Company updated successfully.');
                     window.location.href = 'http://localhost:8080/busstation/admin/companies';
                 })
                 .catch(function(error) {
@@ -152,5 +167,4 @@
     });
 </script>
 </body>
-
 </html>

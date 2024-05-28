@@ -16,7 +16,7 @@ public class ApiStationController {
     private StationService stationService;
 
     @GetMapping("/list")
-    public ResponseEntity<List<Station>> list() {
+    public ResponseEntity<List<Station>> getAllStations() {
         List<Station> stations = stationService.getAllStations();
         return ResponseEntity.ok(stations);
     }
