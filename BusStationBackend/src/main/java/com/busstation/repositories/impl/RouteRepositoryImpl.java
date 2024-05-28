@@ -81,10 +81,15 @@ public class RouteRepositoryImpl implements RouteRepository {
         return results;
     }
 
-//    @Override
-//    public void save(Route route) {
-//        Session session = sessionFactoryBean.getObject().getCurrentSession();
-//        session.saveOrUpdate(route);
-//    }
+    @Override
+    public void save(Route route) {
+        Session session = sessionFactoryBean.getObject().getCurrentSession();
+        try {
+            session.saveOrUpdate(route);
+        } catch (Exception e) {
+            throw new RuntimeException("Error saving or updating Route", e);
+        }
+    }
+
 
 }

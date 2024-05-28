@@ -1,6 +1,7 @@
 package com.busstation.services.impl;
 
 import com.busstation.dtos.CompanyPublicDTO;
+import com.busstation.dtos.TransportationCompanyDTO;
 import com.busstation.mappers.CompanyPublicMapper;
 import com.busstation.pojo.TransportationCompany;
 import com.busstation.repositories.TransportationCompanyRepository;
@@ -77,23 +78,8 @@ public class TransportationCompanyServiceImpl implements TransportationCompanySe
 
     @Transactional
     @Override
-    public void updateTransportationCompany(TransportationCompany company) {
-        Optional<TransportationCompany> existingCompanyOpt = repository.findById(company.getId());
-        if (existingCompanyOpt.isPresent()) {
-            TransportationCompany existingCompany = existingCompanyOpt.get();
-            existingCompany.setName(company.getName());
-            existingCompany.setAvatar(company.getAvatar());
-            existingCompany.setPhone(company.getPhone());
-            existingCompany.setEmail(company.getEmail());
-            existingCompany.setIsVerified(company.getIsVerified());
-            existingCompany.setIsActive(company.getIsActive());
-            existingCompany.setIsCargoTransport(company.getIsCargoTransport());
-            existingCompany.setManager(company.getManager());
+    public void updateTransportationCompany(TransportationCompany transportationCompany) {
 
-            repository.save(existingCompany);
-        } else {
-            throw new RuntimeException("Company not found");
-        }
     }
 
     @Override
@@ -121,5 +107,32 @@ public class TransportationCompanyServiceImpl implements TransportationCompanySe
             String text = "Dear " + company.getName() + ",\n\nYour company has been successfully verified.\n\nBest regards,\nBus Station Team";
             emailService.sendEmail(to, subject, text);
         }
+    }
+    @Override
+    public TransportationCompanyDTO getCompanyAndManager(Long companyId) {
+        return repository.getCompanyAndManager(companyId);
+    }
+
+    @Override
+    public TransportationCompanyDTO getCompanyByManagerId(Long managerId) {
+        TransportationCompany company = repository.findByManagerId(managerId);
+        return convertToDTO(company);
+    }
+
+    private TransportationCompanyDTO convertToDTO(TransportationCompany company) {
+        if (company == null) {
+            return null;
+        }
+        return TransportationCompanyDTO.builder()
+                .id((company.getId()))
+                .name(company.getName())
+                .avatar(company.getAvatar())
+                .phone(company.getPhone())
+                .email(company.getEmail())
+                .isVerified(company.getIsVerified())
+                .isActive(company.getIsActive())
+                .isCargoTransport(company.getIsCargoTransport())
+                .managerId(company.getManager().getId())
+                .build();
     }
 }

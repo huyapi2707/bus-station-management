@@ -19,6 +19,7 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 @Transactional
@@ -34,14 +35,7 @@ public class StationRepositoryImpl implements StationRepository {
     @Override
     public List<Station> getAll() {
         Session session = sessionFactoryBean.getObject().getCurrentSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-
-        CriteriaQuery<Station> criteriaQuery = builder.createQuery(Station.class);
-        Root<Station> root = criteriaQuery.from(Station.class);
-        criteriaQuery.select(root);
-
-        Query query = session.createQuery(criteriaQuery);
-        return query.getResultList();
+        return session.createQuery("FROM Station", Station.class).list();
     }
 
 
@@ -75,5 +69,12 @@ public class StationRepositoryImpl implements StationRepository {
         if (station != null) {
             session.delete(station);
         }
+    }
+
+    @Override
+    public Optional<Station> getStationById(Long id) {
+        Session session = sessionFactoryBean.getObject().getCurrentSession();
+        Station station = session.get(Station.class, id);
+        return Optional.ofNullable(station);
     }
 }

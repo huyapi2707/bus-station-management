@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TransportationCompanyDTO {
+    private Long id;
     private String name;
     private String avatar;
     private String phone;

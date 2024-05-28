@@ -1,5 +1,6 @@
 package com.busstation.repositories;
 
+import com.busstation.dtos.TransportationCompanyDTO;
 import com.busstation.pojo.TransportationCompany;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface TransportationCompanyRepository {
     Optional<TransportationCompany> findById(Long id);
     void save(TransportationCompany company);
     void verifyCompany(Long id);
+    TransportationCompanyDTO getCompanyAndManager(Long companyId);
+    TransportationCompany findByManagerId(Long id);
 }

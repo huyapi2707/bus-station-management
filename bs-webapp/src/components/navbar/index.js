@@ -66,13 +66,23 @@ const Navbar = () => {
                 })}
               </ul>
             </li>
-            {user && (
+            {user && user.role === 'USER' &&(
               <li className="nav-item">
                 <Link
                   to="/create-company"
                   className="nav-link fs-5 text-uppercase"
                 >
                   Join with us
+                </Link>
+              </li>
+            )}
+            {user && user.role === 'COMPANY_MANAGER' && (
+              <li className="nav-item">
+                <Link
+                  to="/manage-company"
+                  className="nav-link fs-5 text-uppercase"
+                >
+                  Manage
                 </Link>
               </li>
             )}
@@ -99,7 +109,7 @@ const Navbar = () => {
                   </li>
                   {user.role === 'COMPANY_MANAGER' && (
                     <li>
-                      <Link className="nav-link">Manage your company</Link>
+                      <Link className="nav-link" to="/manage-company">Manage your company</Link>
                     </li>
                   )}
                   <li>
