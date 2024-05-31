@@ -80,6 +80,10 @@ public class TransportationCompanyRepositoryImpl implements TransportationCompan
             Predicate predicate = builder.like(root.get("name"), String.format("%%%s%%", kw));
             results.add(predicate);
         }
+        Predicate isActivePredicate = builder.isTrue(root.get("isActive"));
+        results.add(isActivePredicate);
+        Predicate isVerifiedPredicate = builder.isTrue((root.get("isVerified")));
+        results.add(isVerifiedPredicate);
         return results;
     }
 

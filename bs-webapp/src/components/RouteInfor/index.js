@@ -5,6 +5,7 @@ import * as utils from '../../config/utils';
 import {apis, endpoints} from '../../config/apis';
 import {CartContext, LoadingContext} from '../../config/context';
 import moment from 'moment';
+import 'moment/locale/vi';
 import {toast} from 'react-toastify';
 
 const RouteInfor = () => {
@@ -124,16 +125,16 @@ const RouteInfor = () => {
           <div>
             <ul className="list-unstyled">
               <li className="mb-2">
-                Route code: <span className="fw-bold">{route['name']}</span>
+                Mã tuyến: <span className="fw-bold">{route['name']}</span>
               </li>
               <li className="mb-2">
-                Seat price:{' '}
+                Giá vé:{' '}
                 <span className="text-primary">
                   {utils.formatToVND(route['seatPrice'])}
                 </span>
               </li>
               <li className="mb-2">
-                Cargo price:{' '}
+                Giá giao hàng:{' '}
                 <span className="text-info">
                   {utils.formatToVND(route['cargoPrice'])}
                 </span>
@@ -142,7 +143,7 @@ const RouteInfor = () => {
               <li className="row mb-2">
                 <div className="col-md-6">
                   <p>
-                    From: <span>{route['fromStation']['address']}</span>
+                    Bắt đầu từ: <span>{route['fromStation']['address']}</span>
                   </p>
                   <iframe
                     src={route['fromStation']['mapUrl']}
@@ -155,7 +156,7 @@ const RouteInfor = () => {
                 </div>
                 <div className="col-md-6">
                   <p>
-                    To: <span>{route['toStation']['address']}</span>
+                    Đến: <span>{route['toStation']['address']}</span>
                   </p>
                   <iframe
                     src={route['toStation']['mapUrl']}
@@ -171,7 +172,7 @@ const RouteInfor = () => {
           </div>
           <div className="mt-5 d-flex align-items-center">
             <button onClick={addToCart} className="btn btn-primary">
-              Add to cart
+              Thêm vào giỏ hàng
             </button>
             <div className="form-check ms-3">
               <input
@@ -182,14 +183,14 @@ const RouteInfor = () => {
                 id="flexCheckChecked"
               />
               <label className="form-check-label" htmlFor="flexCheckChecked">
-                With cargo
+                Có giao hàng
               </label>
             </div>
           </div>
         </div>
         <div className="col-md-6 p-3">
           <div>
-            <h5 className="text-center">Trips</h5>
+            <h5 className="text-center">Các chuyến</h5>
             <div className="mt-4 border-bottom pb-3 d-flex flex-direction-column">
               {trips.map((trip) => {
                 return (
@@ -208,11 +209,9 @@ const RouteInfor = () => {
                       className="form-check-label"
                       htmlFor="flexRadioDefault2"
                     >
-                      Depart at:{' '}
+                      Khởi hành lúc:{' '}
                       <span className="fw-bold">
-                        {moment(trip['departAt']).format(
-                          'MMMM Do YYYY, h:mm:ss a',
-                        )}
+                        {moment(trip['departAt']).format('LLL')}
                       </span>
                     </label>
                   </div>
@@ -220,7 +219,7 @@ const RouteInfor = () => {
               })}
             </div>
             <div className="mt-4 d-flex align-items-center flex-column">
-              <h5>Seat</h5>
+              <h5>Ghế</h5>
               <div className="mt-3 seat-grid">
                 {seatDetails.map((seat) => {
                   return (

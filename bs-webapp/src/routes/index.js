@@ -4,15 +4,14 @@ import Grid from '../components/Grid';
 import RouteInfor from '../components/RouteInfor';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import Checkout from '../components/Checkout';
-import Login from '../pages/login';
-
-import CreateRoute from '../pages/route';
-import Register from '../pages/register';
+import Login from '../pages/Login';
+import CreateRoute from '../pages/Route';
+import Register from '../pages/Register';
 import Home from '../pages/Home';
 import {endpoints} from '../config/apis';
 import PaymentResult from '../pages/PaymentResult';
-import CreateCompany from '../pages/createCompany';
-import ManageCompany from '../pages/manage';
+import CreateCompany from '../pages/CreateCompany';
+import ManageCompany from '../pages/Manage';
 const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -24,15 +23,15 @@ const AppRouter = () => {
             element={
               <>
                 <Grid
-                  title="Companies"
+                  title="Công ty"
                   dataEndpoint={endpoints.company_list}
-                  breadcrumb={['Home', 'Companies']}
+                  breadcrumb={['Trang chủ', 'Công ty']}
                 />
 
                 <Grid
-                  title="Routes"
+                  title="Tuyến xe"
                   dataEndpoint={endpoints.route_list}
-                  breadcrumb={['Home', 'Route']}
+                  breadcrumb={['Trang chủ', 'Tuyến xe']}
                 />
               </>
             }
@@ -50,9 +49,9 @@ const AppRouter = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/payment-result" element={<PaymentResult />} />
-        <Route path="/create-company" element={<CreateCompany/>} />
-        <Route path="/manage-company" element={<ManageCompany/>} />
-        <Route path="/create-route" element={<CreateRoute/>} />
+        <Route path="/create-company" element={<CreateCompany />} />
+        <Route path="/manage-company" element={<ManageCompany />} />
+        <Route path="/create-route" element={<CreateRoute />} />
       </Routes>
     </BrowserRouter>
   );
