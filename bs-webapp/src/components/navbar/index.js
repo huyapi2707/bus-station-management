@@ -1,12 +1,12 @@
-import { useContext, useEffect, useState } from 'react';
+import {useContext, useEffect, useState} from 'react';
 import './styles.css';
-import { AuthenticationContext, LoadingContext } from '../../config/context';
-import { Link } from 'react-router-dom';
-import { apis, endpoints } from '../../config/apis';
+import {AuthenticationContext, LoadingContext} from '../../config/context';
+import {Link} from 'react-router-dom';
+import {apis, endpoints} from '../../config/apis';
 
 const Navbar = () => {
-  const { user, setUser } = useContext(AuthenticationContext);
-  const { setLoading } = useContext(LoadingContext);
+  const {user, setUser} = useContext(AuthenticationContext);
+  const {setLoading} = useContext(LoadingContext);
   const [companies, setCompanies] = useState([]);
 
   const fetchCompanies = async () => {
@@ -28,7 +28,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="container">
+    <nav className="container mt-2">
       <div className="row">
         <div className="col-md-5 d-flex align-middle">
           <Link
@@ -38,24 +38,24 @@ const Navbar = () => {
             <div className="logo">
               <img src="/images/logo.png" alt="logo" />
             </div>
-            <p className="fs-4 fw-bold">CONVENIENT SERVICES</p>
+            <p className="fs-4 fw-bold">DỊCH VỤ VẬN TẢI TIỆN LỢI</p>
           </Link>
         </div>
         <div className="col-md-4 py-5">
-          <ul className="navbar-nav d-flex flex-row justify-content-between py-2">
+          <ul className="navbar-nav d-flex flex-row justify-content-evenly py-2">
             <li className="nav-item">
-              <Link className="nav-link fs-5 text-uppercase">Services</Link>
+              <Link className="nav-link fs-5 text-uppercase">Dịch vụ</Link>
               <ul className="navbar-nav ul-child">
                 <li className="nav-item">
-                  <Link className="nav-link fs-6">Busline</Link>
+                  <Link className="nav-link fs-6">Vé xe</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link fs-6">Shipping</Link>
+                  <Link className="nav-link fs-6">Giao hàng</Link>
                 </li>
               </ul>
             </li>
             <li className="nav-item">
-              <Link className="nav-link fs-5 text-uppercase">Companies</Link>
+              <Link className="nav-link fs-5 text-uppercase">Công ty</Link>
               <ul className="navbar-nav ul-child ul-child-company">
                 {companies.map((c) => {
                   return (
@@ -66,26 +66,16 @@ const Navbar = () => {
                 })}
               </ul>
             </li>
-            {user && user.role === 'USER' &&(
+            {!user || user['role'] === 'USER' > 2 ? (
               <li className="nav-item">
                 <Link
                   to="/create-company"
                   className="nav-link fs-5 text-uppercase"
                 >
-                  Join with us
+                  Tham gia
                 </Link>
               </li>
-            )}
-            {user && user.role === 'COMPANY_MANAGER' && (
-              <li className="nav-item">
-                <Link
-                  to="/manage-company"
-                  className="nav-link fs-5 text-uppercase"
-                >
-                  Manage
-                </Link>
-              </li>
-            )}
+            ) : null}
           </ul>
         </div>
         <div className="col-md-3 d-flex py-5">
@@ -102,14 +92,16 @@ const Navbar = () => {
                 </div>
                 <ul className="navbar-nav ul-child-user">
                   <li>
-                    <Link className="nav-link">Your profile</Link>
+                    <Link className="nav-link">Thông tin của bạn</Link>
                   </li>
                   <li>
-                    <Link className="nav-link">Tickets</Link>
+                    <Link className="nav-link">Vé xe đã mua</Link>
                   </li>
                   {user.role === 'COMPANY_MANAGER' && (
                     <li>
-                      <Link className="nav-link" to="/manage-company">Manage your company</Link>
+                      <Link className="nav-link" to="/manage-company">
+                        Quản lý công ty
+                      </Link>
                     </li>
                   )}
                   <li>
@@ -120,7 +112,7 @@ const Navbar = () => {
                       }}
                       className="btn btn-danger"
                     >
-                      Logout
+                      Đăng xuất
                     </button>
                   </li>
                 </ul>
@@ -129,13 +121,21 @@ const Navbar = () => {
           ) : (
             <>
               <div className="me-5 w-50">
-                <Link to="/login" type="button" className="btn btn-primary w-100">
-                  Sign in
+                <Link
+                  to="/login"
+                  type="button"
+                  className="btn btn-primary w-100"
+                >
+                  Đăng nhập
                 </Link>
               </div>
               <div className="w-50">
-                <Link to="/register" type="button" className="btn btn-light w-100">
-                  Sign up
+                <Link
+                  to="/register"
+                  type="button"
+                  className="btn btn-light w-100"
+                >
+                  Đăng ký
                 </Link>
               </div>
             </>

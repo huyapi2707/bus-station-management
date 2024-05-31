@@ -54,7 +54,7 @@ const Cart = () => {
           className="offcanvas-title mt-5  p-3"
           id="offcanvasWithBothOptionsLabel"
         >
-          Your cart
+          Giỏ hàng
         </h5>
         <button
           type="button"
@@ -67,9 +67,9 @@ const Cart = () => {
         <table className="table">
           <thead>
             <tr>
-              <th>Ticket details</th>
-              <th>With cargo</th>
-              <th>Action</th>
+              <th>Thông tin vé</th>
+              <th>Giao hàng</th>
+              <th>Thao tác</th>
             </tr>
           </thead>
           <tbody>
@@ -80,7 +80,7 @@ const Cart = () => {
                     <ul className="list-unstyled">
                       <li>
                         <Link className="nav-link">
-                          Route name:{' '}
+                          Mã chuyến:{' '}
                           <span className="fw-bold">
                             {ticket['routeInfo']['name']}
                           </span>
@@ -88,33 +88,32 @@ const Cart = () => {
                       </li>
                       <li>
                         <Link className="nav-link">
-                          Company name:{' '}
+                          Tên công ty:{' '}
                           <span className="fw-bold">
                             {ticket['routeInfo']['company']['name']}
                           </span>
                         </Link>
                       </li>
                       <li>
-                        From: {ticket['routeInfo']['fromStation']['address']} to{' '}
+                        Chuyến đi:{' '}
+                        {ticket['routeInfo']['fromStation']['address']} đến{' '}
                         {ticket['routeInfo']['toStation']['address']}
                       </li>
                       <li>
-                        Depart at:{' '}
-                        {moment(ticket['tripInfo']['departAt']).format(
-                          'MMMM Do YYYY, h:mm:ss a',
-                        )}
+                        Khởi hành lúc:{' '}
+                        {moment(ticket['tripInfo']['departAt']).format('LLL')}
                       </li>
-                      <li>Seat code: {ticket['seat']['code']}</li>
+                      <li>Mã ghế: {ticket['seat']['code']}</li>
                       <li>
-                        Seat price:{' '}
+                        Giá vé:{' '}
                         {ultils.formatToVND(ticket['routeInfo']['seatPrice'])}
                       </li>
                       <li>
-                        Cargo price:{' '}
+                        Giá giao hàng:{' '}
                         {ultils.formatToVND(ticket['routeInfo']['cargoPrice'])}
                       </li>
                       <li>
-                        Total:{' '}
+                        Tổng cộng:{' '}
                         {ultils.formatToVND(
                           ticket['routeInfo']['seatPrice'] +
                             ticket['routeInfo']['cargoPrice'],
@@ -146,7 +145,7 @@ const Cart = () => {
                       }
                       className="btn btn-danger"
                     >
-                      Delete
+                      Xóa
                     </button>
                   </td>
                 </tr>
@@ -156,7 +155,7 @@ const Cart = () => {
         </table>
         <div className="d-flex justify-content-end">
           <Link to={'/checkout'} className="btn btn-primary">
-            Check out
+            Thanh toán
           </Link>
         </div>
       </div>

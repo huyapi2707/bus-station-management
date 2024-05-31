@@ -65,7 +65,7 @@ const Checkout = () => {
       const {paymentUrl} = response['data'];
 
       if (paymentUrl === null) {
-        toast.success('Your order have been created', {
+        toast.success('Đơn hàng của bạn đã được xử lý thành công', {
           position: 'top-center',
           autoClose: 500,
           closeOnClick: true,
@@ -78,7 +78,7 @@ const Checkout = () => {
         window.location.replace(paymentUrl);
       }
     } catch (error) {
-      toast.error('Error when processing your order', {
+      toast.error('Đã xảy ra lỗi khi xử lý đơn hàng của bạn', {
         position: 'top-center',
         autoClose: 5000,
         closeOnClick: true,
@@ -102,11 +102,11 @@ const Checkout = () => {
       <div className="row">
         <div className="col-md-6">
           <div className="shadow-sm p-3 mb-5 bg-body rounded">
-            <h4>Your information</h4>
+            <h4>Thông tin của bạn</h4>
             <div className="form mt-4">
               <div className="mb-3">
                 <label htmlFor="email" className="form-label">
-                  First name
+                  Họ và tên lót
                 </label>
                 <input
                   type="email"
@@ -119,7 +119,7 @@ const Checkout = () => {
               </div>
               <div className="mb-3">
                 <label htmlFor="lastname" className="form-label">
-                  Last name
+                  Tên
                 </label>
                 <input
                   type="text"
@@ -132,7 +132,7 @@ const Checkout = () => {
               </div>
               <div className="mb-3">
                 <label htmlFor="email" className="form-label">
-                  Email address
+                  Email
                 </label>
                 <input
                   type="email"
@@ -145,7 +145,7 @@ const Checkout = () => {
               </div>
               <div className="mb-3">
                 <label htmlFor="phone" className="form-label">
-                  Phone
+                  Số điện thoại
                 </label>
                 <input
                   type="email"
@@ -158,7 +158,7 @@ const Checkout = () => {
               </div>
               <div className="mb-3">
                 <label htmlFor="paymentMethod" className="form-label">
-                  Payment Method
+                  Phương thức thanh toán
                 </label>
                 <select
                   onChange={(e) => setSelectedPaymentMethod(e.target.value)}
@@ -175,7 +175,7 @@ const Checkout = () => {
               </div>
               <div className="mt-3 d-flex justify-content-center align-items-center">
                 <button onClick={handleCheckout} className=" btn btn-primary">
-                  Checkout
+                  Đặt vé
                 </button>
               </div>
             </div>
@@ -183,17 +183,17 @@ const Checkout = () => {
         </div>
         <div className="col-md-6">
           <div className="shadow-sm p-3 mb-5 bg-body rounded">
-            <h4>Your orders</h4>
+            <h4>Đơn hàng</h4>
             <table className="table">
               <thead>
                 <tr>
-                  <th>General</th>
-                  <th>Route</th>
-                  <th>Depart at</th>
-                  <th>Seat</th>
-                  <th>Seat price</th>
-                  <th>Cargo price</th>
-                  <th>Total</th>
+                  <th>Công ty & Mã chuyến</th>
+                  <th>Tuyến</th>
+                  <th>Khởi hành lúc</th>
+                  <th>Ghế</th>
+                  <th>Giá ghế</th>
+                  <th>Giá giao hàng</th>
+                  <th>Tổng cộng</th>
                 </tr>
               </thead>
               <tbody>
@@ -211,9 +211,7 @@ const Checkout = () => {
                         </p>
                       </td>
                       <td>
-                        {moment(ticket['tripInfo']['departAt']).format(
-                          'MMMM Do YYYY, h:mm:ss a',
-                        )}
+                        {moment(ticket['tripInfo']['departAt']).format('LLL')}
                       </td>
                       <td>{ticket['seat']['code']}</td>
                       <td>
@@ -234,7 +232,7 @@ const Checkout = () => {
               </tbody>
             </table>
             <div className="d-flex justify-content-between align-items-center">
-              <h5 className="ps-2 fw-bold">Total</h5>
+              <h5 className="ps-2 fw-bold">Tổng cộng</h5>
               <p className="fw-bold fs-3 text-danger">
                 {ultils.formatToVND(
                   tickets.reduce((total, cuurent) => {
