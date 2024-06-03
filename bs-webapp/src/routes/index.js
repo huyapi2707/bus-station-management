@@ -12,6 +12,7 @@ import {endpoints} from '../config/apis';
 import PaymentResult from '../pages/PaymentResult';
 import CreateCompany from '../pages/CreateCompany';
 import ManageCompany from '../pages/Manage';
+import Profile from '../components/Profile';
 const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -42,6 +43,14 @@ const AppRouter = () => {
             element={
               <AuthenticatedRoute>
                 <Checkout />
+              </AuthenticatedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <AuthenticatedRoute>
+                <Profile />
               </AuthenticatedRoute>
             }
           />

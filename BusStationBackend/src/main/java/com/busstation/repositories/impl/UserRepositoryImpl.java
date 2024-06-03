@@ -92,13 +92,22 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User getUserById(Long userId) {
         Session session = sessionFactory.getObject().getCurrentSession();
-        return session.get(User.class, userId);
+        User user = session.get(User.class, userId);
+        if (user == null) throw new IllegalArgumentException("User id is not exist");
+        return user;
     }
 
     @Override
     public void changeRole(User user) {
         Session session = sessionFactory.getObject().getCurrentSession();
         session.saveOrUpdate(user);
+    }
+
+    @Override
+    public User update(User user) {
+        Session session = sessionFactory.getObject().getCurrentSession();
+        session.update(user);
+        return user;
     }
 
 }

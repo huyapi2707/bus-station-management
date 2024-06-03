@@ -13,4 +13,6 @@ public interface UserRepository {
     List<User> findActiveUsersByRoleId(Long roleId);
     User getUserById(Long userId);
     void changeRole(User user);
+
+    User update(User user);
 }

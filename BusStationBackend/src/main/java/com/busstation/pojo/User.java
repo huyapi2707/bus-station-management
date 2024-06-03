@@ -32,10 +32,10 @@ public class User implements UserDetails {
     private String username;
     @Basic
     @Column(name = "first_name", length = 255)
-    private String firstName;
+    private String firstname;
     @Basic
     @Column(name = "last_name", length = 255)
-    private String lastName;
+    private String lastname;
     @Basic
     @Column(name = "password", nullable = false, length = 255)
     private String password;
