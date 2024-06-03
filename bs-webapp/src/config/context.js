@@ -3,6 +3,7 @@ import {createContext} from 'react';
 const LoadingContext = createContext('none');
 const AuthenticationContext = createContext(null);
 const CartContext = createContext(null);
+const CompanyContext = createContext(null);
 
 const cartReducer = (currentState, action) => {
   switch (action.type) {
@@ -65,4 +66,4 @@ const cartReducer = (currentState, action) => {
   }
 };
 
-export {LoadingContext, AuthenticationContext, CartContext, cartReducer};
+export {CompanyContext,LoadingContext, AuthenticationContext, CartContext, cartReducer};

@@ -27,6 +27,4 @@ public class Car {
     @OneToMany(mappedBy = "car")
     private Collection<Seat> seats;
 
-
-
 }

@@ -7,7 +7,6 @@ import {
   CartContext,
 } from './config/context';
 import {useEffect, useReducer, useRef, useState} from 'react';
-// import Loading from './components/Loading';
 import Loading from './components/loading';
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

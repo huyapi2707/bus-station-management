@@ -12,4 +12,6 @@ public interface RouteRepository  {
    Long count(Map<String, String> params);
    Route getById(Long id);
    void save(Route route);
+   List<Route> findByCompanyId(Long companyId);
+   Optional<Route> findById(Long id);
 }

@@ -14,7 +14,7 @@ const CreateRoute = () => {
         seatPrice: '',
         cargoPrice: '',
         isActive: true,
-        companyId: ''  // Mặc định để trống, sẽ được nạp khi fetch company thành công
+        companyId: ''
     });
 
     const { setLoading } = useContext(LoadingContext);
@@ -26,9 +26,7 @@ const CreateRoute = () => {
             try {
                 setLoading(true);
                 const api = apis(accessToken);
-                const response = await api.get(endpoints.get_company_managerid(user.id)); 
-                console.log("Company data received:", response.data);
-                console.log("Fetched companyId:", response.data.id); // In ra companyId
+                const response = await api.get(endpoints.get_company_managerid(user.id));
                 setFormData((prevData) => ({
                     ...prevData,
                     companyId: response.data.id
@@ -51,7 +49,6 @@ const CreateRoute = () => {
                 setLoading(true);
                 const api = apis(accessToken);
                 const response = await api.get(endpoints.list_station);
-                console.log("Stations data received:", response.data);
                 setStations(response.data);
             } catch (error) {
                 console.error('Error fetching stations', error);
@@ -85,7 +82,6 @@ const CreateRoute = () => {
                 toStationId: formData.toStation,
                 isActive: formData.isActive
             };
-            console.log("Sending route data:", routeData);
             await api.post(endpoints.create_route, routeData);
             alert('Route created successfully');
             navigate(-1);
@@ -131,7 +127,10 @@ const CreateRoute = () => {
                     <label>Giá vận chuyển hàng:</label>
                     <input type="number" name="cargoPrice" value={formData.cargoPrice} onChange={handleChange} />
                 </div>
-                <button type="submit">Tạo tuyến</button>
+                <div className="button-group">
+                    <button type="submit" className="btn btn-primary">Tạo tuyến</button>
+                    <button type="button" className="btn btn-secondary button-secondary" onClick={() => navigate('/manage-company')}>Cancel</button>
+                </div>
             </form>
         </div>
     );

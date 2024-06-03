@@ -108,6 +108,21 @@ public class TransportationCompanyServiceImpl implements TransportationCompanySe
             emailService.sendEmail(to, subject, text);
         }
     }
+
+    @Override
+    @Transactional
+    public void cargo(Long id) {
+        repository.cargo(id);
+        Optional<TransportationCompany> companyOpt = repository.findById(id);
+        if (companyOpt.isPresent()) {
+            TransportationCompany company = companyOpt.get();
+            String to = company.getEmail();
+            String subject = "Đăng kí giao hàng thành công";
+            String text = "Chào " + company.getName() + ",\n\nCông ty của bạn đã đăng ký giao hàng thành công.\n\nChúc mừng!\nBus Station Team";
+            emailService.sendEmail(to, subject, text);
+        }
+    }
+
     @Override
     public TransportationCompanyDTO getCompanyAndManager(Long companyId) {
         return repository.getCompanyAndManager(companyId);

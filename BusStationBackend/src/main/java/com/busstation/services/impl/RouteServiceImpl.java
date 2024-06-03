@@ -1,8 +1,6 @@
 package com.busstation.services.impl;
 
-import com.busstation.dtos.RouteDTO;
-import com.busstation.dtos.RouteDetailDTO;
-import com.busstation.dtos.TripDTO;
+import com.busstation.dtos.*;
 import com.busstation.mappers.RouteDTOMapper;
 import com.busstation.mappers.TripDTOMapper;
 import com.busstation.pojo.Route;
@@ -96,5 +94,17 @@ public class RouteServiceImpl implements RouteService {
                 .build();
 
         repository.save(route);
+    }
+
+    @Override
+    @Transactional
+    public List<RoutePublicDTO> getRoutesByCompanyId(Long companyId) {
+        List<Route> routes = repository.findByCompanyId(companyId);
+        return routes.stream()
+                .map(route -> RoutePublicDTO.builder()
+                        .id(route.getId())
+                        .name(route.getName())
+                        .build())
+                .collect(Collectors.toList());
     }
 }

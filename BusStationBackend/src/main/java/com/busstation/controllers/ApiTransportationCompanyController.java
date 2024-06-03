@@ -134,6 +134,12 @@ public class ApiTransportationCompanyController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/cargo/{id}")
+    public ResponseEntity<?> cargo(@PathVariable Long id) {
+        transportationCompanyService.cargo(id);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("get/{id}")
     public ResponseEntity<TransportationCompanyDTO> getCompanyAndManager(@PathVariable Long id) {
         TransportationCompanyDTO companyDto = transportationCompanyService.getCompanyAndManager(id);
@@ -156,4 +162,5 @@ public class ApiTransportationCompanyController {
         }
         return ResponseEntity.ok(company);
     }
+
 }

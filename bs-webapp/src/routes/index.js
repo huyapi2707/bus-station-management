@@ -13,6 +13,7 @@ import {endpoints} from '../config/apis';
 import PaymentResult from '../pages/PaymentResult';
 import CreateCompany from '../pages/createCompany';
 import ManageCompany from '../pages/manage';
+import CreateTrip from '../pages/trip';
 const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -53,6 +54,7 @@ const AppRouter = () => {
         <Route path="/create-company" element={<CreateCompany/>} />
         <Route path="/manage-company" element={<ManageCompany/>} />
         <Route path="/create-route" element={<CreateRoute/>} />
+        <Route path="/register-trip" element={<CreateTrip/>} />
       </Routes>
     </BrowserRouter>
   );

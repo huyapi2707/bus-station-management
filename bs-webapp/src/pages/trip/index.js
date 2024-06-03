@@ -11,7 +11,8 @@ const CreateTrip = () => {
     const [formData, setFormData] = useState({
         routeId: '',
         carId: '',
-        departAt: ''
+        departAt: '',
+        isActive: true
     });
 
     const { setLoading } = useContext(LoadingContext);
@@ -24,11 +25,9 @@ const CreateTrip = () => {
                 setLoading(true);
                 const api = apis(accessToken);
 
-                // Fetch company by manager ID
                 const companyResponse = await api.get(endpoints.get_company_managerid(user.id));
                 const companyId = companyResponse.data.id;
 
-                // Fetch routes by company ID
                 const routesResponse = await api.get(endpoints.get_route_by_companyid(companyId));
                 setRoutes(routesResponse.data || []);
             } catch (error) {
@@ -69,10 +68,16 @@ const CreateTrip = () => {
             setCars(Array.isArray(response.data) ? response.data : []);
         } catch (error) {
             console.error('Error fetching available cars', error);
-            setCars([]); // Ensure cars is always an array
+            setCars([]);
         } finally {
             setLoading(false);
         }
+    };
+
+    const formatDepartAt = (departAt) => {
+        if (!departAt) return '';
+        const [date, time] = departAt.split('T');
+        return `${date} ${time}:00`;
     };
 
     const handleSubmit = async (e) => {
@@ -83,9 +88,11 @@ const CreateTrip = () => {
             const tripData = {
                 routeId: formData.routeId,
                 carId: formData.carId,
-                departAt: formData.departAt
+                departAt: formatDepartAt(formData.departAt),
+                isActive: formData.isActive
             };
-            await api.post(endpoints.create_trip, tripData);
+            console.log('Thông tin gửi đi: ', tripData);
+            await api.post(endpoints.creat_trip, tripData);
             alert('Trip created successfully');
             navigate(-1);
         } catch (error) {
