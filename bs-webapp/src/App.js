@@ -45,7 +45,7 @@ function App() {
     if (accessToken && !user) {
       fetchUserInfor(accessToken);
     }
-  }, [user]);
+  }, []);
 
   useEffect(() => {
     const localStorageItem = localStorage.getItem('cart');

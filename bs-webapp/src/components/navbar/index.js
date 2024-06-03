@@ -92,7 +92,9 @@ const Navbar = () => {
                 </div>
                 <ul className="navbar-nav ul-child-user">
                   <li>
-                    <Link className="nav-link">Thông tin của bạn</Link>
+                    <Link to={'/profile'} className="nav-link">
+                      Thông tin của bạn
+                    </Link>
                   </li>
                   <li>
                     <Link className="nav-link">Vé xe đã mua</Link>

@@ -1,14 +1,22 @@
 package com.busstation.controllers;
 
 import com.busstation.dtos.UserDTO;
-import com.busstation.pojo.User;
 import com.busstation.services.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jdk.jfr.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import javax.annotation.Nullable;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -16,6 +24,17 @@ import java.util.List;
 public class ApiUserController {
     @Autowired
     private UserService userService;
+
+
+
+    @PatchMapping(path = "/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<UserDTO> partialUpdate(@PathVariable Long id,
+                                                 @ModelAttribute UserDTO payload,
+                                                 @RequestParam MultipartFile file
+                                                 ) throws IOException, IllegalAccessException {
+       return ResponseEntity.ok(userService.updateUser(id, payload, file));
+    }
+
 
     @GetMapping("/self")
     public ResponseEntity<UserDTO> getSelfInformation() {
