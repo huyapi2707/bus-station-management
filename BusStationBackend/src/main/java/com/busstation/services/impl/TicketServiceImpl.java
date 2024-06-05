@@ -1,9 +1,6 @@
 package com.busstation.services.impl;
 
-import com.busstation.dtos.CheckoutResponse;
-import com.busstation.dtos.RouteDTO;
-import com.busstation.dtos.TicketDTO;
-import com.busstation.dtos.TripDTO;
+import com.busstation.dtos.*;
 import com.busstation.mappers.TicketDTOMapper;
 import com.busstation.pojo.*;
 import com.busstation.repositories.*;
@@ -251,5 +248,20 @@ public class TicketServiceImpl implements TicketService {
         } catch (Exception ex) {
             return "";
         }
+    }
+
+    @Override
+    public Map<Integer, StatisticsDTO> getAnnualRevenue(int year, Long companyId) {
+        return ticketRepository.calculateAnnualRevenue(year, companyId);
+    }
+
+    @Override
+    public Map<Integer, StatisticsDTO> getQuarterlyRevenue(int year, Long companyId) {
+        return ticketRepository.calculateQuarterlyRevenue(year, companyId);
+    }
+
+    @Override
+    public Map<Integer, StatisticsDTO> getDailyRevenue(int year, int month, int day, Long companyId) {
+        return ticketRepository.calculateDailyRevenue(year, month, day, companyId);
     }
 }

@@ -98,8 +98,8 @@ public class TransportationCompanyServiceImpl implements TransportationCompanySe
     @Transactional
     public void verifyCompany(Long id) {
         repository.verifyCompany(id);
-        userService.changeRole(id,(long)3);
         Optional<TransportationCompany> companyOpt = repository.findById(id);
+        userService.changeRole(companyOpt.get().getManager().getId(), (long)3);
         if (companyOpt.isPresent()) {
             TransportationCompany company = companyOpt.get();
             String to = company.getEmail();
