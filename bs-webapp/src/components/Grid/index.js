@@ -68,9 +68,9 @@ const Grid = ({title, breadcrumb, dataEndpoint}) => {
       <div className="row ">
         <div className="grid-data">
           {data.map((value) => {
-            if (title === 'Companies') {
+            if (title === 'Công ty') {
               return <CompanyItem key={value['id']} value={value} />;
-            } else if (title === 'Routes') {
+            } else if (title === 'Tuyến xe') {
               return <RouteItem key={value['id']} value={value} />;
             }
           })}

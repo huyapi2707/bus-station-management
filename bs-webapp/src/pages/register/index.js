@@ -1,4 +1,5 @@
-import './styles.css';
+import './styles.css'
+// import '../Login/styles.css';
 import '../login/styles.css';
 import {useContext, useState} from 'react';
 import * as validator from '../../config/validator';
@@ -16,7 +17,7 @@ const Register = () => {
   const {setUser} = useContext(AuthenticationContext);
   const validate = () => {
     if (password !== rePassword) {
-      return 'Password and confirm password are mismatch';
+      return 'Mật khẩu không khớp';
     }
     const msgs = [];
     msgs.push(validator.validateEmail(email));
@@ -84,14 +85,14 @@ const Register = () => {
           >
             <div className="col-md-7">
               <div>
-                <h3>Register</h3>
-                <p className="text-muted">Welcome to Bus Station</p>
+                <h3>Đăng ký</h3>
+                <p className="text-muted">Chào mừng đến với OU BUS</p>
               </div>
 
               <form>
                 <div className="mb-3">
                   <label htmlFor="username" className="form-label">
-                    Username
+                    Tên người dùng
                   </label>
                   <input
                     className="form-control form-control-lg"
@@ -119,7 +120,7 @@ const Register = () => {
                 </div>
                 <div className="mb-3">
                   <label htmlFor="password" className="form-label">
-                    Confirm password
+                    Mật khẩu
                   </label>
                   <input
                     className="form-control form-control-lg"
@@ -133,7 +134,7 @@ const Register = () => {
                 </div>
                 <div className="mb-3">
                   <label htmlFor="re-password" className="form-label">
-                    Password
+                    Xác nhận mật khẩu
                   </label>
                   <input
                     className="form-control form-control-lg"
@@ -161,10 +162,10 @@ const Register = () => {
                     className="form-check-label"
                     htmlFor="isCompanyManager"
                   >
-                    Wanna open a company?
+                    Bạn muốn trở thành đối tác?
                   </label>
                   <p className="text-muted" style={{fontSize: '0.9rem'}}>
-                    We will create your account as company manager role
+                    Bạn sẽ đăng ký tài khoản với vai trò quản lý công ty
                   </p>
                 </div>
                 <button
@@ -173,13 +174,13 @@ const Register = () => {
                   className="btn btn-primary btn-lg"
                   style={{width: '100%'}}
                 >
-                  Go
+                  Đăng ký
                 </button>
                 <Link
                   to="/login"
                   className="d-block text-center my-4 text-muted btn"
                 >
-                  Already have an account?
+                  Bạn đã có tài khoản?
                 </Link>
               </form>
             </div>

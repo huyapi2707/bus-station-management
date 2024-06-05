@@ -129,7 +129,7 @@ const CreateRoute = () => {
                 </div>
                 <div className="button-group">
                     <button type="submit" className="btn btn-primary">Tạo tuyến</button>
-                    <button type="button" className="btn btn-secondary button-secondary" onClick={() => navigate('/manage-company')}>Cancel</button>
+                    <button type="button" className="btn btn-secondary button-secondary" onClick={() => navigate('/manage-company')}>Hủy</button>
                 </div>
             </form>
         </div>

@@ -108,7 +108,7 @@ const ManageCompany = () => {
 
     const renderChart = () => {
         if (!stats || Object.keys(stats).length === 0) {
-            return <p>No data available for the selected option.</p>;
+            return <p>Dữ liệu chưa được thiết lập!</p>;
         }
 
         const labels = Object.keys(stats);
@@ -151,17 +151,17 @@ const ManageCompany = () => {
             <Navbar />
             <div className="button-container">
                 <Link to="/create-route">
-                    <button>Create Route</button>
+                    <button>Đăng ký tuyến</button>
                 </Link>
                 <Link to="/register-trip">
-                    <button>Register Trip</button>
+                    <button>Đăng kí chuyến</button>
                 </Link>
-                <button onClick={showConfirmationDialog}>Register Cargo</button>
+                <button onClick={showConfirmationDialog}>Đăng kí chuyển hàng</button>
             </div>
             {showConfirmation && (
                 <div className="confirmation-overlay">
                     <div className="confirmation-dialog">
-                        <p>Are you sure you want to register cargo transport?</p>
+                        <p>Bạn chắc chắn muốn đăng kí vận chuyển hàng hóa không?</p>
                         <button onClick={handleRegisterCargo}>OK</button>
                         <button onClick={hideConfirmationDialog}>Cancel</button>
                     </div>

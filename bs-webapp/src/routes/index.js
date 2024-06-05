@@ -5,7 +5,6 @@ import RouteInfor from '../components/RouteInfor';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import Checkout from '../components/Checkout';
 import Login from '../pages/login';
-
 import CreateRoute from '../pages/route';
 import Register from '../pages/register';
 import Home from '../pages/Home';
@@ -25,15 +24,15 @@ const AppRouter = () => {
             element={
               <>
                 <Grid
-                  title="Companies"
+                  title="Công ty"
                   dataEndpoint={endpoints.company_list}
-                  breadcrumb={['Home', 'Companies']}
+                  breadcrumb={['Trang chủ', 'Công ty']}
                 />
 
                 <Grid
-                  title="Routes"
+                  title="Tuyến xe"
                   dataEndpoint={endpoints.route_list}
-                  breadcrumb={['Home', 'Route']}
+                  breadcrumb={['Trang chủ', 'Tuyến xe']}
                 />
               </>
             }

@@ -69,7 +69,7 @@ const CreateCompany = () => {
     <>
     <Navbar/>
     <div className="form-container">
-      <h2>Register your Bus Company</h2>
+      <h2>Đăng kí công ty vận tải mới</h2>
       {!isSubmitted ? (
         <form id="newCompanyForm" encType="multipart/form-data">
           <label htmlFor="name">Name:</label>
@@ -81,15 +81,15 @@ const CreateCompany = () => {
           <label htmlFor="email">Email:</label>
           <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
 
-          <label htmlFor="isCargoTransport">Is Cargo Transport:</label>
+          <label htmlFor="isCargoTransport">Vận chuyển hàng hóa:</label>
           <input type="checkbox" id="isCargoTransport" name="isCargoTransport" checked={formData.isCargoTransport} onChange={handleChange} />
 
           <label htmlFor="avatar">Avatar:</label>
           <input type="file" id="avatar" name="avatar" accept="image/*" onChange={handleAvatarChange} />
           {avatarPreview && <img id="avatarPreview" src={avatarPreview} alt="Avatar Preview" style={{ maxWidth: '150px', marginTop: '10px' }} />}
 
-          <button type="button" onClick={handleSubmit}>Save</button>
-          <button type="button" className="cancel" onClick={() => navigate('/')}>Cancel</button>
+          <button type="button" onClick={handleSubmit}>Xác nhận</button>
+          <button type="button" className="cancel" onClick={() => navigate('/')}>Hủy</button>
         </form>
       ) : (
         <div className="submission-message">

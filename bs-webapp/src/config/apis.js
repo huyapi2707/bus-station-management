@@ -25,9 +25,8 @@ const endpoints = {
   route_trip_list: (id) => `/api/v1/route/${id}/trip`,
   trip_seat_details: (id) => `/api/v1/trip/${id}/seat-details`,
   checkout: (paymentMethodId) => `/api/v1/ticket/checkout/${paymentMethodId}`,
-  
+  user: (id) => `/api/v1/users/${id}`,
   get_user_by_role: (id) => `/admin/users/role/${id}`,
-  
 };
 const apis = (accessToken) => {
   if (accessToken) {

@@ -110,7 +110,7 @@ const CreateTrip = () => {
                 <div className="form-group">
                     <label>Route:</label>
                     <select name="routeId" value={formData.routeId} onChange={handleChange}>
-                        <option value="">Select Route</option>
+                        <option value="">Chọn tuyến</option>
                         {routes.map(route => (
                             <option key={route.id} value={route.id}>{`${route.id} - ${route.name}`}</option>
                         ))}
@@ -123,15 +123,15 @@ const CreateTrip = () => {
                 <div className="form-group">
                     <label>Car:</label>
                     <select name="carId" value={formData.carId} onChange={handleChange}>
-                        <option value="">Select Car</option>
+                        <option value="">Chọn xe</option>
                         {cars.map(car => (
                             <option key={car.id} value={car.id}>{`${car.id} - ${car.carNumber}`}</option>
                         ))}
                     </select>
                 </div>
                 <div className="button-group">
-                    <button type="submit" className="btn btn-primary">Create Trip</button>
-                    <button type="button" className="btn btn-secondary" onClick={() => navigate(-1)}>Cancel</button>
+                    <button type="submit" className="btn btn-primary">Xác nhận</button>
+                    <button type="button" className="btn btn-secondary" onClick={() => navigate(-1)}>Hủy</button>
                 </div>
             </form>
         </div>

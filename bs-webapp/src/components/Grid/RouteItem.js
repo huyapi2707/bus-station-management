@@ -13,18 +13,18 @@ const RouteItem = ({value}) => {
       <div className="mt-3">
         <ul className="nav d-flex flex-column">
           <li className="nav-item">
-            Route: {value['fromStation']['address']} -{' '}
+            Tuyến: {value['fromStation']['address']} -{' '}
             {value['toStation']['address']}
           </li>
-          <li className="nav-item">Company: {value['company']['name']}</li>
+          <li className="nav-item">Công ty: {value['company']['name']}</li>
           <li className="nav-item">
-            Seat price:{' '}
+            Giá vé:{' '}
             <span className="text-primary">
               {utils.formatToVND(value['seatPrice'])}
             </span>
           </li>
           <li className="nav-item">
-            Cargo price:{' '}
+            Giá giao hàng:{' '}
             <span className="text-primary">
               {utils.formatToVND(value['cargoPrice'])}
             </span>

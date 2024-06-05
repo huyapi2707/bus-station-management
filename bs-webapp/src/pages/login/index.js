@@ -1,4 +1,5 @@
 import {useContext, useState} from 'react';
+// import './styles.css';
 import './styles.css';
 import {FaGoogle} from 'react-icons/fa';
 import {LoadingContext, AuthenticationContext} from '../../config/context';
@@ -84,14 +85,14 @@ const Login = () => {
           >
             <div className="col-md-7">
               <div>
-                <h3>Login</h3>
-                <p className="text-muted">Welcome to Bus Station</p>
+                <h3>Đăng nhập</h3>
+                <p className="text-muted">Chào mừng đến OU BUS</p>
               </div>
 
               <form>
                 <div className="mb-3">
                   <label htmlFor="username" className="form-label">
-                    Username
+                    Tên tài khoản
                   </label>
                   <input
                     className="form-control form-control-lg"
@@ -105,7 +106,7 @@ const Login = () => {
                 </div>
                 <div className="mb-3">
                   <label htmlFor="password" className="form-label">
-                    Password
+                    Mật khẩu
                   </label>
                   <input
                     className="form-control form-control-lg"
@@ -119,13 +120,13 @@ const Login = () => {
                 </div>
                 <div className="d-flex justify-content-between mb-3">
                   <p className="text-decoration-underline text-muted btn">
-                    Forgot password?
+                    Quên mật khẩu?
                   </p>
                   <Link
                     to="/register"
                     className="text-decoration-underline text-muted btn"
                   >
-                    Dont't have an account?
+                    Bạn chưa có tài khoản?
                   </Link>
                 </div>
                 <button
@@ -134,10 +135,10 @@ const Login = () => {
                   className="btn btn-primary btn-lg"
                   style={{width: '100%'}}
                 >
-                  Go
+                  Đăng nhập
                 </button>
                 <span className="d-block text-center my-4 text-muted">
-                  -- or --
+                  -- hoặc --
                 </span>
                 <button
                   type="button"
@@ -145,7 +146,7 @@ const Login = () => {
                   style={{width: '100%'}}
                 >
                   <FaGoogle className="me-2" />
-                  Login with Google
+                  Đăng nhập với Google
                 </button>
               </form>
             </div>
