@@ -14,17 +14,20 @@ const endpoints = {
   register_company: '/api/v1/transportation_company/add',
   create_route: '/api/v1/route/add',
   list_station: '/api/v1/transportation_company/list_station',
-  get_company_managerid: (id) => `/api/v1/transportation_company/manager/${id}`,
+  available_cars: '/api/v1/cars/available-cars',
+  creat_trip: '/api/v1/trip/add',
+  statistics_ticket_month: (year) => `/api/v1/statistics/month/${year}`,
+  statistics_ticket_quarterly: (year) => `/api/v1/statistics/quarterly/${year}`,
+  statistics_ticket_day: (year, month, day) => `/api/v1/statistics/day/${year}/${month}/${day}`,
+  register_cargo: (id) => `api/v1/transportation_company/cargo/${id}`,
+  get_route_by_companyid: (id) => `api/v1/route/company/${id}`,
+  get_company_managerid:(id) => `/api/v1/transportation_company/manager/${id}`,
   route_trip_list: (id) => `/api/v1/route/${id}/trip`,
   trip_seat_details: (id) => `/api/v1/trip/${id}/seat-details`,
   checkout: (paymentMethodId) => `/api/v1/ticket/checkout/${paymentMethodId}`,
   user: (id) => `/api/v1/users/${id}`,
   get_user_by_role: (id) => `/admin/users/role/${id}`,
 };
-
-// transportationCompany_list has available request params: kw , page
-// kw stand for company name query
-
 const apis = (accessToken) => {
   if (accessToken) {
     return axios.create({

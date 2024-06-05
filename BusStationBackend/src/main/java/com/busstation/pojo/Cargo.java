@@ -45,6 +45,4 @@ public class Cargo {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ticket_id", referencedColumnName = "id", nullable = false)
     private Ticket ticket;
-
-
 }

@@ -1,9 +1,7 @@
 package com.busstation.repositories.impl;
 
 import com.busstation.pojo.Route;
-import com.busstation.pojo.TransportationCompany;
 import com.busstation.repositories.RouteRepository;
-import org.hibernate.QueryException;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
@@ -91,5 +89,23 @@ public class RouteRepositoryImpl implements RouteRepository {
         }
     }
 
+    @Override
+    public List<Route> findByCompanyId(Long companyId) {
+        Session session = sessionFactoryBean.getObject().getCurrentSession();
+        String hql = "SELECT r FROM Route r " +
+                "JOIN FETCH r.company c " +
+                "JOIN FETCH r.fromStation " +
+                "JOIN FETCH r.toStation " +
+                "WHERE c.id = :companyId";
+        return session.createQuery(hql, Route.class)
+                .setParameter("companyId", companyId)
+                .getResultList();
+    }
 
+    @Override
+    public Optional<Route> findById(Long id) {
+        Session session = sessionFactoryBean.getObject().getCurrentSession();
+        Route route = session.get(Route.class, id);
+        return Optional.ofNullable(route);
+    }
 }

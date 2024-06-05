@@ -21,4 +21,5 @@ public interface TransportationCompanyService{
     void verifyCompany(Long id);
     TransportationCompanyDTO getCompanyAndManager(Long companyId);
     TransportationCompanyDTO getCompanyByManagerId(Long managerId);
+    void cargo(Long companyId);
 }

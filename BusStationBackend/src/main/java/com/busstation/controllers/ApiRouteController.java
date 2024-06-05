@@ -2,6 +2,7 @@ package com.busstation.controllers;
 
 import com.busstation.dtos.RouteDTO;
 import com.busstation.dtos.RouteDetailDTO;
+import com.busstation.dtos.RoutePublicDTO;
 import com.busstation.pojo.Route;
 import com.busstation.services.RouteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -40,8 +42,13 @@ public class ApiRouteController {
             service.createRoute(routeDetailDTO);
             return ResponseEntity.ok("Route created successfully");
         } catch (Exception e) {
-            e.printStackTrace(); // Thêm dòng này để log lỗi
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create route");
         }
+    }
+
+    @GetMapping("/company/{companyId}")
+    public List<RoutePublicDTO> getRoutesByCompanyId(@PathVariable Long companyId) {
+        return service.getRoutesByCompanyId(companyId);
     }
 }

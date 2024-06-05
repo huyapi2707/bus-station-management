@@ -66,7 +66,7 @@ const Navbar = () => {
                 })}
               </ul>
             </li>
-            {!user || user['role'] === 'USER' > 2 ? (
+            {user && user.role === 'USER' && (
               <li className="nav-item">
                 <Link
                   to="/create-company"
@@ -75,7 +75,7 @@ const Navbar = () => {
                   Tham gia
                 </Link>
               </li>
-            ) : null}
+            )}
           </ul>
         </div>
         <div className="col-md-3 d-flex py-5">

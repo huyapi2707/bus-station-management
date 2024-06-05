@@ -4,15 +4,15 @@ import Grid from '../components/Grid';
 import RouteInfor from '../components/RouteInfor';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import Checkout from '../components/Checkout';
-import Login from '../pages/Login';
-import CreateRoute from '../pages/Route';
-import Register from '../pages/Register';
+import Login from '../pages/login';
+import CreateRoute from '../pages/route';
+import Register from '../pages/register';
 import Home from '../pages/Home';
 import {endpoints} from '../config/apis';
 import PaymentResult from '../pages/PaymentResult';
-import CreateCompany from '../pages/CreateCompany';
-import ManageCompany from '../pages/Manage';
-import Profile from '../components/Profile';
+import CreateCompany from '../pages/createCompany';
+import ManageCompany from '../pages/manage';
+import CreateTrip from '../pages/trip';
 const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -46,21 +46,14 @@ const AppRouter = () => {
               </AuthenticatedRoute>
             }
           />
-          <Route
-            path="/profile"
-            element={
-              <AuthenticatedRoute>
-                <Profile />
-              </AuthenticatedRoute>
-            }
-          />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/payment-result" element={<PaymentResult />} />
-        <Route path="/create-company" element={<CreateCompany />} />
-        <Route path="/manage-company" element={<ManageCompany />} />
-        <Route path="/create-route" element={<CreateRoute />} />
+        <Route path="/create-company" element={<CreateCompany/>} />
+        <Route path="/manage-company" element={<ManageCompany/>} />
+        <Route path="/create-route" element={<CreateRoute/>} />
+        <Route path="/register-trip" element={<CreateTrip/>} />
       </Routes>
     </BrowserRouter>
   );

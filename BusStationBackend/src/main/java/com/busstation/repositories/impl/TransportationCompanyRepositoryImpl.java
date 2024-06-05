@@ -156,6 +156,17 @@ public class TransportationCompanyRepositoryImpl implements TransportationCompan
             session.update(company);
         }
     }
+
+    @Override
+    public void cargo(Long id) {
+        Session session = sessionFactoryBean.getObject().getCurrentSession();
+        TransportationCompany company = session.get(TransportationCompany.class, id);
+        if (company != null) {
+            company.setIsCargoTransport(true);
+            session.update(company);
+        }
+    }
+
     @Override
     public TransportationCompanyDTO getCompanyAndManager(Long companyId) {
         try (Session session = sessionFactoryBean.getObject().openSession()) {

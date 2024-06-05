@@ -24,6 +24,7 @@ public class TripRepositoryImpl implements TripRepository {
     @Autowired
     LocalSessionFactoryBean sessionFactoryBean;
 
+
     @Override
     public List<Seat> getAvailableSeats(Long id) {
         Session session = sessionFactoryBean.getObject().getCurrentSession();
@@ -37,7 +38,6 @@ public class TripRepositoryImpl implements TripRepository {
         seatCriteriaQuery.select(carSeatJoin);
 
 
-        // create subQuery
         Subquery<Seat> seatSubquery = seatCriteriaQuery.subquery(Seat.class);
         Root<Trip> subQueryTripRoot = seatSubquery.from(Trip.class);
         Join<Trip, Ticket> subQueryTripTicketJoin = subQueryTripRoot.join("tickets");
@@ -100,6 +100,13 @@ public class TripRepositoryImpl implements TripRepository {
         Session session = sessionFactoryBean.getObject().getCurrentSession();
         Trip trip = session.get(Trip.class, id);
         if (trip == null) throw new IllegalArgumentException("Trip id is not exist");
+        return trip;
+    }
+
+    @Override
+    public Trip save(Trip trip) {
+        Session session = sessionFactoryBean.getObject().getCurrentSession();
+        session.saveOrUpdate(trip);
         return trip;
     }
 }

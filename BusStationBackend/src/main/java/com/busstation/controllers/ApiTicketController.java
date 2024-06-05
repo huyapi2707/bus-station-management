@@ -29,5 +29,4 @@ public class ApiTicketController {
         return ResponseEntity.ok(ticketService.checkout(cart, paymentMethodId, ip));
     }
 
-
 }

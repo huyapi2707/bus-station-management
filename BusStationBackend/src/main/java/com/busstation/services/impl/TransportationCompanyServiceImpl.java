@@ -98,8 +98,8 @@ public class TransportationCompanyServiceImpl implements TransportationCompanySe
     @Transactional
     public void verifyCompany(Long id) {
         repository.verifyCompany(id);
-        userService.changeRole(id,(long)3);
         Optional<TransportationCompany> companyOpt = repository.findById(id);
+        userService.changeRole(companyOpt.get().getManager().getId(), (long)3);
         if (companyOpt.isPresent()) {
             TransportationCompany company = companyOpt.get();
             String to = company.getEmail();
@@ -108,6 +108,21 @@ public class TransportationCompanyServiceImpl implements TransportationCompanySe
             emailService.sendEmail(to, subject, text);
         }
     }
+
+    @Override
+    @Transactional
+    public void cargo(Long id) {
+        repository.cargo(id);
+        Optional<TransportationCompany> companyOpt = repository.findById(id);
+        if (companyOpt.isPresent()) {
+            TransportationCompany company = companyOpt.get();
+            String to = company.getEmail();
+            String subject = "Đăng kí giao hàng thành công";
+            String text = "Chào " + company.getName() + ",\n\nCông ty của bạn đã đăng ký giao hàng thành công.\n\nChúc mừng!\nBus Station Team";
+            emailService.sendEmail(to, subject, text);
+        }
+    }
+
     @Override
     public TransportationCompanyDTO getCompanyAndManager(Long companyId) {
         return repository.getCompanyAndManager(companyId);

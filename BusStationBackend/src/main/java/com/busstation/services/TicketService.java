@@ -2,6 +2,7 @@ package com.busstation.services;
 
 
 import com.busstation.dtos.CheckoutResponse;
+import com.busstation.dtos.StatisticsDTO;
 import com.busstation.dtos.TicketDTO;
 import com.busstation.pojo.Ticket;
 
@@ -21,4 +22,10 @@ public interface TicketService {
     CheckoutResponse checkout(List<Map<String, String>> client_cart, Long paymentMethodId, String ip) throws UnsupportedEncodingException;
 
     String handleVnPayResponse(Map<String, String> params) throws ParseException;
+
+    Map<Integer, StatisticsDTO> getAnnualRevenue(int year, Long companyId);
+
+    Map<Integer, StatisticsDTO> getQuarterlyRevenue(int year, Long companyId);
+
+    Map<Integer, StatisticsDTO> getDailyRevenue(int year, int month, int day, Long companyId);
 }
