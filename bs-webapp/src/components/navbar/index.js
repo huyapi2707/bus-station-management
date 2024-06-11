@@ -60,7 +60,12 @@ const Navbar = () => {
                 {companies.map((c) => {
                   return (
                     <li key={c.id} className="nav-item">
-                      <Link className="nav-link fs-6">{c.name}</Link>
+                      <Link
+                        to={`/company/${c['id']}`}
+                        className="nav-link fs-6"
+                      >
+                        {c.name}
+                      </Link>
                     </li>
                   );
                 })}

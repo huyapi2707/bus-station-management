@@ -1,4 +1,4 @@
-import {useLocation, useParams} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import './styles.css';
 import {useContext, useEffect, useState} from 'react';
 import * as utils from '../../config/utils';
@@ -8,10 +8,9 @@ import moment from 'moment';
 import 'moment/locale/vi';
 import {toast} from 'react-toastify';
 
-const RouteInfor = () => {
+const RouteInfo = () => {
   let {id} = useParams();
-  let {state} = useLocation();
-  let route = state['route'];
+  const [route, setRoute] = useState(null);
   const {setLoading} = useContext(LoadingContext);
   const {cartDispatcher} = useContext(CartContext);
   const [withCargo, setWithCargo] = useState(true);
@@ -77,6 +76,19 @@ const RouteInfor = () => {
     }
   };
 
+  const fetchRouteInfo = async () => {
+    try {
+      setLoading('flex');
+      const response = await apis(null).get(endpoints.route_info(id));
+      const data = response['data'];
+      setRoute(data);
+    } catch (ex) {
+      console.error(ex);
+    } finally {
+      setLoading('none');
+    }
+  };
+
   const fetchTripSeatDetails = async () => {
     setLoading('flex');
     try {
@@ -107,87 +119,93 @@ const RouteInfor = () => {
   };
 
   useEffect(() => {
+    fetchRouteInfo();
     fetchAllTrips();
-  }, [id]);
+  }, []);
 
   useEffect(() => {
     if (tripId !== null) {
       fetchTripSeatDetails();
     }
-  }, [tripId, id]);
+  }, [tripId]);
+
   return (
     <div className="container py-5">
       <div className="row">
-        <div className="col-md-6 p-3">
-          <div className="border-bottom mb-4">
-            <h3>{route['company']['name']}</h3>
-          </div>
-          <div>
-            <ul className="list-unstyled">
-              <li className="mb-2">
-                Mã tuyến: <span className="fw-bold">{route['name']}</span>
-              </li>
-              <li className="mb-2">
-                Giá vé:{' '}
-                <span className="text-primary">
-                  {utils.formatToVND(route['seatPrice'])}
-                </span>
-              </li>
-              <li className="mb-2">
-                Giá giao hàng:{' '}
-                <span className="text-info">
-                  {utils.formatToVND(route['cargoPrice'])}
-                </span>
-              </li>
+        {route && (
+          <div className="col-md-6 p-3">
+            <div className="border-bottom mb-4">
+              <Link className="fs-2" to={`/company/${route['company']['id']}`}>
+                {route['company']['name']}
+              </Link>
+            </div>
+            <div>
+              <ul className="list-unstyled">
+                <li className="mb-2">
+                  Mã tuyến: <span className="fw-bold">{route['name']}</span>
+                </li>
+                <li className="mb-2">
+                  Giá vé:{' '}
+                  <span className="text-primary">
+                    {utils.formatToVND(route['seatPrice'])}
+                  </span>
+                </li>
+                <li className="mb-2">
+                  Giá giao hàng:{' '}
+                  <span className="text-success">
+                    {utils.formatToVND(route['cargoPrice'])}
+                  </span>
+                </li>
 
-              <li className="row mb-2">
-                <div className="col-md-6">
-                  <p>
-                    Bắt đầu từ: <span>{route['fromStation']['address']}</span>
-                  </p>
-                  <iframe
-                    src={route['fromStation']['mapUrl']}
-                    width="300"
-                    height="300"
-                    allowFullScreen={true}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  ></iframe>
-                </div>
-                <div className="col-md-6">
-                  <p>
-                    Đến: <span>{route['toStation']['address']}</span>
-                  </p>
-                  <iframe
-                    src={route['toStation']['mapUrl']}
-                    width="300"
-                    height="300"
-                    allowFullScreen={true}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  ></iframe>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div className="mt-5 d-flex align-items-center">
-            <button onClick={addToCart} className="btn btn-primary">
-              Thêm vào giỏ hàng
-            </button>
-            <div className="form-check ms-3">
-              <input
-                checked={withCargo}
-                className="form-check-input"
-                type="checkbox"
-                onChange={(event) => setWithCargo(event.target.checked)}
-                id="flexCheckChecked"
-              />
-              <label className="form-check-label" htmlFor="flexCheckChecked">
-                Có giao hàng
-              </label>
+                <li className="row mb-2">
+                  <div className="col-md-6">
+                    <p>
+                      Bắt đầu từ: <span>{route['fromStation']['address']}</span>
+                    </p>
+                    <iframe
+                      src={route['fromStation']['mapUrl']}
+                      width="300"
+                      height="300"
+                      allowFullScreen={true}
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    ></iframe>
+                  </div>
+                  <div className="col-md-6">
+                    <p>
+                      Đến: <span>{route['toStation']['address']}</span>
+                    </p>
+                    <iframe
+                      src={route['toStation']['mapUrl']}
+                      width="300"
+                      height="300"
+                      allowFullScreen={true}
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    ></iframe>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div className="mt-5 d-flex align-items-center">
+              <button onClick={addToCart} className="btn btn-primary">
+                Thêm vào giỏ hàng
+              </button>
+              <div className="form-check ms-3">
+                <input
+                  checked={withCargo}
+                  className="form-check-input"
+                  type="checkbox"
+                  onChange={(event) => setWithCargo(event.target.checked)}
+                  id="flexCheckChecked"
+                />
+                <label className="form-check-label" htmlFor="flexCheckChecked">
+                  Có giao hàng
+                </label>
+              </div>
             </div>
           </div>
-        </div>
+        )}
         <div className="col-md-6 p-3">
           <div>
             <h5 className="text-center">Các chuyến</h5>
@@ -256,4 +274,4 @@ const RouteInfor = () => {
   );
 };
 
-export default RouteInfor;
+export default RouteInfo;
