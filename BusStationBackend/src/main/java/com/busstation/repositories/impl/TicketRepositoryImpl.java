@@ -38,12 +38,13 @@ public class TicketRepositoryImpl implements TicketRepository {
     @Override
     public Map<Integer, StatisticsDTO> calculateAnnualRevenue(int year, Long companyId) {
         Session session = localSessionFactoryBean.getObject().getCurrentSession();
-        String hql = "SELECT MONTH(t.paidAt), SUM(t.seatPrice), SUM(t.cargo.cargoPrice) " +
+        String hql = "SELECT MONTH(t.paidAt), SUM(t.seatPrice), COALESCE(SUM(c.cargoPrice), 0) " +
                 "FROM Ticket t " +
+                "LEFT JOIN t.cargo c " +
                 "JOIN t.trip tr " +
                 "JOIN tr.route r " +
-                "JOIN r.company c " +
-                "WHERE YEAR(t.paidAt) = :year AND c.id = :companyId " +
+                "JOIN r.company comp " +
+                "WHERE YEAR(t.paidAt) = :year AND comp.id = :companyId " +
                 "GROUP BY MONTH(t.paidAt) " +
                 "ORDER BY MONTH(t.paidAt)";
         Query<Object[]> query = session.createQuery(hql, Object[].class);
@@ -51,7 +52,7 @@ public class TicketRepositoryImpl implements TicketRepository {
         query.setParameter("companyId", companyId);
         List<Object[]> results = query.list();
 
-        System.out.println("Results: " + results.size()); // In ra số lượng kết quả
+        System.out.println("Results: " + results.size());
 
         for (Object[] result : results) {
             System.out.println("Month: " + result[0] + ", TotalTicket: " + result[1] + ", TotalCargo: " + result[2]);
@@ -68,15 +69,17 @@ public class TicketRepositoryImpl implements TicketRepository {
         return revenueMap;
     }
 
+
     @Override
     public Map<Integer, StatisticsDTO> calculateQuarterlyRevenue(int year, Long companyId) {
         Session session = localSessionFactoryBean.getObject().getCurrentSession();
-        String hql = "SELECT QUARTER(t.paidAt), SUM(t.seatPrice), SUM(t.cargo.cargoPrice) " +
+        String hql = "SELECT QUARTER(t.paidAt), SUM(t.seatPrice), COALESCE(SUM(c.cargoPrice), 0) " +
                 "FROM Ticket t " +
+                "LEFT JOIN t.cargo c " +
                 "JOIN t.trip tr " +
                 "JOIN tr.route r " +
-                "JOIN r.company c " +
-                "WHERE YEAR(t.paidAt) = :year AND c.id = :companyId " +
+                "JOIN r.company comp " +
+                "WHERE YEAR(t.paidAt) = :year AND comp.id = :companyId " +
                 "GROUP BY QUARTER(t.paidAt) " +
                 "ORDER BY QUARTER(t.paidAt)";
         Query<Object[]> query = session.createQuery(hql, Object[].class);
@@ -95,15 +98,17 @@ public class TicketRepositoryImpl implements TicketRepository {
         return revenueMap;
     }
 
+
     @Override
     public Map<Integer, StatisticsDTO> calculateDailyRevenue(int year, int month, int day, Long companyId) {
         Session session = localSessionFactoryBean.getObject().getCurrentSession();
-        String hql = "SELECT DAY(t.paidAt), SUM(t.seatPrice), SUM(t.cargo.cargoPrice) " +
+        String hql = "SELECT DAY(t.paidAt), SUM(t.seatPrice), COALESCE(SUM(c.cargoPrice), 0) " +
                 "FROM Ticket t " +
+                "LEFT JOIN t.cargo c " +
                 "JOIN t.trip tr " +
                 "JOIN tr.route r " +
-                "JOIN r.company c " +
-                "WHERE YEAR(t.paidAt) = :year AND MONTH(t.paidAt) = :month AND DAY(t.paidAt) = :day AND c.id = :companyId " +
+                "JOIN r.company comp " +
+                "WHERE YEAR(t.paidAt) = :year AND MONTH(t.paidAt) = :month AND DAY(t.paidAt) = :day AND comp.id = :companyId " +
                 "GROUP BY DAY(t.paidAt) " +
                 "ORDER BY DAY(t.paidAt)";
         Query<Object[]> query = session.createQuery(hql, Object[].class);
@@ -123,4 +128,5 @@ public class TicketRepositoryImpl implements TicketRepository {
         }
         return revenueMap;
     }
+
 }
