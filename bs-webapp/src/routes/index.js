@@ -1,20 +1,21 @@
 import Cart from '../components/Cart';
 import {Routes, Route, BrowserRouter} from 'react-router-dom';
 import Grid from '../components/Grid';
-import RouteInfor from '../components/RouteInfor';
+import RouteInfo from '../pages/RouteInfo';
 import AuthenticatedRoute from './AuthenticatedRoute';
-import Checkout from '../components/Checkout';
+import Checkout from '../pages/Checkout';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import CreateCompany from '../pages/CreateCompany';
-import ManageCompany from '../pages/Manage';
-import CreateRoute from '../pages/Route';
-import CreateTrip from '../pages/Trip';
+import ManageCompany from '../pages/ManageCompany';
+import CreateRoute from '../pages/CreateRoute';
+import CreateTrip from '../pages/CreateTrip';
 import Home from '../pages/Home';
 import {endpoints} from '../config/apis';
 import PaymentResult from '../pages/PaymentResult';
 import ManagerRoute from './ManagerRoute';
-import Profile from '../components/Profile';
+import Profile from '../pages/Profile';
+import CompanyInfo from '../pages/CompanyInfo';
 const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -39,7 +40,8 @@ const AppRouter = () => {
               </>
             }
           />
-          <Route path="/route/:id" element={<RouteInfor />} />
+          <Route path="/route/:id" element={<RouteInfo />} />
+          <Route path="/company/:id" element={<CompanyInfo />} />
           <Route
             path="/checkout"
             element={

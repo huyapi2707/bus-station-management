@@ -124,7 +124,7 @@ const Profile = () => {
             />
           </div>
           <div className="row">
-            <div className="col-md-2">
+            <div>
               <button
                 disabled={!isChanged}
                 onClick={handleUpdateUserInfo}
@@ -133,7 +133,7 @@ const Profile = () => {
                 Lưu
               </button>
             </div>
-            <div className="col-md-2">
+            <div>
               <button
                 disabled={!isChanged}
                 onClick={resetUserInfo}
