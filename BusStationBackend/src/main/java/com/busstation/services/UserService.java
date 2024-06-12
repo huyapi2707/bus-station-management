@@ -1,5 +1,6 @@
 package com.busstation.services;
 
+import com.busstation.dtos.TicketDTO;
 import com.busstation.dtos.UserDTO;
 import com.busstation.pojo.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,6 +20,8 @@ public interface UserService extends UserDetailsService {
     List<UserDTO> findActiveUsersByRoleId(Long roleId);
     Optional<User> getUserById(Long id);
     void changeRole(Long userId, Long roleId);
+
+
 
     UserDTO updateUser(Long id, UserDTO payload, MultipartFile file) throws IllegalAccessException, IOException;
 }

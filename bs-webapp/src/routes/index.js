@@ -16,6 +16,7 @@ import PaymentResult from '../pages/PaymentResult';
 import ManagerRoute from './ManagerRoute';
 import Profile from '../pages/Profile';
 import CompanyInfo from '../pages/CompanyInfo';
+import CustomerTicket from '../pages/CustomerTicket';
 const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -47,6 +48,14 @@ const AppRouter = () => {
             element={
               <AuthenticatedRoute>
                 <Checkout />
+              </AuthenticatedRoute>
+            }
+          />
+          <Route
+            path="/ticket"
+            element={
+              <AuthenticatedRoute>
+                <CustomerTicket />
               </AuthenticatedRoute>
             }
           />

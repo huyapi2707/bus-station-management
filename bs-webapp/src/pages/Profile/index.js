@@ -63,7 +63,7 @@ const Profile = () => {
   const avatar = useRef(null);
   const [currentAvart, setCurrentAvatar] = useState(user['avatar']);
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 shadow p-3 mb-5 bg-body rounded">
       <div className="row mt-2">
         <h2>Thông tin của bạn</h2>
       </div>

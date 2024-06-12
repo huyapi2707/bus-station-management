@@ -36,7 +36,7 @@ function App() {
       }
     } catch (ex) {
       localStorage.removeItem('accessToken');
-      console.log(ex);
+      console.error(ex);
     } finally {
       setLoading('none');
     }

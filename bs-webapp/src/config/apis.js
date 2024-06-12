@@ -16,6 +16,7 @@ const endpoints = {
   list_station: '/api/v1/transportation_company/list_station',
   available_cars: '/api/v1/cars/available-cars',
   creat_trip: '/api/v1/trip/add',
+  self_ticket: '/api/v1/users/self/tickets',
   statistics_ticket_month: (year) => `/api/v1/statistics/month/${year}`,
   statistics_ticket_quarterly: (year) => `/api/v1/statistics/quarterly/${year}`,
   statistics_ticket_day: (year, month, day) =>
@@ -30,6 +31,7 @@ const endpoints = {
   user: (id) => `/api/v1/users/${id}`,
   get_user_by_role: (id) => `/admin/users/role/${id}`,
   companyInfo: (id) => `/api/v1/transportation_company/${id}`,
+  ticket: (id) => `/api/v1/ticket/${id}`,
 };
 const apis = (accessToken) => {
   if (accessToken) {

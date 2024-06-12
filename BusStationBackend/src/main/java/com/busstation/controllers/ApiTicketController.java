@@ -29,4 +29,10 @@ public class ApiTicketController {
         return ResponseEntity.ok(ticketService.checkout(cart, paymentMethodId, ip));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> delete(@PathVariable Long id) {
+        ticketService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

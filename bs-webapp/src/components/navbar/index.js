@@ -102,7 +102,9 @@ const Navbar = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link className="nav-link">Vé xe đã mua</Link>
+                    <Link to={'/ticket'} className="nav-link">
+                      Vé xe đã mua
+                    </Link>
                   </li>
                   {user.role === 'COMPANY_MANAGER' && (
                     <li>
