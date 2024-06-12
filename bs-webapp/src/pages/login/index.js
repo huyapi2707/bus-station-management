@@ -18,7 +18,7 @@ const Login = () => {
 
   const accessToken = localStorage.getItem('accessToken');
   if (accessToken) {
-    return <Navigate to={from} />;
+    return <Navigate to={from} replace={true} />;
   }
 
   const validate = () => {
@@ -70,7 +70,6 @@ const Login = () => {
       setUser(data['userDetails']);
       navigator(from);
     } catch (error) {
-      console.info(error);
     } finally {
       setLoading('none');
     }

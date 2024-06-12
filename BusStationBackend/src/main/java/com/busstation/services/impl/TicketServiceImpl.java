@@ -264,4 +264,15 @@ public class TicketServiceImpl implements TicketService {
     public Map<Integer, StatisticsDTO> getDailyRevenue(int year, int month, int day, Long companyId) {
         return ticketRepository.calculateDailyRevenue(year, month, day, companyId);
     }
+
+    @Override
+    public List<TicketDTO> getTicketByUserId(Long userId) {
+        List<Ticket> tickets = ticketRepository.findTicketsByUserId(userId);
+        return tickets.stream().map(ticketDTOMapper::apply).collect(Collectors.toList());
+    }
+
+    @Override
+    public void delete(Long id) {
+        ticketRepository.delete(id);
+    }
 }

@@ -67,7 +67,7 @@ const Checkout = () => {
       if (paymentUrl === null) {
         toast.success('Đơn hàng của bạn đã được xử lý thành công', {
           position: 'top-center',
-          autoClose: 500,
+          autoClose: 5000,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,

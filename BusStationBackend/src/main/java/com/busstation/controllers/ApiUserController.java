@@ -1,6 +1,9 @@
 package com.busstation.controllers;
 
+import com.busstation.dtos.TicketDTO;
 import com.busstation.dtos.UserDTO;
+import com.busstation.pojo.User;
+import com.busstation.services.TicketService;
 import com.busstation.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jdk.jfr.ContentType;
@@ -8,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartResolver;
@@ -25,6 +29,8 @@ public class ApiUserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private TicketService ticketService;
 
 
     @PatchMapping(path = "/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
@@ -51,6 +57,12 @@ public class ApiUserController {
     public ResponseEntity<List<UserDTO>> findActiveUsersByRoleId(@PathVariable Long id) {
         List<UserDTO> users = userService.findActiveUsersByRoleId(id);
         return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @GetMapping("/self/tickets")
+    public ResponseEntity<List<TicketDTO>> retrieveTickets() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok(ticketService.getTicketByUserId(user.getId()));
     }
 }
 

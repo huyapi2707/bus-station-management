@@ -1,8 +1,11 @@
 package com.busstation.services.impl;
 
+import com.busstation.dtos.TicketDTO;
 import com.busstation.dtos.UserDTO;
+import com.busstation.mappers.TicketDTOMapper;
 import com.busstation.mappers.UserDTOMapper;
 import com.busstation.pojo.Role;
+import com.busstation.pojo.Ticket;
 import com.busstation.pojo.User;
 import com.busstation.repositories.RoleRepository;
 import com.busstation.repositories.UserRepository;
@@ -37,6 +40,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDTOMapper userDTOMapper;
+
+    @Autowired
+    private TicketDTOMapper ticketDTOMapper;
 
 
    @Autowired
@@ -100,6 +106,7 @@ public class UserServiceImpl implements UserService {
         user.setRole(role);
         userRepository.changeRole(user);
     }
+
 
     @Override
     public UserDTO updateUser(Long id, UserDTO payload, MultipartFile avatar) throws IllegalAccessException, IOException {
