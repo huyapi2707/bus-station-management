@@ -1,14 +1,20 @@
-import {Link, useParams} from 'react-router-dom';
+import {Link, useParams, useLocation} from 'react-router-dom';
 import './styles.css';
-import {useState, useContext, useEffect} from 'react';
-import {LoadingContext} from '../../config/context';
+import {useState, useContext, useEffect, useRef} from 'react';
+import {AuthenticationContext, LoadingContext} from '../../config/context';
 import {apis, endpoints} from '../../config/apis';
 import moment from 'moment';
+import Chat from '../../components/Chat';
+import databaseRef from '../../config/firebase';
 const CompanyInfo = () => {
+  let {pathname} = useLocation();
+  const {user} = useContext(AuthenticationContext);
   const {id} = useParams();
   const {setLoading} = useContext(LoadingContext);
   const [company, setCompany] = useState(null);
   const [routes, setRoutes] = useState([]);
+  const [startChat, setStartChat] = useState(false);
+  const conversationKey = useRef(null);
   const fetchComanyInfo = async () => {
     try {
       setLoading('flex');
@@ -33,6 +39,37 @@ const CompanyInfo = () => {
       setLoading('none');
     }
   };
+  const startConversation = async () => {
+    let key = null;
+    await databaseRef
+      .child('/users_keys/' + user['id'])
+      .once('value')
+      .then((snapshot) => {
+        snapshot.forEach((child) => {
+          const data = child.val();
+          if (data['opponentId'] === company['id']) {
+            key = child.key;
+          }
+        });
+        if (!key) {
+          key = databaseRef.child('/users_keys/' + user['id']).push().key;
+          databaseRef.child('/users_keys/' + user['id'] + `/${key}`).set({
+            opponentId: company['id'],
+            unread: 0,
+          });
+          databaseRef
+            .child('/companies_keys/' + company['id'] + `/${key}`)
+            .set({
+              opponentId: user['id'],
+              unread: 0,
+            });
+        }
+        conversationKey.current = key;
+      });
+
+    setStartChat(true);
+  };
+
   useEffect(() => {
     fetchRoutes();
     fetchComanyInfo();
@@ -82,6 +119,21 @@ const CompanyInfo = () => {
                     Điện thoại: <span>{company['phone']}</span>
                   </p>
                 </li>
+                <li>
+                  {user ? (
+                    <button
+                      disabled={startChat}
+                      className="btn btn-primary"
+                      onClick={startConversation}
+                    >
+                      Tư vấn
+                    </button>
+                  ) : (
+                    <Link to={'/login'} state={{from: pathname}}>
+                      Đăng nhập chat với nhân viên nhà xe
+                    </Link>
+                  )}
+                </li>
               </ul>
             </div>
             <div className="row">
@@ -101,6 +153,21 @@ const CompanyInfo = () => {
           </div>
         </div>
       )}
+      <div className="row">
+        <div className="col-md-4">
+          {startChat && (
+            <Chat
+              key={conversationKey.current}
+              conversationKey={conversationKey.current}
+              senderId={user['id']}
+              receiverId={company['id']}
+              avatar={company['avatar']}
+              subtitle={`Trò chuyện với nhân viên của ${company['name']}`}
+              isCompany={false}
+            />
+          )}
+        </div>
+      </div>
     </div>
   );
 };
