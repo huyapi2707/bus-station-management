@@ -97,8 +97,8 @@ const CreateRoute = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="route-form">
-        <div className="form-group">
+      <form onSubmit={handleSubmit} className="custom-route-form">
+        <div className="custom-form-group">
           <label>Nơi đi:</label>
           <select
             name="fromStation"
@@ -114,7 +114,7 @@ const CreateRoute = () => {
               ))}
           </select>
         </div>
-        <div className="form-group">
+        <div className="custom-form-group">
           <label>Nơi đến:</label>
           <select
             name="toStation"
@@ -130,7 +130,7 @@ const CreateRoute = () => {
               ))}
           </select>
         </div>
-        <div className="form-group">
+        <div className="custom-form-group">
           <label>Tên tuyến:</label>
           <input
             type="text"
@@ -139,7 +139,7 @@ const CreateRoute = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="form-group">
+        <div className="custom-form-group">
           <label>Giá ghế:</label>
           <input
             type="number"
@@ -148,7 +148,7 @@ const CreateRoute = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="form-group">
+        <div className="custom-form-group">
           <label>Giá vận chuyển hàng:</label>
           <input
             type="number"
@@ -157,13 +157,13 @@ const CreateRoute = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="button-group">
-          <button type="submit" className="btn btn-primary">
+        <div className="custom-button-group">
+          <button type="submit" className="custom-btn custom-btn-primary">
             Tạo tuyến
           </button>
           <button
             type="button"
-            className="btn btn-secondary button-secondary"
+            className="custom-btn custom-btn-secondary"
             onClick={() => navigate('/manage-company')}
           >
             Hủy

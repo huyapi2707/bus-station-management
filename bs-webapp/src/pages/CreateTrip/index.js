@@ -109,8 +109,8 @@ const CreateTrip = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="trip-form">
-        <div className="form-group">
+      <form onSubmit={handleSubmit} className="custom-trip-form">
+        <div className="custom-form-group">
           <label>Route:</label>
           <select
             name="routeId"
@@ -126,7 +126,7 @@ const CreateTrip = () => {
             ))}
           </select>
         </div>
-        <div className="form-group">
+        <div className="custom-form-group">
           <label>Depart At:</label>
           <input
             type="datetime-local"
@@ -135,7 +135,7 @@ const CreateTrip = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="form-group">
+        <div className="custom-form-group">
           <label>Car:</label>
           <select name="carId" value={formData.carId} onChange={handleChange}>
             <option value="">Chọn xe</option>
@@ -147,13 +147,13 @@ const CreateTrip = () => {
             ))}
           </select>
         </div>
-        <div className="button-group">
-          <button type="submit" className="btn btn-primary">
+        <div className="custom-button-group">
+          <button type="submit" className="custom-btn custom-btn-primary">
             Xác nhận
           </button>
           <button
             type="button"
-            className="btn btn-secondary"
+            className="custom-btn custom-btn-secondary"
             onClick={() => navigate(-1)}
           >
             Hủy
@@ -161,7 +161,7 @@ const CreateTrip = () => {
         </div>
       </form>
     </div>
-  );
+);
 };
 
 export default CreateTrip;

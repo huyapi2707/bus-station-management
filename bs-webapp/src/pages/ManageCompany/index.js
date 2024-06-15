@@ -176,27 +176,28 @@ const ManageCompany = () => {
 
   return (
     <>
-      <div className="button-container">
+      <div className="custom-button-container">
         <Link to="/create-route">
-          <button>Đăng ký tuyến</button>
+          <button className="custom-button">Đăng ký tuyến</button>
         </Link>
         <Link to="/register-trip">
-          <button>Đăng kí chuyến</button>
+          <button className="custom-button">Đăng kí chuyến</button>
         </Link>
-        <button onClick={showConfirmationDialog}>Đăng kí chuyển hàng</button>
+        <button className="custom-button" onClick={showConfirmationDialog}>Đăng kí chuyển hàng</button>
       </div>
       {showConfirmation && (
-        <div className="confirmation-overlay">
-          <div className="confirmation-dialog">
+        <div className="custom-confirmation-overlay">
+          <div className="custom-confirmation-dialog">
             <p>Bạn chắc chắn muốn đăng kí vận chuyển hàng hóa không?</p>
-            <button onClick={handleRegisterCargo}>OK</button>
-            <button onClick={hideConfirmationDialog}>Cancel</button>
+            <button className="custom-button" onClick={handleRegisterCargo}>OK</button>
+            <button className="custom-button" onClick={hideConfirmationDialog}>Cancel</button>
           </div>
         </div>
       )}
-      <div className="stats-chart-container">
-        <div className="stats-button-container">
+      <div className="custom-stats-chart-container">
+        <div className="custom-stats-button-container">
           <button
+            className="custom-button"
             onClick={() => {
               setSelectedOption('month');
               handleFetchStats('month');
@@ -205,6 +206,7 @@ const ManageCompany = () => {
             Thống kê theo tháng
           </button>
           <button
+            className="custom-button"
             onClick={() => {
               setSelectedOption('quarter');
               handleFetchStats('quarter');
@@ -213,6 +215,7 @@ const ManageCompany = () => {
             Thống kê theo quý
           </button>
           <button
+            className="custom-button"
             onClick={() => {
               setSelectedOption('day');
               handleFetchStats('day');
@@ -224,13 +227,14 @@ const ManageCompany = () => {
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="date-input"
+            className="custom-date-input"
           />
         </div>
-        <div className="chart-container">{renderChart()}</div>
+        <div className="custom-chart-container">{renderChart()}</div>
       </div>
     </>
   );
+
 };
 
 export default ManageCompany;

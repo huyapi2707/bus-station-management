@@ -1,4 +1,4 @@
-/* .route-form, .trip-form {
+.custom-route-form, .custom-trip-form {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
@@ -7,25 +7,25 @@
     background-color: #f9f9f9;
 }
 
-.form-group {
+.custom-form-group {
     margin-bottom: 15px;
 }
 
-.form-group label {
+.custom-form-group label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
 }
 
-.form-group select,
-.form-group input {
+.custom-form-group select,
+.custom-form-group input {
     width: 100%;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-button {
+.custom-btn {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -33,15 +33,27 @@ button {
     color: white;
     font-size: 16px;
     cursor: pointer;
+    flex: 1;
+    margin: 0 5px;
+    text-align: center;
 }
 
-button:hover {
+.custom-btn:hover {
     background-color: #0056b3;
 }
 
-.trip-form .button-group {
+.custom-trip-form .custom-button-group {
     display: flex;
     justify-content: center;
     gap: 10px;
     margin-top: 10px;
-} */
+    width: 100%;
+}
+
+.custom-btn-secondary {
+    background-color: #6c757d;
+}
+
+.custom-btn-secondary:hover {
+    background-color: #5a6268;
+}
