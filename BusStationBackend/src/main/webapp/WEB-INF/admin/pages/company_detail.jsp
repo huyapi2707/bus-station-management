@@ -42,7 +42,7 @@
             background-color: #f44336;
         }
         #avatarPreview {
-            max-width: 150px; /* Adjust the size as needed */
+            max-width: 150px;
             height: auto;
             display: none;
             margin-top: 10px;
@@ -89,7 +89,7 @@
     $(document).ready(function() {
         const companyId = new URLSearchParams(window.location.search).get('id');
 
-        // Load company data
+
         axios.get('http://localhost:8080/busstation/api/v1/transportation_company/get/' + companyId)
             .then(function(response) {
                 const company = response.data;
