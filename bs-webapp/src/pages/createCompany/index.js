@@ -1,4 +1,3 @@
-
 import React, { useState, useContext } from 'react';
 import './styles.css';
 import { apis, endpoints } from '../../config/apis';
@@ -44,7 +43,7 @@ const CreateCompany = () => {
   };
 
   const handleSubmit = async () => {
-    setLoading('flex');
+    setLoading(true);
     const data = new FormData();
     data.append('company', new Blob([JSON.stringify(formData)], { type: 'application/json' }));
     if (document.getElementById('avatar').files[0]) {
@@ -61,45 +60,47 @@ const CreateCompany = () => {
       console.error("Failed to create new company:", error);
       alert("Failed to create new company");
     } finally {
-      setLoading('none');
+      setLoading(false);
     }
   };
 
   return (
     <>
-    <Navbar/>
-    <div className="form-container">
-      <h2>Đăng kí công ty vận tải mới</h2>
-      {!isSubmitted ? (
-        <form id="newCompanyForm" encType="multipart/form-data">
-          <label htmlFor="name">Name:</label>
-          <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />
+      <Navbar/>
+      <div className="custom-form-container">
+        <h2>Đăng kí công ty vận tải mới</h2>
+        {!isSubmitted ? (
+          <form id="newCompanyForm" encType="multipart/form-data">
+            <label htmlFor="name">Name:</label>
+            <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />
 
-          <label htmlFor="phone">Phone:</label>
-          <input type="text" id="phone" name="phone" value={formData.phone} onChange={handleChange} required />
+            <label htmlFor="phone">Phone:</label>
+            <input type="text" id="phone" name="phone" value={formData.phone} onChange={handleChange} required />
 
-          <label htmlFor="email">Email:</label>
-          <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
+            <label htmlFor="email">Email:</label>
+            <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
 
-          <label htmlFor="isCargoTransport">Vận chuyển hàng hóa:</label>
-          <input type="checkbox" id="isCargoTransport" name="isCargoTransport" checked={formData.isCargoTransport} onChange={handleChange} />
+            <label htmlFor="isCargoTransport">Vận chuyển hàng hóa:</label>
+            <input type="checkbox" id="isCargoTransport" name="isCargoTransport" checked={formData.isCargoTransport} onChange={handleChange} />
 
-          <label htmlFor="avatar">Avatar:</label>
-          <input type="file" id="avatar" name="avatar" accept="image/*" onChange={handleAvatarChange} />
-          {avatarPreview && <img id="avatarPreview" src={avatarPreview} alt="Avatar Preview" style={{ maxWidth: '150px', marginTop: '10px' }} />}
+            <label htmlFor="avatar">Avatar:</label>
+            <input type="file" id="avatar" name="avatar" accept="image/*" onChange={handleAvatarChange} />
+            {avatarPreview && <img id="avatarPreview" src={avatarPreview} alt="Avatar Preview" style={{ maxWidth: '150px', marginTop: '10px' }} />}
 
-          <button type="button" onClick={handleSubmit}>Xác nhận</button>
-          <button type="button" className="cancel" onClick={() => navigate('/')}>Hủy</button>
-        </form>
-      ) : (
-        <div className="submission-message">
-          <p>Your registration has been submitted. Please wait for the administrator to approve it.</p>
-          <button type="button" className="btn btn-primary" onClick={() => navigate('/')}>
-            Go back
-          </button>
-        </div>
-      )}
-    </div>
+            <div className="custom-button-group">
+              <button type="button" className="custom-btn" onClick={handleSubmit}>Xác nhận</button>
+              <button type="button" className="custom-btn cancel" onClick={() => navigate('/')}>Hủy</button>
+            </div>
+          </form>
+        ) : (
+          <div className="submission-message">
+            <p>Your registration has been submitted. Please wait for the administrator to approve it.</p>
+            <button type="button" className="custom-btn-primary" onClick={() => navigate('/')}>
+              Go back
+            </button>
+          </div>
+        )}
+      </div>
     </>
   );
 };
