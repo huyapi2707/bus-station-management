@@ -2,7 +2,7 @@ import {Link} from 'react-router-dom';
 
 const CompanyItem = ({value}) => {
   return (
-    <Link className="nav-link grid-item border">
+    <Link to={`/company/${value['id']}`} className="nav-link grid-item border">
       <div className="image-container">
         <img src={value['avatar']}></img>
       </div>

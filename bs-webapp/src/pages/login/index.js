@@ -4,7 +4,7 @@ import {FaGoogle} from 'react-icons/fa';
 import {LoadingContext, AuthenticationContext} from '../../config/context';
 import {apis, endpoints} from '../../config/apis';
 import {toast} from 'react-toastify';
-import {Link, Navigate, useLocation, useNavigate} from 'react-router-dom';
+import {Link, useLocation, useNavigate} from 'react-router-dom';
 import * as validator from '../../config/validator';
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -14,12 +14,6 @@ const Login = () => {
   const location = useLocation();
   const {from} = location['state'] || {from: '/'};
   const navigator = useNavigate();
-
-  const accessToken = localStorage.getItem('accessToken');
-  if (accessToken) {
-    return <Navigate to={from} />;
-  }
-
   const validate = () => {
     const msgs = [];
     msgs.push(validator.validateUsername(username));
@@ -52,7 +46,7 @@ const Login = () => {
         })
         .catch((error) => {
           if (error.response.status === 400) {
-            toast.error(error.response.data, {
+            toast.error(error.response.data.errors[0], {
               position: 'top-center',
               autoClose: 4000,
               closeOnClick: true,
@@ -69,7 +63,6 @@ const Login = () => {
       setUser(data['userDetails']);
       navigator(from);
     } catch (error) {
-      console.info(error);
     } finally {
       setLoading('none');
     }

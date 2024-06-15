@@ -1,21 +1,21 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/database';
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyDSp1Q-66tYWeg1q1UJYcIKYr7N6a7Sh4c",
-  authDomain: "busstationmanagement-1f2e7.firebaseapp.com",
-  projectId: "busstationmanagement-1f2e7",
-  storageBucket: "busstationmanagement-1f2e7.appspot.com",
-  messagingSenderId: "162695041887",
-  appId: "1:162695041887:web:2698c966fbf6237e6e1cea",
-  measurementId: "G-YMTK9ZR2KV"
+  apiKey: 'AIzaSyDA19hOUUIdUsOMiNbb_W41v9yKaqR1fek',
+  authDomain: 'lms-chats.firebaseapp.com',
+  databaseURL:
+    'https://lms-chats-default-rtdb.asia-southeast1.firebasedatabase.app',
+  projectId: 'lms-chats',
+  storageBucket: 'lms-chats.appspot.com',
+  messagingSenderId: '74220990475',
+  appId: '1:74220990475:web:a2e33d60cbba6a85e8570e',
+  measurementId: 'G-79FJV88W0D',
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+firebase.initializeApp(firebaseConfig);
+
+const database = firebase.database();
+const databaseRef = database.ref('/busStation');
+
+export default databaseRef;

@@ -1,17 +1,13 @@
 import './App.css';
-
 import {
   LoadingContext,
   AuthenticationContext,
   cartReducer,
   CartContext,
 } from './config/context';
-// <<<<<<< HEAD
+
 import {useEffect, useReducer, useRef, useState} from 'react';
-import Loading from './components/loading';
-// =======
-// import {useEffect, useReducer, useState} from 'react';
-// import Loading from './components/Loading';
+import Loading from './components/Loading';
 
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -39,7 +35,7 @@ function App() {
       }
     } catch (ex) {
       localStorage.removeItem('accessToken');
-      console.log(ex);
+      console.error(ex);
     } finally {
       setLoading('none');
     }

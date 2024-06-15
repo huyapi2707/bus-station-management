@@ -9,14 +9,19 @@ const AuthenticatedRoute = ({children}) => {
 
   let {pathname} = useLocation();
   const accessToken = localStorage.getItem('accessToken');
+
   if (!user) {
     if (accessToken) {
       return <LoadingPrototype />;
     } else {
-      return <Navigate to={{pathname: '/login'}} state={{from: pathname}} />;
+      return <Navigate to={'/login'} state={{from: pathname}} />;
     }
   } else {
-    return children;
+    if (user['role'] === 'COMPANY_MANAGER') {
+      return children;
+    } else {
+      return <Navigate to={'/create-company'} />;
+    }
   }
 };
 

@@ -12,8 +12,7 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-import static org.hibernate.cfg.AvailableSettings.DIALECT;
-import static org.hibernate.cfg.AvailableSettings.SHOW_SQL;
+import static org.hibernate.cfg.AvailableSettings.*;
 
 @Configuration
 @PropertySource("classpath:databases.properties")
@@ -54,6 +53,7 @@ public class HibernateConfiguration {
         Properties properties = new Properties();
         properties.put(DIALECT,environment.getProperty("hibernate.dialect") );
         properties.put(SHOW_SQL, environment.getProperty("hibernate.showSql"));
+        
         return properties;
     }
 

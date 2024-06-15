@@ -16,6 +16,11 @@ public class TicketDTO {
 
     private Seat seat;
 
+    private Timestamp paidAt;
+    private Double seatPrice;
+
+    private Double cargoPrice;
+
     private TripDTO tripInfo;
     private PaymentMethod paymentMethod;
 

@@ -16,17 +16,22 @@ const endpoints = {
   list_station: '/api/v1/transportation_company/list_station',
   available_cars: '/api/v1/cars/available-cars',
   creat_trip: '/api/v1/trip/add',
+  self_ticket: '/api/v1/users/self/tickets',
   statistics_ticket_month: (year) => `/api/v1/statistics/month/${year}`,
   statistics_ticket_quarterly: (year) => `/api/v1/statistics/quarterly/${year}`,
-  statistics_ticket_day: (year, month, day) => `/api/v1/statistics/day/${year}/${month}/${day}`,
+  statistics_ticket_day: (year, month, day) =>
+    `/api/v1/statistics/day/${year}/${month}/${day}`,
   register_cargo: (id) => `api/v1/transportation_company/cargo/${id}`,
-  get_route_by_companyid: (id) => `api/v1/route/company/${id}`,
-  get_company_managerid:(id) => `/api/v1/transportation_company/manager/${id}`,
+  route_info: (id) => `/api/v1/route/${id}`,
+  get_route_by_companyid: (id) => `/api/v1/route/company/${id}`,
+  get_company_managerid: (id) => `/api/v1/transportation_company/manager/${id}`,
   route_trip_list: (id) => `/api/v1/route/${id}/trip`,
   trip_seat_details: (id) => `/api/v1/trip/${id}/seat-details`,
   checkout: (paymentMethodId) => `/api/v1/ticket/checkout/${paymentMethodId}`,
   user: (id) => `/api/v1/users/${id}`,
   get_user_by_role: (id) => `/admin/users/role/${id}`,
+  companyInfo: (id) => `/api/v1/transportation_company/${id}`,
+  ticket: (id) => `/api/v1/ticket/${id}`,
 };
 const apis = (accessToken) => {
   if (accessToken) {

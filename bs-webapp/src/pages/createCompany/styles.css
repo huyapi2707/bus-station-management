@@ -33,32 +33,27 @@
 }
 
 .custom-btn {
-  display: inline-block;
   padding: 10px 20px;
-  margin-right: 10px;
   border: none;
   border-radius: 5px;
   background-color: #4CAF50;
   color: white;
   cursor: pointer;
-}
-
-.custom-btn:hover {
-  background-color: #45a049;
+  flex: 1; 
+  margin: 0 5px;
+  text-align: center;
 }
 
 .custom-btn.cancel {
   background-color: #f44336;
 }
 
-.custom-btn.cancel:hover {
-  background-color: #e41e20;
+.custom-btn:hover {
+  background-color: #45a049;
 }
 
-.custom-button-group {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
+.custom-btn.cancel:hover {
+  background-color: #e31b0c;
 }
 
 #avatarPreview {
@@ -68,9 +63,17 @@
   margin-top: 10px;
 }
 
-.submission-message {
+.custom-submission-message {
   text-align: center;
   font-size: 1.2em;
   color: #4CAF50;
   margin-top: 20px;
+}
+
+.custom-button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+  width: 100%;
 }

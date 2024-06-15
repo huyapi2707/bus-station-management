@@ -3,6 +3,7 @@ package com.busstation.repositories.impl;
 import com.busstation.dtos.StatisticsDTO;
 import com.busstation.pojo.OnlinePaymentResult;
 import com.busstation.pojo.Ticket;
+import com.busstation.pojo.User;
 import com.busstation.repositories.TicketRepository;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -11,6 +12,7 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -127,6 +129,28 @@ public class TicketRepositoryImpl implements TicketRepository {
             revenueMap.put(dayOfMonth, statisticsDTO);
         }
         return revenueMap;
+    }
+
+    @Override
+    public List<Ticket> findTicketsByUserId(Long userId) {
+        Session session = localSessionFactoryBean.getObject().getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Ticket> criteriaQuery = builder.createQuery(Ticket.class);
+        Root<Ticket> ticketRoot = criteriaQuery.from(Ticket.class);
+        Predicate userIdPredicate = builder.equal(ticketRoot.get("customer"), userId);
+        criteriaQuery.select(ticketRoot);
+        criteriaQuery.where(userIdPredicate);
+        return session.createQuery(criteriaQuery).getResultList();
+    }
+
+    @Override
+    public void delete(Long id) {
+        Session session = localSessionFactoryBean.getObject().getCurrentSession();
+        String hql = "DELETE Ticket t where t.id =:id";
+        Query query = session.createQuery(hql);
+        query.setParameter("id", id);
+        query.executeUpdate();
+
     }
 
 }

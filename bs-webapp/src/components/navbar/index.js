@@ -60,7 +60,12 @@ const Navbar = () => {
                 {companies.map((c) => {
                   return (
                     <li key={c.id} className="nav-item">
-                      <Link className="nav-link fs-6">{c.name}</Link>
+                      <Link
+                        to={`/company/${c['id']}`}
+                        className="nav-link fs-6"
+                      >
+                        {c.name}
+                      </Link>
                     </li>
                   );
                 })}
@@ -97,7 +102,9 @@ const Navbar = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link className="nav-link">Vé xe đã mua</Link>
+                    <Link to={'/ticket'} className="nav-link">
+                      Vé xe đã mua
+                    </Link>
                   </li>
                   {user.role === 'COMPANY_MANAGER' && (
                     <li>

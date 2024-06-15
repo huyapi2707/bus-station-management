@@ -28,4 +28,8 @@ public interface TicketService {
     Map<Integer, StatisticsDTO> getQuarterlyRevenue(int year, Long companyId);
 
     Map<Integer, StatisticsDTO> getDailyRevenue(int year, int month, int day, Long companyId);
+
+    List<TicketDTO> getTicketByUserId(Long userId);
+
+    void delete(Long id);
 }
