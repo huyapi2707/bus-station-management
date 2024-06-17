@@ -20,8 +20,5 @@ public interface UserService extends UserDetailsService {
     List<UserDTO> findActiveUsersByRoleId(Long roleId);
     Optional<User> getUserById(Long id);
     void changeRole(Long userId, Long roleId);
-
-
-
     UserDTO updateUser(Long id, UserDTO payload, MultipartFile file) throws IllegalAccessException, IOException;
 }
