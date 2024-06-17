@@ -8,9 +8,11 @@ import {
 } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
 import './styles.css';
-import {useEffect, useRef, useState} from 'react';
+import { useEffect, useRef, useState } from 'react';
 import databaseRef from '../../config/firebase';
 import moment from 'moment';
+import CloseButton from './CloseButton';
+
 const Chat = ({
   subtitle,
   avatar,
@@ -18,19 +20,21 @@ const Chat = ({
   receiverId,
   conversationKey,
   isCompany,
+  onCloseChat,
 }) => {
-  const messageRef = useRef(
-    databaseRef.child(`/chats/${conversationKey}/messages`),
-  );
+  const messageRef = useRef(databaseRef.child(`/chats/${conversationKey}/messages`));
   const badgeRef = useRef(null);
   const receiverBadgeRef = useRef(null);
   const [initing, setIniting] = useState(true);
+
   const handleSendMessage = (newMessage) => {
-    messageRef.current.push({
+    const timestamp = new Date().getTime();
+    const newMessageData = {
       message: newMessage,
       senderId: senderId,
-      timestamp: new Date().getTime(),
-    });
+      timestamp: timestamp,
+    };
+    messageRef.current.push(newMessageData);
 
     badgeRef.current.set(0);
 
@@ -40,15 +44,18 @@ const Chat = ({
     });
 
     renderCustomComponent(SendTime, {
-      timestamp: new Date().getTime(),
+      timestamp: timestamp,
       isSender: true,
     });
   };
 
   const fetchMessages = () => {
     messageRef.current.once('value', (snapshot) => {
+      const fetchedMessages = [];
       snapshot.forEach((child) => {
         const data = child.val();
+        fetchedMessages.push(data);
+
         if (data['senderId'] === receiverId) {
           addResponseMessage(data['message']);
           renderCustomComponent(SendTime, {
@@ -64,12 +71,12 @@ const Chat = ({
           });
         }
       });
+      setIniting(false);
     });
   };
 
   useEffect(() => {
-    // listen messages
-    messageRef.current.on('child_added', (snapshot) => {
+    const handleChildAdded = (snapshot) => {
       const data = snapshot.val();
 
       if (data['senderId'] === receiverId && !initing) {
@@ -79,9 +86,9 @@ const Chat = ({
           isSender: false,
         });
       }
-    });
+    };
 
-    // listen to badge
+    messageRef.current.on('child_added', handleChildAdded);
 
     if (isCompany) {
       badgeRef.current = databaseRef
@@ -91,7 +98,7 @@ const Chat = ({
         .child('unread');
       receiverBadgeRef.current = databaseRef
         .child('/users_keys/')
-        .child(senderId)
+        .child(receiverId)
         .child(conversationKey)
         .child('unread');
     } else {
@@ -102,10 +109,12 @@ const Chat = ({
         .child('unread');
       receiverBadgeRef.current = databaseRef
         .child('/companies_keys/')
-        .child(senderId)
+        .child(receiverId)
         .child(conversationKey)
         .child('unread');
     }
+
+    badgeRef.current.set(0);
 
     badgeRef.current.on('value', (snapshot) => {
       const data = snapshot.val();
@@ -114,32 +123,36 @@ const Chat = ({
       }
     });
 
-    // init
     fetchMessages();
     setIniting(false);
+
+    renderCustomComponent(CloseButton, { onClose: onCloseChat });
 
     return () => {
       deleteMessages();
       badgeRef.current.off('value');
-      messageRef.current.off('child_added');
+      messageRef.current.off('child_added', handleChildAdded);
     };
-  }, []);
+  }, [receiverId, senderId, conversationKey, isCompany, onCloseChat, initing]);
 
   return (
-    <Widget
-      chatId={conversationKey}
-      emojis={true}
-      titleAvatar={avatar}
-      title="Tư vấn trực tuyến"
-      subtitle={subtitle}
-      handleNewUserMessage={handleSendMessage}
-      senderPlaceHolder={'Nhập tin nhắn của bạn'}
-      showTimeStamp={false}
-    />
+    <div className="chat-widget-container">
+      <CloseButton onClose={onCloseChat} />
+      <Widget
+        chatId={conversationKey}
+        emojis={true}
+        titleAvatar={avatar}
+        title="Tư vấn trực tuyến"
+        subtitle={subtitle}
+        handleNewUserMessage={handleSendMessage}
+        senderPlaceHolder={'Nhập tin nhắn của bạn'}
+        showTimeStamp={false}
+      />
+    </div>
   );
 };
 
-const SendTime = ({timestamp, isSender}) => {
+const SendTime = ({ timestamp, isSender }) => {
   return (
     <div
       className={[

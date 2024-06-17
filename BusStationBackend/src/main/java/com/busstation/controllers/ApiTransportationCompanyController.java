@@ -1,12 +1,15 @@
 package com.busstation.controllers;
 
 import com.busstation.dtos.TransportationCompanyDTO;
+import com.busstation.dtos.UserChatDTO;
+import com.busstation.dtos.UserDTO;
 import com.busstation.pojo.Station;
 import com.busstation.pojo.TransportationCompany;
 import com.busstation.services.CloudinaryService;
 import com.busstation.services.StationService;
 import com.busstation.services.TransportationCompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.busstation.pojo.User;
@@ -16,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/transportation_company")
@@ -163,4 +167,19 @@ public class ApiTransportationCompanyController {
         return ResponseEntity.ok(company);
     }
 
+    @GetMapping("users/{id}")
+    public ResponseEntity<UserChatDTO> getUserById(@PathVariable Long id) {
+        Optional<User> userOptional = userService.getUserById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            UserChatDTO userChatDTO = UserChatDTO.builder()
+                    .avatar(user.getAvatar())
+                    .firstname(user.getFirstname())
+                    .lastname(user.getLastname())
+                    .build();
+            return ResponseEntity.ok(userChatDTO);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

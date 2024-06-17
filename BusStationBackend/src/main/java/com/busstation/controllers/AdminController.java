@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
+import java.util.Optional;
+
 import com.busstation.pojo.TransportationCompany;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -71,11 +73,10 @@ public class AdminController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-
-
     @GetMapping("/verify")
     public String verify() {
         return "verify";
     }
+
 
 }

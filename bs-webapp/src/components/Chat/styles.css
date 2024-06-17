@@ -1,13 +1,15 @@
 .chat-time {
   font-size: 0.8rem;
+  margin-top: 5px;
+  color: #999;
 }
 
-.rcw-message:has(.sender) {
+.rcw-message.rcw-sent {
   display: flex;
   justify-content: flex-end;
 }
 
-.rcw-message:has(.receiver) {
+.rcw-message.rcw-received {
   display: flex;
   justify-content: flex-start;
 }
@@ -16,7 +18,43 @@
   background-color: #0091c4;
 }
 
-.rcw-message > .rcw-response {
+.rcw-message.rcw-response {
   background-color: pink;
   color: white;
 }
+
+.custom-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: aliceblue;
+}
+
+.chat-widget-container {
+  position: relative;
+}
+
+.rcw-header-title {
+  flex: 1;
+}
+
+.rcw-close-button {
+  font-size: 1.2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+.rcw-message .sender .chat-time {
+  text-align: right;
+}
+
+.rcw-message .receiver .chat-time {
+  text-align: left;
+}
+
