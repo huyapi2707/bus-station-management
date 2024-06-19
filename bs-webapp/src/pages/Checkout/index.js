@@ -174,7 +174,11 @@ const Checkout = () => {
                 </select>
               </div>
               <div className="mt-3 d-flex justify-content-center align-items-center">
-                <button onClick={handleCheckout} className=" btn btn-primary">
+                <button
+                  disabled={tickets.length === 0 ? 'disabled' : null}
+                  onClick={handleCheckout}
+                  className=" btn btn-primary"
+                >
                   Đặt vé
                 </button>
               </div>

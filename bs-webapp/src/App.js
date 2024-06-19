@@ -35,7 +35,6 @@ function App() {
       }
     } catch (ex) {
       localStorage.removeItem('accessToken');
-      console.error(ex);
     } finally {
       setLoading('none');
     }
@@ -49,7 +48,7 @@ function App() {
 
   useEffect(() => {
     const localStorageItem = localStorage.getItem('cart');
-    if (cart['key'] === '' && localStorageItem !== '') {
+    if (cart['key'] === '' && localStorageItem !== '' && !localStorageItem) {
       try {
         const temp = JSON.parse(localStorageItem);
         if (temp.length > 0) {
@@ -71,7 +70,7 @@ function App() {
       <AuthenticationContext.Provider value={{user, setUser}}>
         <LoadingContext.Provider value={{loading, setLoading}}>
           <CartContext.Provider value={{cart, cartDispatcher}}>
-            {loading && <Loading />}
+            <Loading />
             <ToastContainer />
             <CartIcon />
             <AppRouter />

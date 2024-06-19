@@ -36,7 +36,7 @@ public class ApiUserController {
     @PatchMapping(path = "/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<UserDTO> partialUpdate(@PathVariable Long id,
                                                  @ModelAttribute UserDTO payload,
-                                                 @RequestParam MultipartFile file
+                                                 @RequestParam(required = false) MultipartFile file
                                                  ) throws IOException, IllegalAccessException {
        return ResponseEntity.ok(userService.updateUser(id, payload, file));
     }
