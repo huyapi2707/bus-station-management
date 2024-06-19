@@ -8,11 +8,9 @@ import {
 } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
 import './styles.css';
-import { useEffect, useRef, useState } from 'react';
+import {useEffect, useRef} from 'react';
 import databaseRef from '../../config/firebase';
 import moment from 'moment';
-import CloseButton from './CloseButton';
-
 const Chat = ({
   subtitle,
   avatar,
@@ -20,21 +18,19 @@ const Chat = ({
   receiverId,
   conversationKey,
   isCompany,
-  onCloseChat,
 }) => {
-  const messageRef = useRef(databaseRef.child(`/chats/${conversationKey}/messages`));
+  const messageRef = useRef(
+    databaseRef.child(`/chats/${conversationKey}/messages`),
+  );
   const badgeRef = useRef(null);
   const receiverBadgeRef = useRef(null);
-  const [initing, setIniting] = useState(true);
 
   const handleSendMessage = (newMessage) => {
-    const timestamp = new Date().getTime();
-    const newMessageData = {
+    messageRef.current.push({
       message: newMessage,
       senderId: senderId,
-      timestamp: timestamp,
-    };
-    messageRef.current.push(newMessageData);
+      timestamp: new Date().getTime(),
+    });
 
     badgeRef.current.set(0);
 
@@ -44,18 +40,15 @@ const Chat = ({
     });
 
     renderCustomComponent(SendTime, {
-      timestamp: timestamp,
+      timestamp: new Date().getTime(),
       isSender: true,
     });
   };
 
   const fetchMessages = () => {
     messageRef.current.once('value', (snapshot) => {
-      const fetchedMessages = [];
       snapshot.forEach((child) => {
         const data = child.val();
-        fetchedMessages.push(data);
-
         if (data['senderId'] === receiverId) {
           addResponseMessage(data['message']);
           renderCustomComponent(SendTime, {
@@ -71,24 +64,28 @@ const Chat = ({
           });
         }
       });
-      setIniting(false);
     });
   };
 
   useEffect(() => {
-    const handleChildAdded = (snapshot) => {
-      const data = snapshot.val();
+    // listen messages
+    messageRef.current
+      .orderByChild('timestamp')
+      .startAt(Date.now())
+      .limitToLast(1)
+      .on('child_added', (snapshot) => {
+        const data = snapshot.val();
+        console.log(data);
+        if (data['senderId'] === receiverId) {
+          addResponseMessage(data['message']);
+          renderCustomComponent(SendTime, {
+            timestamp: data['timestamp'],
+            isSender: false,
+          });
+        }
+      });
 
-      if (data['senderId'] === receiverId && !initing) {
-        addResponseMessage(data['message']);
-        renderCustomComponent(SendTime, {
-          timestamp: data['timestamp'],
-          isSender: false,
-        });
-      }
-    };
-
-    messageRef.current.on('child_added', handleChildAdded);
+    // listen to badge
 
     if (isCompany) {
       badgeRef.current = databaseRef
@@ -114,8 +111,6 @@ const Chat = ({
         .child('unread');
     }
 
-    badgeRef.current.set(0);
-
     badgeRef.current.on('value', (snapshot) => {
       const data = snapshot.val();
       if (data !== 0) {
@@ -123,36 +118,32 @@ const Chat = ({
       }
     });
 
+    // init
     fetchMessages();
-    setIniting(false);
-
-    renderCustomComponent(CloseButton, { onClose: onCloseChat });
 
     return () => {
       deleteMessages();
       badgeRef.current.off('value');
-      messageRef.current.off('child_added', handleChildAdded);
+      messageRef.current.off('child_added');
     };
-  }, [receiverId, senderId, conversationKey, isCompany, onCloseChat, initing]);
+  }, []);
 
   return (
-    <div className="chat-widget-container">
-      <CloseButton onClose={onCloseChat} />
-      <Widget
-        chatId={conversationKey}
-        emojis={true}
-        titleAvatar={avatar}
-        title="Tư vấn trực tuyến"
-        subtitle={subtitle}
-        handleNewUserMessage={handleSendMessage}
-        senderPlaceHolder={'Nhập tin nhắn của bạn'}
-        showTimeStamp={false}
-      />
-    </div>
+    <Widget
+      showCloseButton={true}
+      chatId={conversationKey}
+      emojis={true}
+      titleAvatar={avatar}
+      title="Tư vấn trực tuyến"
+      subtitle={subtitle}
+      handleNewUserMessage={handleSendMessage}
+      senderPlaceHolder={'Nhập tin nhắn của bạn'}
+      showTimeStamp={false}
+    />
   );
 };
 
-const SendTime = ({ timestamp, isSender }) => {
+const SendTime = ({timestamp, isSender}) => {
   return (
     <div
       className={[

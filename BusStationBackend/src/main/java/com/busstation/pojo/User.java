@@ -60,7 +60,7 @@ public class User implements UserDetails {
     private Collection<Ticket> tickets;
     @OneToOne(mappedBy = "manager", fetch = FetchType.LAZY)
     private TransportationCompany managed;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
 
