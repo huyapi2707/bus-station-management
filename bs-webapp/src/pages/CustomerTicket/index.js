@@ -24,16 +24,16 @@ const CustomerTicket = () => {
     fetchTickets();
   }, []);
   const handleDeleteTicket = async (index, id) => {
-    if (alert(`Bạn có chắc hủy vé? Mã vé: ${id}`)) {
+    if (window.confirm(`Bạn có chắc hủy vé? Mã vé: ${id}`)) {
       try {
         setLoading('flex');
         const accessToken = localStorage.getItem('accessToken');
+        console.log(endpoints.ticket(id));
         const response = await apis(accessToken).delete(endpoints.ticket(id));
 
         if (response['status'] === 204) {
           const temp = tickets;
           temp.splice(index, 1);
-
           setTickets(temp);
         }
       } catch (ex) {

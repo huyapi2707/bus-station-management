@@ -21,6 +21,9 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Configuration
 @EnableWebSecurity
@@ -32,6 +35,21 @@ import org.springframework.web.filter.OncePerRequestFilter;
         "com.busstation.configurations"
 })
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    private List<String> publicUrl = List.of("/",
+            "/api/v1/auth/**",
+            "/api/v1/payment-result/**",
+            "/api/v1/cars/**",
+            "/api/v1/payment-method/**",
+            "/api/v1/route/**",
+            "/api/v1/ticket/cart/**",
+            "/api/v1/transportation_company/**",
+            "/api/v1/**/seat-details");
+
+    private List<String> companyManagerUrl = List.of();
+
+    private List<String> adminUrl =List.of("/admin/**");
+
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -54,12 +72,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
-
-        http.authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/admin/**").hasAuthority("ADMIN")
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .authorizeRequests()
+                .antMatchers(publicUrl.toArray(String[]::new)).permitAll()
+                .antMatchers(companyManagerUrl.toArray(String[]::new)).hasAuthority("COMPANY_MANAGER")
+                .antMatchers(adminUrl.toArray(String[]::new)).hasAuthority("ADMIN")
+                .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .usernameParameter("username")
@@ -70,23 +88,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logout().logoutSuccessUrl("/login");
 
 
-        http.authorizeRequests()
-                .antMatchers("/payment-result/**").permitAll()
-                .antMatchers("/api/v1/auth/**").permitAll()
-                .antMatchers("/api/v1/payment-method/**").permitAll()
-                .antMatchers("/api/v1/transportation_company/**").permitAll()
-                .antMatchers("/api/v1/route/**").permitAll()
-                .antMatchers("/api/v1/trip/**").permitAll()
-                .antMatchers("/api/v1/ticket/cart/**").permitAll()
-                .antMatchers("/api/v1/stations/**").permitAll()
-                .antMatchers("/api/v1/cars/**").permitAll()
-                .antMatchers("/api/v1/statistics/**").permitAll()
-                .anyRequest().authenticated();
-
-
-
 
     }
+
 
 
 

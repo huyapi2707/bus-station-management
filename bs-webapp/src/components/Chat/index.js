@@ -8,7 +8,7 @@ import {
 } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
 import './styles.css';
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef} from 'react';
 import databaseRef from '../../config/firebase';
 import moment from 'moment';
 const Chat = ({
@@ -24,7 +24,7 @@ const Chat = ({
   );
   const badgeRef = useRef(null);
   const receiverBadgeRef = useRef(null);
-  const [initing, setIniting] = useState(true);
+
   const handleSendMessage = (newMessage) => {
     messageRef.current.push({
       message: newMessage,
@@ -69,17 +69,21 @@ const Chat = ({
 
   useEffect(() => {
     // listen messages
-    messageRef.current.on('child_added', (snapshot) => {
-      const data = snapshot.val();
-
-      if (data['senderId'] === receiverId && !initing) {
-        addResponseMessage(data['message']);
-        renderCustomComponent(SendTime, {
-          timestamp: data['timestamp'],
-          isSender: false,
-        });
-      }
-    });
+    messageRef.current
+      .orderByChild('timestamp')
+      .startAt(Date.now())
+      .limitToLast(1)
+      .on('child_added', (snapshot) => {
+        const data = snapshot.val();
+        console.log(data);
+        if (data['senderId'] === receiverId) {
+          addResponseMessage(data['message']);
+          renderCustomComponent(SendTime, {
+            timestamp: data['timestamp'],
+            isSender: false,
+          });
+        }
+      });
 
     // listen to badge
 
@@ -91,7 +95,7 @@ const Chat = ({
         .child('unread');
       receiverBadgeRef.current = databaseRef
         .child('/users_keys/')
-        .child(senderId)
+        .child(receiverId)
         .child(conversationKey)
         .child('unread');
     } else {
@@ -102,7 +106,7 @@ const Chat = ({
         .child('unread');
       receiverBadgeRef.current = databaseRef
         .child('/companies_keys/')
-        .child(senderId)
+        .child(receiverId)
         .child(conversationKey)
         .child('unread');
     }
@@ -116,7 +120,6 @@ const Chat = ({
 
     // init
     fetchMessages();
-    setIniting(false);
 
     return () => {
       deleteMessages();
@@ -127,6 +130,7 @@ const Chat = ({
 
   return (
     <Widget
+      showCloseButton={true}
       chatId={conversationKey}
       emojis={true}
       titleAvatar={avatar}
