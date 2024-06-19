@@ -24,7 +24,7 @@ const CreateRoute = () => {
   useEffect(() => {
     const fetchCompany = async () => {
       try {
-        setLoading(true);
+        setLoading('flex');
         const api = apis(accessToken);
         const response = await api.get(
           endpoints.get_company_managerid(user.id),
@@ -36,7 +36,7 @@ const CreateRoute = () => {
       } catch (error) {
         console.error('Error fetching company', error);
       } finally {
-        setLoading(false);
+        setLoading('none');
       }
     };
 
@@ -48,14 +48,14 @@ const CreateRoute = () => {
   useEffect(() => {
     const fetchStations = async () => {
       try {
-        setLoading(true);
+        setLoading('flex');
         const api = apis(accessToken);
         const response = await api.get(endpoints.list_station);
         setStations(response.data);
       } catch (error) {
         console.error('Error fetching stations', error);
       } finally {
-        setLoading(false);
+        setLoading('none');
       }
     };
 

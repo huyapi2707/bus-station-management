@@ -5,7 +5,8 @@ import { AuthenticationContext, LoadingContext } from '../../config/context';
 import { useNavigate } from 'react-router-dom';
 
 const CreateCompany = () => {
-  const { accessToken, user } = useContext(AuthenticationContext);
+  const { user } = useContext(AuthenticationContext);
+  const accessToken = localStorage.getItem('accessToken');
   const { setLoading } = useContext(LoadingContext);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({

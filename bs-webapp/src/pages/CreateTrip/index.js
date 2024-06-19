@@ -22,7 +22,7 @@ const CreateTrip = () => {
   useEffect(() => {
     const fetchCompanyAndRoutes = async () => {
       try {
-        setLoading(true);
+        setLoading('flex');
         const api = apis(accessToken);
 
         const companyResponse = await api.get(
@@ -37,7 +37,7 @@ const CreateTrip = () => {
       } catch (error) {
         console.error('Error fetching company and routes', error);
       } finally {
-        setLoading(false);
+        setLoading('none');
       }
     };
 
@@ -62,7 +62,7 @@ const CreateTrip = () => {
     if (!departAt) return;
 
     try {
-      setLoading(true);
+      setLoading('flex');
       const api = apis(accessToken);
       const response = await api.get(endpoints.available_cars, {
         params: {
@@ -74,7 +74,7 @@ const CreateTrip = () => {
       console.error('Error fetching available cars', error);
       setCars([]);
     } finally {
-      setLoading(false);
+      setLoading('none');
     }
   };
 
@@ -87,7 +87,7 @@ const CreateTrip = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true);
+      setLoading('flex');
       const api = apis(accessToken);
       const tripData = {
         routeId: formData.routeId,
@@ -103,7 +103,7 @@ const CreateTrip = () => {
       console.error('Error creating trip', error);
       alert('Failed to create trip');
     } finally {
-      setLoading(false);
+      setLoading('none');
     }
   };
 

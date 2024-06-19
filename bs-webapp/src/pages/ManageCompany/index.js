@@ -1,10 +1,10 @@
 import React, {useState, useEffect, useContext} from 'react';
-
 import './styles.css';
 import {Link} from 'react-router-dom';
 import {AuthenticationContext, LoadingContext} from '../../config/context';
 import {apis, endpoints} from '../../config/apis';
 import {Bar} from 'react-chartjs-2';
+import ChatIcon from '../../components/ChatIcon';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -30,23 +30,26 @@ const ManageCompany = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [companyId, setCompanyId] = useState(null);
   const [stats, setStats] = useState(null);
-  const {setLoading} = useContext(LoadingContext);
-  const {accessToken, user} = useContext(AuthenticationContext);
+  const { setLoading } = useContext(LoadingContext);
+  const { user } = useContext(AuthenticationContext);
+  const [companyName, setCompanyName] = useState(null);
+  const accessToken = localStorage.getItem('accessToken');
 
   useEffect(() => {
     const fetchCompanyId = async () => {
       try {
-        setLoading(true);
+        setLoading('flex');
         const api = apis(accessToken);
         const response = await api.get(
           endpoints.get_company_managerid(user.id),
         );
         setCompanyId(response.data.id);
+        setCompanyName(response.data.name);
         console.log('Fetched Company ID:', response.data.id);
       } catch (error) {
         console.error('Error fetching company ID:', error);
       } finally {
-        setLoading(false);
+        setLoading('none');
       }
     };
 
@@ -59,7 +62,7 @@ const ManageCompany = () => {
     if (!companyId) return;
 
     try {
-      setLoading(true);
+      setLoading('flex');
       const api = apis(accessToken);
       const dateObj = new Date(date);
       const year = dateObj.getFullYear();
@@ -68,7 +71,7 @@ const ManageCompany = () => {
       let endpoint;
 
       if (type === 'month') {
-        endpoint = `${endpoints.statistics_ticket_month(
+        endpoint = `${endpoints.statistics_ticket_year(
           year,
         )}?companyId=${companyId}`;
       } else if (type === 'quarter') {
@@ -84,22 +87,22 @@ const ManageCompany = () => {
       }
 
       console.log('API Request URL:', endpoint);
-      const response = await api.get(endpoint);
+      const response = await api.get(endpoint, accessToken);
       console.log('API Response Data:', response.data);
       setStats(response.data);
     } catch (error) {
       console.error(`Error fetching ${type} statistics:`, error);
     } finally {
-      setLoading(false);
+      setLoading('none');
     }
   };
 
   const handleRegisterCargo = async () => {
     setShowConfirmation(false);
     try {
-      setLoading(true);
+      setLoading('flex');
       const api = apis(accessToken);
-      const payload = {date};
+      const payload = { date };
       console.log('Register Cargo Payload:', payload);
       const response = await api.put(
         endpoints.register_cargo(companyId),
@@ -114,7 +117,7 @@ const ManageCompany = () => {
       console.error('Error registering cargo:', error);
       alert('An error occurred during registration.');
     } finally {
-      setLoading(false);
+      setLoading('none');
     }
   };
 
@@ -183,14 +186,21 @@ const ManageCompany = () => {
         <Link to="/register-trip">
           <button className="custom-button">Đăng kí chuyến</button>
         </Link>
-        <button className="custom-button" onClick={showConfirmationDialog}>Đăng kí chuyển hàng</button>
+        <button className="custom-button" onClick={showConfirmationDialog}>
+          Đăng kí chuyển hàng
+        </button>
+        <ChatIcon/>
       </div>
       {showConfirmation && (
         <div className="custom-confirmation-overlay">
           <div className="custom-confirmation-dialog">
             <p>Bạn chắc chắn muốn đăng kí vận chuyển hàng hóa không?</p>
-            <button className="custom-button" onClick={handleRegisterCargo}>OK</button>
-            <button className="custom-button" onClick={hideConfirmationDialog}>Cancel</button>
+            <button className="custom-button" onClick={handleRegisterCargo}>
+              OK
+            </button>
+            <button className="custom-button" onClick={hideConfirmationDialog}>
+              Cancel
+            </button>
           </div>
         </div>
       )}
@@ -230,11 +240,15 @@ const ManageCompany = () => {
             className="custom-date-input"
           />
         </div>
-        <div className="custom-chart-container">{renderChart()}</div>
+        <div className="custom-chart-and-heading-container">
+          <h2 className="custom-heading">
+            Báo cáo doanh thu của công ty <span className="company-name">{companyName}</span>
+          </h2>
+          <div className="custom-chart-container">{renderChart()}</div>
+        </div>
       </div>
     </>
   );
-
 };
 
 export default ManageCompany;

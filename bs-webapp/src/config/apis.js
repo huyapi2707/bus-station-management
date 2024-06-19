@@ -17,7 +17,7 @@ const endpoints = {
   available_cars: '/api/v1/cars/available-cars',
   creat_trip: '/api/v1/trip/add',
   self_ticket: '/api/v1/users/self/tickets',
-  statistics_ticket_month: (year) => `/api/v1/statistics/month/${year}`,
+  statistics_ticket_year: (year) => `/api/v1/statistics/year/${year}`,
   statistics_ticket_quarterly: (year) => `/api/v1/statistics/quarterly/${year}`,
   statistics_ticket_day: (year, month, day) =>
     `/api/v1/statistics/day/${year}/${month}/${day}`,
@@ -29,6 +29,7 @@ const endpoints = {
   trip_seat_details: (id) => `/api/v1/trip/${id}/seat-details`,
   checkout: (paymentMethodId) => `/api/v1/ticket/checkout/${paymentMethodId}`,
   user: (id) => `/api/v1/users/${id}`,
+  get_user_by_id: (id) => `/api/v1/users/${id}`,
   get_user_by_role: (id) => `/admin/users/role/${id}`,
   companyInfo: (id) => `/api/v1/transportation_company/${id}`,
   ticket: (id) => `/api/v1/ticket/${id}`,
