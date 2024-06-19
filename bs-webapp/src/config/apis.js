@@ -32,7 +32,6 @@ const endpoints = {
   get_user_by_role: (id) => `/admin/users/role/${id}`,
   companyInfo: (id) => `/api/v1/transportation_company/${id}`,
   ticket: (id) => `/api/v1/ticket/${id}`,
-  get_user_by_id: (id) => `api/v1/transportation_company/users/${id}`,
 };
 const apis = (accessToken) => {
   if (accessToken) {
