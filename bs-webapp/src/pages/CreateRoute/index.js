@@ -18,7 +18,8 @@ const CreateRoute = () => {
   });
 
   const {setLoading} = useContext(LoadingContext);
-  const {accessToken, user} = useContext(AuthenticationContext);
+  const { user} = useContext(AuthenticationContext);
+  const accessToken = localStorage.getItem('accessToken');
   const navigate = useNavigate();
 
   useEffect(() => {

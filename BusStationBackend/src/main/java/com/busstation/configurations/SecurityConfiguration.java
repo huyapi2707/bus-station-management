@@ -48,7 +48,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             );
     //Api for company
     private List<String> companyManagerUrl = List.of("/",
-            "/api/v1/statistics/**"
+            "/api/v1/statistics/**",
+            "/api/v1/route/add",
+            "/api/v1/trip/add",
+            "api/v1/transportation_company/cargo/**"
             );
 
     private List<String> adminUrl =List.of("/admin/**");
