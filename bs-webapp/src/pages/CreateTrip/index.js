@@ -1,9 +1,9 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './styles.css';
 
-import {apis, endpoints} from '../../config/apis';
-import {LoadingContext, AuthenticationContext} from '../../config/context';
-import {useNavigate} from 'react-router-dom';
+import { apis, endpoints } from '../../config/apis';
+import { LoadingContext, AuthenticationContext } from '../../config/context';
+import { useNavigate } from 'react-router-dom';
 
 const CreateTrip = () => {
   const [routes, setRoutes] = useState([]);
@@ -15,14 +15,15 @@ const CreateTrip = () => {
     isActive: true,
   });
 
-  const {setLoading} = useContext(LoadingContext);
-  const {accessToken, user} = useContext(AuthenticationContext);
+  const { setLoading } = useContext(LoadingContext);
+  const { user } = useContext(AuthenticationContext);
+  const accessToken = localStorage.getItem('accessToken');
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCompanyAndRoutes = async () => {
       try {
-        setLoading(true);
+        setLoading('flex');
         const api = apis(accessToken);
 
         const companyResponse = await api.get(
@@ -33,11 +34,12 @@ const CreateTrip = () => {
         const routesResponse = await api.get(
           endpoints.get_route_by_companyid(companyId),
         );
-        setRoutes(routesResponse.data || []);
+        const sortedRoutes = (routesResponse.data || []).sort((a, b) => b.id - a.id);
+        setRoutes(sortedRoutes);
       } catch (error) {
         console.error('Error fetching company and routes', error);
       } finally {
-        setLoading(false);
+        setLoading('none');
       }
     };
 
@@ -47,7 +49,7 @@ const CreateTrip = () => {
   }, [user, accessToken, setLoading]);
 
   const handleChange = (e) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
@@ -62,7 +64,7 @@ const CreateTrip = () => {
     if (!departAt) return;
 
     try {
-      setLoading(true);
+      setLoading('flex');
       const api = apis(accessToken);
       const response = await api.get(endpoints.available_cars, {
         params: {
@@ -74,7 +76,7 @@ const CreateTrip = () => {
       console.error('Error fetching available cars', error);
       setCars([]);
     } finally {
-      setLoading(false);
+      setLoading('none');
     }
   };
 
@@ -87,7 +89,7 @@ const CreateTrip = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true);
+      setLoading('flex');
       const api = apis(accessToken);
       const tripData = {
         routeId: formData.routeId,
@@ -103,7 +105,7 @@ const CreateTrip = () => {
       console.error('Error creating trip', error);
       alert('Failed to create trip');
     } finally {
-      setLoading(false);
+      setLoading('none');
     }
   };
 
@@ -161,7 +163,7 @@ const CreateTrip = () => {
         </div>
       </form>
     </div>
-);
+  );
 };
 
 export default CreateTrip;

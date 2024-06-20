@@ -1,0 +1,38 @@
+.chat-icon-container {
+    position: fixed;
+    bottom: 550px;
+    right:  10px;
+    z-index: 1000; 
+  }
+  
+  .chat-icon img {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+  }
+  
+  .message-list-container {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 300px;
+    max-height: 400px;
+    background-color: rgb(160, 188, 221);
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow-y: scroll;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .chat-container {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 400px;
+    height: 500px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }

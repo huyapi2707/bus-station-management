@@ -14,7 +14,7 @@ public class ApiStatisticsController {
     TicketService ticketService;
 
 
-    @GetMapping("month/{year}")
+    @GetMapping("year/{year}")
     public Map<Integer, StatisticsDTO> getAnnualRevenue(
             @PathVariable(name = "year") Integer year,
             @RequestParam(name = "companyId") Long companyId) {
