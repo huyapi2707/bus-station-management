@@ -15,6 +15,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class UserChatDTO implements Serializable {
     private Long id;
+    private String username;
     private String firstname;
     private String lastname;
     private String avatar;

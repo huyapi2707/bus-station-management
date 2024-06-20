@@ -68,7 +68,7 @@ const Chat = ({
   };
 
   useEffect(() => {
-    // listen messages
+    // listen new messages
     messageRef.current
       .orderByChild('timestamp')
       .startAt(Date.now())

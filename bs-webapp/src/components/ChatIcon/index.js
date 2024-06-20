@@ -15,7 +15,6 @@ const ChatIcon = () => {
   const [companyId, setCompanyId] = useState(null);
   const [companyAvt, setCompanyAvt] = useState(null);
 
-  // Lấy thông tin company
   useEffect(() => {
     const fetchCompany = async () => {
       try {
@@ -37,7 +36,6 @@ const ChatIcon = () => {
     }
   }, [user, accessToken, setLoading]);
 
-  // Lấy thông tin receiver
   useEffect(() => {
     const fetchReceiverInfo = async (receiverId) => {
       try {
@@ -74,7 +72,7 @@ const ChatIcon = () => {
   return (
     <div className="chat-icon-container">
       <div className="chat-icon" onClick={toggleMessages}>
-        <img src="/images/mess.png" alt="Chat Icon" />
+        <img src="/images/mess_icon.png" alt="Chat Icon" />
       </div>
       {showMessages && (
         <div className="message-list-container">
@@ -88,7 +86,7 @@ const ChatIcon = () => {
           senderId={companyId}
           receiverId={selectedChat.opponentId}
           avatar={receiverInfo.avatar}
-          subtitle={`Trò chuyện với ${receiverInfo.firstname} ${receiverInfo.lastname}`}
+          subtitle={`Trò chuyện với ${receiverInfo.firstname} ${receiverInfo.lastname} [${receiverInfo.username}]`}
           isCompany={true}
           onCloseChat={handleCloseChat}
         />

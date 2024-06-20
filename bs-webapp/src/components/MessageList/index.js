@@ -6,6 +6,7 @@ import './styles.css';
 const MessageList = ({ onSelectChat, companyId, accessToken }) => {
   const [messages, setMessages] = useState([]);
 
+  // Lấy tin nhắn từ firebase
   useEffect(() => {
     if (!companyId) return;
 
@@ -53,7 +54,7 @@ const MessageList = ({ onSelectChat, companyId, accessToken }) => {
               };
             }
           }));
-
+          //Sắp xếp tin nhắn từ mới đến cũ
           messageList.sort((a, b) => a.timestamp - b.timestamp);
           setMessages(messageList);
         }

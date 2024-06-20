@@ -29,6 +29,7 @@ const endpoints = {
   trip_seat_details: (id) => `/api/v1/trip/${id}/seat-details`,
   checkout: (paymentMethodId) => `/api/v1/ticket/checkout/${paymentMethodId}`,
   user: (id) => `/api/v1/users/${id}`,
+  //Lấy thông tin user để hiển thị trong component chat
   get_user_by_id: (id) => `/api/v1/users/${id}`,
   get_user_by_role: (id) => `/admin/users/role/${id}`,
   companyInfo: (id) => `/api/v1/transportation_company/${id}`,

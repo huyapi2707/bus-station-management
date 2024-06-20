@@ -73,6 +73,7 @@ public class ApiUserController {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             UserChatDTO userChatDTO = UserChatDTO.builder()
+                    .username((user.getUsername()))
                     .avatar(user.getAvatar())
                     .firstname(user.getFirstname())
                     .lastname(user.getLastname())
