@@ -102,7 +102,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = userRepository.getUserByEmail(data.getEmail());
         if (user == null) {
             Role role = roleRepository.getRoleByName("USER");
-            String password = generatePassword();
+            String password = passwordEncoder.encode(generatePassword());
             user = User.builder()
                     .username(data.getUsername())
                     .email(data.getEmail())
