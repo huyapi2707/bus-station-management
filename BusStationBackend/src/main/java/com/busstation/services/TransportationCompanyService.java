@@ -22,4 +22,5 @@ public interface TransportationCompanyService{
     TransportationCompanyDTO getCompanyAndManager(Long companyId);
     TransportationCompanyDTO getCompanyByManagerId(Long managerId);
     void cargo(Long companyId);
+    long getTotalCompanyCount();
 }

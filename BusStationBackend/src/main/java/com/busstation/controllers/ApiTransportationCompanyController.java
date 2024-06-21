@@ -3,14 +3,11 @@ package com.busstation.controllers;
 import com.busstation.dtos.TransportationCompanyDTO;
 import com.busstation.pojo.Station;
 import com.busstation.pojo.TransportationCompany;
-import com.busstation.services.CloudinaryService;
-import com.busstation.services.StationService;
-import com.busstation.services.TransportationCompanyService;
+import com.busstation.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.busstation.pojo.User;
-import com.busstation.services.UserService;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -161,6 +158,15 @@ public class ApiTransportationCompanyController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(company);
+    }
+
+    @GetMapping("/count/user/{id}")
+    public long getUserCountByRoleId(@PathVariable Long id) {
+        return userService.getUserCountByRoleId(id);
+    }
+    @GetMapping("/count/company")
+    public long getTotalCompanyCount() {
+        return transportationCompanyService.getTotalCompanyCount();
     }
 
 }

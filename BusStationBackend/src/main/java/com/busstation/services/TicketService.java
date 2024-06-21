@@ -32,4 +32,5 @@ public interface TicketService {
     List<TicketDTO> getTicketByUserId(Long userId);
 
     void delete(Long id);
+
 }

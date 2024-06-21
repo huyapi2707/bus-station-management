@@ -192,4 +192,16 @@ public class TransportationCompanyRepositoryImpl implements TransportationCompan
                 .setParameter("managerId", managerId)
                 .uniqueResult();
     }
+
+    @Override
+    public long countAllCompanies() {
+        Session session = sessionFactoryBean.getObject().getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
+        Root<TransportationCompany> root = criteriaQuery.from(TransportationCompany.class);
+
+        criteriaQuery.select(builder.count(root));
+
+        return session.createQuery(criteriaQuery).getSingleResult();
+    }
 }
