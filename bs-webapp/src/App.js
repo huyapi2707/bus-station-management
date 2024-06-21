@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {apis, endpoints} from './config/apis';
 import CartIcon from './components/CartIcon';
 import AppRouter from './routes';
+import {GoogleOAuthProvider} from '@react-oauth/google';
 
 function App() {
   const [loading, setLoading] = useState('none');
@@ -67,16 +68,18 @@ function App() {
 
   return (
     <div className="container-fluid">
-      <AuthenticationContext.Provider value={{user, setUser}}>
-        <LoadingContext.Provider value={{loading, setLoading}}>
-          <CartContext.Provider value={{cart, cartDispatcher}}>
-            <Loading />
-            <ToastContainer />
-            <CartIcon />
-            <AppRouter />
-          </CartContext.Provider>
-        </LoadingContext.Provider>
-      </AuthenticationContext.Provider>
+      <GoogleOAuthProvider clientId="74220990475-fqfc35bpnobkpphc31ik8mnuq1fm93og.apps.googleusercontent.com">
+        <AuthenticationContext.Provider value={{user, setUser}}>
+          <LoadingContext.Provider value={{loading, setLoading}}>
+            <CartContext.Provider value={{cart, cartDispatcher}}>
+              <Loading />
+              <ToastContainer />
+              <CartIcon />
+              <AppRouter />
+            </CartContext.Provider>
+          </LoadingContext.Provider>
+        </AuthenticationContext.Provider>
+      </GoogleOAuthProvider>
     </div>
   );
 }

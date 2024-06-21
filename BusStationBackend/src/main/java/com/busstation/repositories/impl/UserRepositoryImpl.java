@@ -127,5 +127,19 @@ public class UserRepositoryImpl implements UserRepository {
         return (Long) query.getSingleResult();
     }
 
+    @Override
+    public User getUserByEmail(String email) {
+        Session session = sessionFactory.getObject().getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<User> criteriaQuery = builder.createQuery(User.class);
+        Root root = criteriaQuery.from(User.class);
+        criteriaQuery.select(root);
+        criteriaQuery.where(builder.equal(root.get("email"), email));
+        Query query = session.createQuery(criteriaQuery);
+
+        return (User) query.getResultList().stream().findFirst().orElse(null);
+
+    }
+
 }
 
