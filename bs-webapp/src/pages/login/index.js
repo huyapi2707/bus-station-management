@@ -86,6 +86,16 @@ const Login = () => {
       setUser(data['userDetails']);
       navigator(from);
     } catch (ex) {
+      console.error(ex);
+      toast.error('Error when process your request', {
+        position: 'top-center',
+        autoClose: 4000,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
+      });
     } finally {
       setLoading('none');
     }
@@ -155,17 +165,21 @@ const Login = () => {
                 <span className="d-block text-center my-4 text-muted">
                   -- hoặc --
                 </span>
-                {/* <button
-                  type="button"
-                  className="btn btn-danger btn-lg"
-                  style={{width: '100%'}}
-                >
-                  <FaGoogle className="me-2" />
-                  Đăng nhập với Google
-                </button> */}
+
                 <GoogleLogin
                   onSuccess={(credentialResponse) => {
                     handleLoginWithGoogle(credentialResponse);
+                  }}
+                  onError={() => {
+                    toast.error('Access denied when login with Google', {
+                      position: 'top-center',
+                      autoClose: 4000,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: 'colored',
+                    });
                   }}
                 ></GoogleLogin>
               </form>
