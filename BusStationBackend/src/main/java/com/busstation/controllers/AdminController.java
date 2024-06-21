@@ -1,8 +1,6 @@
 package com.busstation.controllers;
 
 import com.busstation.dtos.UserDTO;
-import com.busstation.pojo.User;
-import com.busstation.services.TransportationCompanyService;
 import com.busstation.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,11 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
 import java.util.List;
-import com.busstation.pojo.TransportationCompany;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
@@ -23,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class AdminController {
     @Autowired
     private UserService userService;
+
     @GetMapping("/")
     public String admin() {
         return "admin";
@@ -71,11 +67,10 @@ public class AdminController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-
-
     @GetMapping("/verify")
     public String verify() {
         return "verify";
     }
+
 
 }

@@ -7,16 +7,15 @@ import com.busstation.repositories.*;
 import com.busstation.services.RouteService;
 import com.busstation.services.TicketService;
 import com.busstation.services.TripService;
-import com.sun.tools.jconsole.JConsoleContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.ScannedGenericBeanDefinition;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.persistence.criteria.Root;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -54,6 +53,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Autowired
     private OnlinePaymentResultRepository paymentResultRepository;
+
 
 
     @Override
@@ -275,4 +275,5 @@ public class TicketServiceImpl implements TicketService {
     public void delete(Long id) {
         ticketRepository.delete(id);
     }
+
 }

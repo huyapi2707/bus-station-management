@@ -150,4 +150,9 @@ public class TransportationCompanyServiceImpl implements TransportationCompanySe
                 .managerId(company.getManager().getId())
                 .build();
     }
+
+    @Override
+    public long getTotalCompanyCount() {
+        return repository.countAllCompanies();
+    }
 }

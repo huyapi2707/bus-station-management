@@ -13,7 +13,6 @@ public interface TicketRepository {
     Map<Integer, StatisticsDTO> calculateAnnualRevenue(int year, Long companyId);
     Map<Integer, StatisticsDTO> calculateQuarterlyRevenue(int year, Long companyId);
     Map<Integer, StatisticsDTO> calculateDailyRevenue(int year, int month, int day, Long companyId);
-
     List<Ticket> findTicketsByUserId(Long userId);
     void delete(Long id);
 }

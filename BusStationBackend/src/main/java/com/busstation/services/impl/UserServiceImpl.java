@@ -5,7 +5,6 @@ import com.busstation.dtos.UserDTO;
 import com.busstation.mappers.TicketDTOMapper;
 import com.busstation.mappers.UserDTOMapper;
 import com.busstation.pojo.Role;
-import com.busstation.pojo.Ticket;
 import com.busstation.pojo.User;
 import com.busstation.repositories.RoleRepository;
 import com.busstation.repositories.UserRepository;
@@ -17,15 +16,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -137,5 +133,10 @@ public class UserServiceImpl implements UserService {
         }
         userRepository.update(user);
         return userDTOMapper.apply(user);
+    }
+
+    @Override
+    public long getUserCountByRoleId(Long roleId) {
+        return userRepository.countUsersByRoleId(roleId);
     }
 }

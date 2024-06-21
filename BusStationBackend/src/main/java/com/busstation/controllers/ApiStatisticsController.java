@@ -2,6 +2,7 @@ package com.busstation.controllers;
 
 import com.busstation.dtos.StatisticsDTO;
 import com.busstation.services.TicketService;
+import com.busstation.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,4 +37,5 @@ public class ApiStatisticsController {
             @RequestParam(name = "companyId") Long companyId) {
         return ticketService.getDailyRevenue(year, month, day, companyId);
     }
+
 }

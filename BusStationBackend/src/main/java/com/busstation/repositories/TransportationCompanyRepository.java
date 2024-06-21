@@ -23,4 +23,5 @@ public interface TransportationCompanyRepository {
     TransportationCompanyDTO getCompanyAndManager(Long companyId);
     TransportationCompany findByManagerId(Long id);
     void cargo(Long id);
+    long countAllCompanies();
 }

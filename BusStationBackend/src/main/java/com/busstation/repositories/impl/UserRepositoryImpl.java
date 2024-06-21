@@ -110,5 +110,22 @@ public class UserRepositoryImpl implements UserRepository {
         return user;
     }
 
+    @Override
+    public long countUsersByRoleId(Long roleId) {
+        Session session = sessionFactory.getObject().getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
+        Root<User> root = criteriaQuery.from(User.class);
+
+        Predicate rolePredicate = builder.equal(root.get("role").get("id"), roleId);
+        Predicate activePredicate = builder.isTrue(root.get("isActive"));
+
+        criteriaQuery.select(builder.count(root));
+        criteriaQuery.where(builder.and(rolePredicate, activePredicate));
+
+        Query query = session.createQuery(criteriaQuery);
+        return (Long) query.getSingleResult();
+    }
+
 }
 

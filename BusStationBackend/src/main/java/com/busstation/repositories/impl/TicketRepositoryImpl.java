@@ -152,5 +152,4 @@ public class TicketRepositoryImpl implements TicketRepository {
         query.executeUpdate();
 
     }
-
 }
