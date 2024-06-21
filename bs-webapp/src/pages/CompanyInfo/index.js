@@ -130,7 +130,7 @@ const CompanyInfo = () => {
                     </button>
                   ) : (
                     <Link to={'/login'} state={{from: pathname}}>
-                      Đăng nhập chat với nhân viên nhà xe
+                      Đăng nhập để chat với nhân viên nhà xe
                     </Link>
                   )}
                 </li>

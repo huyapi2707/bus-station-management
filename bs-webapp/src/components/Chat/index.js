@@ -113,6 +113,7 @@ const Chat = ({
 
     badgeRef.current.on('value', (snapshot) => {
       const data = snapshot.val();
+
       if (data !== 0) {
         setBadgeCount(data);
       }

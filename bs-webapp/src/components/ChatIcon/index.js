@@ -1,17 +1,17 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import MessageList from '../MessageList';
 import Chat from '../Chat';
 import './styles.css';
-import { LoadingContext, AuthenticationContext } from '../../config/context';
-import { apis, endpoints } from '../../config/apis';
-
+import {LoadingContext, AuthenticationContext} from '../../config/context';
+import {apis, endpoints} from '../../config/apis';
+import {RiMessage3Line} from 'react-icons/ri';
 const ChatIcon = () => {
   const [showMessages, setShowMessages] = useState(false);
   const [selectedChat, setSelectedChat] = useState(null);
   const [receiverInfo, setReceiverInfo] = useState({});
-  const { user } = useContext(AuthenticationContext);
+  const {user} = useContext(AuthenticationContext);
   const accessToken = localStorage.getItem('accessToken');
-  const { setLoading } = useContext(LoadingContext);
+  const {setLoading} = useContext(LoadingContext);
   const [companyId, setCompanyId] = useState(null);
   const [companyAvt, setCompanyAvt] = useState(null);
 
@@ -20,17 +20,19 @@ const ChatIcon = () => {
       try {
         setLoading('flex');
         const api = apis(accessToken);
-        const response = await api.get(endpoints.get_company_managerid(user.id));
+        const response = await api.get(
+          endpoints.get_company_managerid(user.id),
+        );
         setCompanyId(response.data.id);
         setCompanyAvt(response.data.avatar);
-        console.log("Url avatar: ", response.data.avatar);
+        console.log('Url avatar: ', response.data.avatar);
       } catch (error) {
         console.error('Error fetching company', error);
       } finally {
         setLoading('none');
       }
     };
-    
+
     if (user && user.id) {
       fetchCompany();
     }
@@ -72,11 +74,15 @@ const ChatIcon = () => {
   return (
     <div className="chat-icon-container">
       <div className="chat-icon" onClick={toggleMessages}>
-        <img src="/images/mess_icon.png" alt="Chat Icon" />
+        <RiMessage3Line size="2em" color="#6D75D5" />
       </div>
       {showMessages && (
         <div className="message-list-container">
-          <MessageList onSelectChat={handleSelectChat} companyId={companyId} accessToken={accessToken} />
+          <MessageList
+            onSelectChat={handleSelectChat}
+            companyId={companyId}
+            accessToken={accessToken}
+          />
         </div>
       )}
       {selectedChat && receiverInfo && (
