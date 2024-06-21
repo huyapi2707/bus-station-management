@@ -1,11 +1,13 @@
 import {useContext, useState} from 'react';
 import './styles.css';
-import {FaGoogle} from 'react-icons/fa';
+
 import {LoadingContext, AuthenticationContext} from '../../config/context';
 import {apis, endpoints} from '../../config/apis';
 import {toast} from 'react-toastify';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import * as validator from '../../config/validator';
+import {GoogleLogin} from '@react-oauth/google';
+import {jwtDecode} from 'jwt-decode';
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -63,6 +65,27 @@ const Login = () => {
       setUser(data['userDetails']);
       navigator(from);
     } catch (error) {
+    } finally {
+      setLoading('none');
+    }
+  };
+  const handleLoginWithGoogle = async ({credential}) => {
+    try {
+      setLoading('flex');
+      const {email, family_name, given_name, name, picture} =
+        jwtDecode(credential);
+      const response = await apis(null).post(endpoints['login_with_google'], {
+        firstName: family_name,
+        lastName: given_name,
+        username: email,
+        email: email,
+        avatar: picture,
+      });
+      const data = response['data'];
+      localStorage.setItem('accessToken', data['accessToken']);
+      setUser(data['userDetails']);
+      navigator(from);
+    } catch (ex) {
     } finally {
       setLoading('none');
     }
@@ -132,14 +155,19 @@ const Login = () => {
                 <span className="d-block text-center my-4 text-muted">
                   -- hoặc --
                 </span>
-                <button
+                {/* <button
                   type="button"
                   className="btn btn-danger btn-lg"
                   style={{width: '100%'}}
                 >
                   <FaGoogle className="me-2" />
                   Đăng nhập với Google
-                </button>
+                </button> */}
+                <GoogleLogin
+                  onSuccess={(credentialResponse) => {
+                    handleLoginWithGoogle(credentialResponse);
+                  }}
+                ></GoogleLogin>
               </form>
             </div>
           </div>

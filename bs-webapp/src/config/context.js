@@ -66,4 +66,10 @@ const cartReducer = (currentState, action) => {
   }
 };
 
-export {CompanyContext,LoadingContext, AuthenticationContext, CartContext, cartReducer};
+export {
+  CompanyContext,
+  LoadingContext,
+  AuthenticationContext,
+  CartContext,
+  cartReducer,
+};

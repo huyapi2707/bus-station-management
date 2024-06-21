@@ -15,4 +15,6 @@ public interface UserRepository {
     void changeRole(User user);
     User update(User user);
     long countUsersByRoleId(Long roleId);
+
+    User  getUserByEmail(String email);
 }

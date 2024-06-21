@@ -17,6 +17,7 @@ const endpoints = {
   available_cars: '/api/v1/cars/available-cars',
   creat_trip: '/api/v1/trip/add',
   self_ticket: '/api/v1/users/self/tickets',
+  login_with_google: '/api/v1/auth/oauth2/google',
   statistics_ticket_year: (year) => `/api/v1/statistics/year/${year}`,
   statistics_ticket_quarterly: (year) => `/api/v1/statistics/quarterly/${year}`,
   statistics_ticket_day: (year, month, day) =>
