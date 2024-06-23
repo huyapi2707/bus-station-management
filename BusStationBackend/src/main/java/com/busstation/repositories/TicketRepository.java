@@ -15,4 +15,6 @@ public interface TicketRepository {
     Map<Integer, StatisticsDTO> calculateDailyRevenue(int year, int month, int day, Long companyId);
     List<Ticket> findTicketsByUserId(Long userId);
     void delete(Long id);
+
+    Ticket getById(Long id);
 }

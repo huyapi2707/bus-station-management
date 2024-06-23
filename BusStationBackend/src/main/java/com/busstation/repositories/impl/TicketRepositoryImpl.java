@@ -152,4 +152,12 @@ public class TicketRepositoryImpl implements TicketRepository {
         query.executeUpdate();
 
     }
+
+    @Override
+    public Ticket getById(Long id) {
+        Session session  = localSessionFactoryBean.getObject().getCurrentSession();
+        Ticket ticket = session.get(Ticket.class, id);
+        if (ticket == null) throw  new IllegalArgumentException("Ticket id is not exist");
+        return ticket;
+    }
 }

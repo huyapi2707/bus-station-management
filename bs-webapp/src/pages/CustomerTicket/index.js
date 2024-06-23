@@ -63,7 +63,7 @@ const CustomerTicket = () => {
               <th>Khởi hành lúc</th>
               <th>Phương thức thanh toán</th>
               <th>Đã thanh toán</th>
-              <th>Hủy vé</th>
+              <th>Hành động</th>
             </tr>
           </thead>
           <tbody className="ticket-table-body">

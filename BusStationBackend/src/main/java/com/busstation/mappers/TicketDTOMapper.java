@@ -22,15 +22,18 @@ public class TicketDTOMapper implements Function<Ticket, TicketDTO> {
     public TicketDTO apply(Ticket ticket) {
         RouteDTO routeDTO = routeDTOMapper.apply(ticket.getTrip().getRoute());
         TripDTO tripDTO = tripDTOMapper.apply(ticket.getTrip());
-        return TicketDTO.builder()
+       var result = TicketDTO.builder()
                 .ticketId(ticket.getId())
                 .routeInfo(routeDTO)
                 .tripInfo(tripDTO)
                 .seatPrice(ticket.getSeatPrice())
-                .cargoPrice(ticket.getCargo().getCargoPrice())
+
                 .paidAt(ticket.getPaidAt())
                 .paymentMethod(ticket.getPaymentMethod())
-                .seat(ticket.getSeat())
-                .build();
+                .seat(ticket.getSeat());
+       if (ticket.getCargo() != null) {
+           result.cargoPrice(ticket.getCargo().getCargoPrice());
+       }
+       return result.build();
     }
 }
