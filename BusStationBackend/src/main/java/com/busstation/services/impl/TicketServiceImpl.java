@@ -268,12 +268,29 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public List<TicketDTO> getTicketByUserId(Long userId) {
         List<Ticket> tickets = ticketRepository.findTicketsByUserId(userId);
+
         return tickets.stream().map(ticketDTOMapper::apply).collect(Collectors.toList());
     }
 
     @Override
     public void delete(Long id) {
-        ticketRepository.delete(id);
+        Ticket ticket = ticketRepository.getById(id);
+        User  user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (hasObjectPermission(ticket, user)) {
+            ticketRepository.delete(id);
+        }
+        else throw  new IllegalArgumentException("Access denied");
+    }
+
+    @Override
+    public boolean hasObjectPermission(Ticket ticket, User user) {
+        if (user.getRole().getName().equals("ADMIN")) {
+            return true;
+        }
+        if (user.getId() == ticket.getCustomer().getId()) {
+            return true;
+        }
+        return false;
     }
 
 }

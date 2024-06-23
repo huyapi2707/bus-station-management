@@ -5,6 +5,7 @@ import com.busstation.dtos.CheckoutResponse;
 import com.busstation.dtos.StatisticsDTO;
 import com.busstation.dtos.TicketDTO;
 import com.busstation.pojo.Ticket;
+import com.busstation.pojo.User;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.MalformedParameterizedTypeException;
@@ -32,5 +33,7 @@ public interface TicketService {
     List<TicketDTO> getTicketByUserId(Long userId);
 
     void delete(Long id);
+
+    boolean hasObjectPermission(Ticket ticket, User user );
 
 }
